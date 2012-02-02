@@ -1,0 +1,45 @@
+<ui>
+  <menubar name='MenuBar'>
+    <menu action='MenuFile'>
+      <menuitem action='Open' />
+      <menuitem action='Save As' />
+      <separator/>
+      <menuitem action='ImportFromGlobalEnv' />
+      <separator/>
+      <menuitem action='Quit'/>
+    </menu>
+    <menu action='MenuEdit'>
+      <menuitem action='ChageDataSetName'/>
+      <menuitem action='RemoveDataSet' />
+      <separator/>
+      <menuitem action='RevertToOriginal' />
+      <menuitem action='ReloadFromGlobalEnv' />
+      <separator/>
+      <menuitem action='Settings' />
+    </menu>
+    <menu action='MenuView'>
+      <menuitem action='DataView' />
+      <menuitem action='PlotView' />
+    </menu>
+  </menubar>
+  <popup name="PopupVV">
+    <menuitem action="Recode" />
+  </popup>
+  <toolbar  name='ToolBar'>
+    <toolitem action='Open' />
+    <toolitem action='Save As' />
+    <separator/>
+    <toolitem action='ImportFromGlobalEnv' />
+    <separator/>
+    <toolitem action='ChageDataSetName' />
+    <toolitem action='RemoveDataSet' />
+    <separator/>
+    <toolitem action='RevertToOriginal' />
+    <toolitem action='ReloadFromGlobalEnv' />
+    <separator/>
+    <toolitem action='Settings' />
+    <separator/>
+    <toolitem action='DataView' />
+    <toolitem action='PlotView' />
+  </toolbar>
+</ui>
