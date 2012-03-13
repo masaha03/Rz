@@ -73,6 +73,7 @@ setRefClass("RzMain",
       rzVariableEditorView$setAccel(accel.group)
       
       rzActionGroup$getA.plot.view()$setActive(rzSettings$getPlotViewEnabled())
+      rzActionGroup$getA.variable.editor.view()$setActive(rzSettings$getVariableEditorViewEnabled())
       rzActionGroup$getA.reload()$setSensitive(rzSettings$getUseDataSetObject())
       gSignalConnect(rzActionGroup$getA.open(),      "activate", .self$onOpen)
       gSignalConnect(rzActionGroup$getA.save(),      "activate", .self$onSave)
@@ -81,6 +82,10 @@ setRefClass("RzMain",
       gSignalConnect(rzActionGroup$getA.remove(),    "activate", .self$onRemove)
       gSignalConnect(rzActionGroup$getA.revert(),    "activate", .self$onRevert)
       gSignalConnect(rzActionGroup$getA.reload(),    "activate", .self$onReload)
+      gSignalConnect(rzActionGroup$getA.selectall(), "activate", .self$onSelectAll)
+      gSignalConnect(rzActionGroup$getA.unselect(),  "activate", .self$onUnselect)
+      gSignalConnect(rzActionGroup$getA.delete(),    "activate", .self$onDelete)
+      gSignalConnect(rzActionGroup$getA.duplicate(), "activate", .self$onDuplicate)
       gSignalConnect(rzActionGroup$getA.quit(),      "activate", win$destroy)
       gSignalConnect(rzActionGroup$getA.settings(),  "activate", .self$onSetting)
       gSignalConnect(rzActionGroup$getA.data.view(), "activate", .self$onDataView)
@@ -121,7 +126,36 @@ setRefClass("RzMain",
     
     # actions
     onEditValueLabels = function(action){
-      variable.view$onEditValueLabels(win=win)
+      if(is.null(variable.view)) return()
+      variable.view$onEditValueLabels()
+    },
+
+    onSelectAll = function(action){
+      if(is.null(variable.view)) return()
+      variable.view$onSelectAll()
+    },
+    
+    onUnselect = function(action){
+      if(is.null(variable.view)) return()
+      variable.view$onUnselect()
+    },
+    
+    onDelete = function(action){
+      if(is.null(variable.view)) return()
+      dialog <- gtkMessageDialogNew(win, "destroy-with-parent",
+                                    GtkMessageType["question"], GtkButtonsType["ok-cancel"],
+                                    gettext("Are you sure you want to do that?"))
+      response <- dialog$run()
+      dialog$hide()
+      
+      if(response==GtkResponseType["ok"]){
+        variable.view$onDelete()
+      }
+    },
+
+    onDuplicate = function(action){
+      if(is.null(variable.view)) return()
+      variable.view$onDuplicate()
     },
     
     onDataView = function(action){
@@ -342,7 +376,7 @@ setRefClass("RzMain",
       if ( is.null(variable.view) ) {
         timeoutid <- gTimeoutAdd(80, progress.bar$start)
         variable.view <<- new("RzVariableView", data=rzDataHandler$getData(data.set.name),
-                              rzPlot=rzPlot)
+                              win=win, rzPlot=rzPlot)
         variable.view$construct()
         variable.view.list[[data.set.name]] <<- variable.view
         main.view$packStart(variable.view$getSw())

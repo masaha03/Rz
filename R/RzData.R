@@ -53,6 +53,34 @@ setRefClass("RzData",
       }
     },
     
+    deleteVars = function(inds){
+      inds <- sort(inds)
+      inds <- rev(inds)
+      for(i in inds){
+        data.set[[i]] <<- NULL
+      }
+      data.frame <<- as.data.frame(data.set)
+      .self$linkDataFrame()      
+    },
+    
+    duplicate = function(inds){
+      dup <- data.set[inds]
+      orig.names <- colnames(data.set)
+      dup.names  <- colnames(dup)
+      dup.names  <- dup.names.tmp <- sprintf("%s.copy", dup.names)
+      for(i in seq_along(dup.names)){
+        suffix <- 2
+        while(any(dup.names[i]==orig.names)){
+          dup.names[i] <- sprintf("%s%s", dup.names.tmp[i], suffix)
+          suffix <- suffix + 1
+        }
+      }
+      data.set <<- cbind(data.set, dup)
+      colnames(data.set) <<- c(orig.names, dup.names)
+      data.frame <<- as.data.frame(data.set)
+      .self$linkDataFrame()      
+    },
+    
     ncol              = function() { length(description(data.set)) },
     
     constructVariable = function(col){

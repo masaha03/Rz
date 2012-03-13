@@ -14,14 +14,18 @@ setRefClass("RzSettings",
         settings <- dget(con)
         close(con)
         themesFolder     <<- ifelse(is.null(settings$themesFolder), file.path(RzPath, "themes"), settings$themesFolder)
-        theme            <<- ifelse(is.null(settings$theme)   , "Default", settings$theme)          
+        if(grepl("linux", R.Version()$os)){
+          theme            <<- ifelse(is.null(settings$theme)   , "Default", settings$theme)          
+        } else {
+          theme            <<- ifelse(is.null(settings$theme)   , "kde42-oxygen", settings$theme)
+        }
         if(grepl("darwin", R.Version()$os)){
           globalFont       <<- ifelse(is.null(settings$globalFont)   , "Arial 10"     , settings$globalFont)
-          variableViewFont <<- ifelse(is.null(settings$variableViewFont)   , "Arial 10"     , settings$globalFont)
+          variableViewFont <<- ifelse(is.null(settings$variableViewFont)   , "Arial 10"     , settings$variableViewFont)
           plotFont         <<- ifelse(is.null(settings$plotFont)     , "Arial 10"     , settings$plotFont)
         } else {
           globalFont       <<- ifelse(is.null(settings$globalFont)   , "sans 10"     , settings$globalFont)
-          variableViewFont <<- ifelse(is.null(settings$variableViewFont)   , "sans 10"     , settings$globalFont)
+          variableViewFont <<- ifelse(is.null(settings$variableViewFont)   , "sans 10"     , settings$variableViewFont)
           plotFont         <<- ifelse(is.null(settings$plotFont)     , "sans 10"     , settings$plotFont)
         }
         monospaceFont    <<- ifelse(is.null(settings$monospaceFont), "monospace 10", settings$monospaceFont)
@@ -35,7 +39,11 @@ setRefClass("RzSettings",
         popupOff         <<- ifelse(is.null(settings$popupOff),         FALSE, settings$popupOff)
       } else {
         themesFolder <<- file.path(RzPath, "themes")
-        theme      <<- "Default"
+        if(grepl("linux", R.Version()$os)){
+          theme      <<- "Default"
+        } else {
+          theme      <<- "kde42-oxygen"          
+        }
         if(grepl("darwin", R.Version()$os)){
           globalFont <<- "Arial 10"
           variableViewFont <<- "Arial 10"

@@ -1,3 +1,23 @@
+0.3-18
+add axis limits option
+add errorbar and other option (statistics->summary)
+support ggplot2 0.9.0
+add delete variables function
+add duplicate function
+add misc options
+add scale selector in stratum options
+add "specify" option in legend position
+add theme(kde42-oxygen)
+improve plot view (excute button, clear button, variable selector, plot history)
+add stat_summary
+add method option of stat_smooth
+change display and edit of measurement
+edit value labels by double click a cell
+fix completion error
+fix variableview font setting
+fix position bug of plot
+ignore case on search
+
 0.3-8 2012-02-06
 add quick editor
 add label editor
