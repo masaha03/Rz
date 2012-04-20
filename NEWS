@@ -2,6 +2,7 @@
 add axis limits option
 add errorbar and other option (statistics->summary)
 support ggplot2 0.9.0
+add violin plot
 add delete variables function
 add duplicate function
 add misc options

@@ -274,7 +274,7 @@ setRefClass("RzPlot",
         
         if (!is.na(binwidth)) {
           p <- p + stat_bin(binwidth=binwidth)
-        } else if (all(!is.na(breaks)) {
+        } else if (all(!is.na(breaks))) {
           p <- p + stat_bin(breaks=breaks)          
         }        
       }

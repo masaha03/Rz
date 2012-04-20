@@ -23,7 +23,7 @@ setRefClass("RzPlotGeom",
       # geom
       label <- gtkLabelNew("geom")
       combo <<- gtkComboBoxNewText()
-      geoms <- c("auto", "bar", "freqpoly", "histogram", "density", "boxplot",
+      geoms <- c("auto", "bar", "freqpoly", "histogram", "density", "boxplot", "violin",
                  "line", "area", "point", "jitter", "rug", "smooth", "quantile", "blank")
       for(i in geoms) combo$appendText(i)
       combo$setActive(0)
