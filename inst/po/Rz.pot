@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: R 2.14.2\n"
+"Project-Id-Version: R 2.15.0\n"
 "Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2012-03-05 17:05\n"
+"POT-Creation-Date: 2012-05-01 13:09\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -110,6 +110,15 @@ msgstr ""
 msgid "Quick Editor View"
 msgstr ""
 
+msgid "_Help"
+msgstr ""
+
+msgid "Tutorial on Web"
+msgstr ""
+
+msgid "Load Sample Dataset"
+msgstr ""
+
 msgid "This dataset name is invalid. Please enter a valid dataset name."
 msgstr ""
 
@@ -164,7 +173,13 @@ msgstr ""
 msgid "%s [from Global Environment]"
 msgstr ""
 
+msgid "http://m884.jp/RzTutorial.html"
+msgstr ""
+
 msgid "Are you sure you want to do that?"
+msgstr ""
+
+msgid "NES1948 [Sample Dataset in memisc]"
 msgstr ""
 
 msgid "Old Name"
@@ -296,10 +311,13 @@ msgstr ""
 msgid "Theme (requires restart R)"
 msgstr ""
 
-msgid "Sync as data.set of memisc package"
+msgid "Sync as data.set object"
 msgstr ""
 
-msgid "Use embeded graphics divice (requires restart Rz)\n * Some bugs exist on Windows"
+msgid "Use embeded graphics divice (requires cairoDevice package)"
+msgstr ""
+
+msgid "Plot when a index cell is double-clicked"
 msgstr ""
 
 msgid "Don't output summary while plot view open"

@@ -5,7 +5,8 @@ setRefClass("RzActionGroup",
              "a.quit", "a.edit","a.ch.name", "a.revert", "a.reload",
              "a.remove", "a.vlabs", "a.missing", "a.selectall", "a.unselect",
              "a.recode", "a.value.lab", "a.settings",
-             "a.view", "a.data.view", "a.plot.view", "a.variable.editor.view"),
+             "a.view", "a.data.view", "a.plot.view", "a.variable.editor.view",
+             "a.help", "a.tutorial", "a.load.sample"),
   methods = list(
     initialize            = function(...) {
       initFields(...)
@@ -33,6 +34,9 @@ setRefClass("RzActionGroup",
       a.data.view <<- gtkActionNew("DataView", gettext("Data View"), gettext("Data View"))
       a.plot.view <<- gtkToggleActionNew("PlotView", gettext("Plot View"), gettext("Plot View"))
       a.variable.editor.view <<- gtkToggleActionNew("QuickEditorView", gettext("Quick Editor View"), gettext("Quick Editor View"))
+      a.help      <<- gtkActionNew("MenuHelp", gettext("_Help"))
+      a.tutorial  <<- gtkActionNew("Tutorial", gettext("Tutorial on Web"), gettext("Tutorial on Web"))
+      a.load.sample <<- gtkActionNew("LoadSample", gettext("Load Sample Dataset"), gettext("Load Sample Dataset"))
       image <- gFileIconNew(gFileNewForPath(file.path(rzSettings$getRzPath(), "images", "tick.png")))
       a.selectall$setGicon(image)
       image <- gFileIconNew(gFileNewForPath(file.path(rzSettings$getRzPath(), "images", "cross.png")))
@@ -89,8 +93,14 @@ setRefClass("RzActionGroup",
       action.group$addAction(a.plot.view)
       action.group$addAction(a.variable.editor.view)
       
+      action.group$addAction(a.help)
+      action.group$addAction(a.tutorial)
+      action.group$addAction(a.load.sample)
+
       action.group$addAction(a.recode)
       action.group$addAction(a.value.lab)
+      
+      
     }
   )
 )
@@ -100,5 +110,6 @@ ag$accessors(c("action.group", "a.file", "a.open",
                "a.revert", "a.reload",
                "a.vlabs", "a.duplicate", "a.delete", "a.selectall", "a.unselect",
                "a.missing", "a.recode", "a.value.lab", "a.settings",
-               "a.data.view", "a.plot.view", "a.variable.editor.view"))
+               "a.data.view", "a.plot.view", "a.variable.editor.view",
+               "a.tutorial", "a.load.sample"))
 

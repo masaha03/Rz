@@ -47,11 +47,16 @@ setRefClass("RzMain",
       rzVariableEditorView$setInfo.bar(info.bar)
       plot.view$pack2(rzPlot$getMain(), resize=FALSE)
       if(rzSettings$getUseEmbededDevice()){
-        plot.area <- gtkDrawingArea()
-        plot.view$pack1(plot.area, resize=TRUE)
-        plot.view$setPosition(300)
-        asCairoDevice(plot.area)
-        rzSettings$setEmbededDeviceOn(TRUE)
+        if(require(cairoDevice)) {
+          plot.area <- gtkDrawingArea()
+          plot.view$pack1(plot.area, resize=TRUE)
+          plot.view$setPosition(300)
+          asCairoDevice(plot.area)
+          rzSettings$setEmbededDeviceOn(TRUE)
+        } else {
+          cat("cairoDevice package isn't installed", fill=TRUE)
+          rzSettings$setEmbededDeviceOn(FALSE)          
+        }
       } else {
         rzSettings$setEmbededDeviceOn(FALSE)
       }
@@ -91,6 +96,8 @@ setRefClass("RzMain",
       gSignalConnect(rzActionGroup$getA.data.view(), "activate", .self$onDataView)
       gSignalConnect(rzActionGroup$getA.plot.view(), "toggled" , .self$onPlotViewToggled)
       gSignalConnect(rzActionGroup$getA.variable.editor.view(), "toggled" , .self$onVariableEditorViewToggled)
+      gSignalConnect(rzActionGroup$getA.tutorial(),  "activate", function(...) browseURL(gettext("http://m884.jp/RzTutorial.html")))
+      gSignalConnect(rzActionGroup$getA.load.sample(), "activate", .self$onLoadSample)
       gSignalConnect(rzActionGroup$getA.value.lab(), "activate", .self$onEditValueLabels)
       
       rzDataHandler <<- new("RzDataHandler", data.collection=data.collection.obj)
@@ -232,12 +239,25 @@ setRefClass("RzMain",
     
     onImportFromGlobalEnv = function(action){
       timeoutid <- gTimeoutAdd(80, progress.bar$start)
-      gSourceRemove(timeoutid)
       data <- rzDataSetIO$importFromGlobalEnv(win)
-      progress.bar["activity-mode"] <<- FALSE
       if(!is.null(data)) {
         rzDataHandler$addData(data)
       }
+      gSourceRemove(timeoutid)
+      progress.bar["activity-mode"] <<- FALSE
+    },
+    
+    onLoadSample = function(action){
+      timeoutid <- gTimeoutAdd(80, progress.bar$start)
+#      data <- rzDataSetIO$importFromGlobalEnv(win)
+      nes1948.por <- UnZip("anes/NES1948.ZIP","NES1948.POR",package="memisc")
+      nes1948 <- spss.portable.file(nes1948.por)
+      sample.data.set <- as.data.set(nes1948)
+      data <- new("RzData", file.path=NULL, data.set=sample.data.set,
+                  original.name=gettext("NES1948 [Sample Dataset in memisc]"))
+      rzDataHandler$addData(data)
+      gSourceRemove(timeoutid)
+      progress.bar["activity-mode"] <<- FALSE
     },
     
     onChangeDataSetName   = function(action){

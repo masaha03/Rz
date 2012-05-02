@@ -1,4 +1,7 @@
-0.3-18
+0.4-0
+Plot when a index cell is double-clicked (in preferences)
+Link to Tutorial (in Help)
+load sample dataset (in Help)
 add axis limits option
 add errorbar and other option (statistics->summary)
 support ggplot2 0.9.0
@@ -18,6 +21,7 @@ fix completion error
 fix variableview font setting
 fix position bug of plot
 ignore case on search
+minor fixes
 
 0.3-8 2012-02-06
 add quick editor

@@ -1,7 +1,7 @@
 library(methods)
 library(RGtk2)
 library(memisc)
-#setwd("/Users/masahiro/Dropbox/Documents/R/Rz/Rz/R/")
+setwd("/Users/masahiro/Dropbox/Documents/R/Rz/Rz/R/")
 setwd("/media/sf_Dropbox/Documents/R/Rz/Rz/R/")
 sapply(dir(), source)
 Rz()
@@ -158,14 +158,13 @@ dialog$addActionWidget(entry, GtkResponseType["ok"])
 # ワーディング管理
 # ケースの選択
 # 最近使ったファイル
-# ヒストグラム
-In if (!is.na(breaks)) { :
-  条件が長さが2以上なので，最初の一つだけが使われます 
-                         
+# unit of plot file.
+# 保存のときのrzdのエンコーディング
+
 # 画像のフォント
-# rzdのエンコーディング
 # 入力がスペースだけの場合
 
+# !make.names
 # !変数の複製
 # !変数の削除
 # !plot履歴

@@ -155,7 +155,7 @@ setRefClass("RzPlot",
         df$y <<- data.frame[[y]]        
       }
       
-      if (misc.args$theme=="gray") {
+      if (misc.args$theme=="grey") {
         theme_Rz <<- theme_grey
       } else if (misc.args$theme=="bw") {
         theme_Rz <<- theme_bw        
@@ -437,7 +437,11 @@ setRefClass("RzPlot",
       
       if (nzchar(str)) {
         info.bar$setMessageType(GtkMessageType["warning"])
-        info.bar$setText(paste(str, collapse="\n"))
+        str <- paste(str, collapse="\n")
+        str <- strsplit(str, " ")[[1]]
+        str <- capture.output(cat(str, fill=80))
+        str <- paste(str, collapse="\n")
+        info.bar$setText(str)
         info.bar$show()
         p.current <<- p
         p.list    <<- c(list(p), p.list)
@@ -447,7 +451,11 @@ setRefClass("RzPlot",
         assign("rz.last.plot", p.current, envir=.GlobalEnv)
       } else if (!is.list(e)) {
         info.bar$setMessageType(GtkMessageType["error"])
-        info.bar$setText(e[1])
+        str <- paste(e[1], collapse="\n")
+        str <- strsplit(str, " ")[[1]]
+        str <- capture.output(cat(str, fill=80))
+        str <- paste(str, collapse="\n")
+        info.bar$setText(str)
         info.bar$show()
       } else {
         p.current <<- p
@@ -523,7 +531,11 @@ setRefClass("RzPlot",
       
       if (nzchar(str)) {
         info.bar$setMessageType(GtkMessageType["warning"])
-        info.bar$setText(paste(str, collapse="\n"))
+        str <- paste(str, collapse="\n")
+        str <- strsplit(str, " ")[[1]]
+        str <- capture.output(cat(str, fill=80))
+        str <- paste(str, collapse="\n")
+        info.bar$setText(str)
         info.bar$show()
         p.current <<- p
         p.list    <<- c(list(p), p.list)
@@ -533,7 +545,11 @@ setRefClass("RzPlot",
         assign("rz.last.plot", p.current, envir=.GlobalEnv)
       } else if (!is.list(e)) {
         info.bar$setMessageType(GtkMessageType["error"])
-        info.bar$setText(e[1])
+        str <- paste(e[1], collapse="\n")
+        str <- strsplit(str, " ")[[1]]
+        str <- capture.output(cat(str, fill=80))
+        str <- paste(str, collapse="\n")
+        info.bar$setText(str)
         info.bar$show()
       } else {
         p.current <<- p
@@ -592,7 +608,11 @@ setRefClass("RzPlot",
       
       if (nzchar(str)) {
         info.bar$setMessageType(GtkMessageType["warning"])
-        info.bar$setText(paste(str, collapse="\n"))
+        str <- paste(str, collapse="\n")
+        str <- strsplit(str, " ")[[1]]
+        str <- capture.output(cat(str, fill=80))
+        str <- paste(str, collapse="\n")
+        info.bar$setText(str)
         info.bar$show()
         p.current <<- p
         p.list    <<- c(list(p), p.list)
@@ -602,7 +622,11 @@ setRefClass("RzPlot",
         assign("rz.last.plot", p.current, envir=.GlobalEnv)
       } else if (!is.list(e)) {
         info.bar$setMessageType(GtkMessageType["error"])
-        info.bar$setText(e[1])
+        str <- paste(e[1], collapse="\n")
+        str <- strsplit(str, " ")[[1]]
+        str <- capture.output(cat(str, fill=80))
+        str <- paste(str, collapse="\n")
+        info.bar$setText(str)
         info.bar$show()
       } else {
         p.current <<- p

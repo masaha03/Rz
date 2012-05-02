@@ -280,10 +280,11 @@ setRefClass("RzVariableView",
     
     onCellEditedVars    = function(renderer, path, new.text){
       txt     <- localize(new.text)
-      txt     <- sub("^([[:space:]]+)([^[:space:]]+)([[:space:]]+)$", "\\2", txt)
-      invalid <- grepl("(^$)|(^[0-9]+)|([]\\[\\^$*?|(){}@!\"#$%&'*+,/:;<=>?~[:space:]-])",
-                       txt)
-      if(invalid) return()
+#      txt     <- sub("^([[:space:]]+)([^[:space:]]+)([[:space:]]+)$", "\\2", txt)
+#      invalid <- grepl("(^$)|(^[0-9]+)|([]\\[\\^$*?|(){}@!\"#$%&'*+,/:;<=>?~[:space:]-])",
+#                       txt)
+#      if(invalid) return()
+      txt           <- make.names(txt)
       row           <- as.numeric(path) + 1
       data.set.name <- data$getData.set.name()
       var.name      <- data$getVariableNames()[row]
@@ -787,11 +788,11 @@ setRefClass("RzVariableView",
 
       if (col.title=="index") {
         data.set <- data$getData.set()
-        if(rzSettings$getPlotViewEnabled()) {
+        if(rzSettings$getPlotViewEnabled() & rzSettings$getRunPlot()) {
           rzPlot$setX(row + 1)
           rzPlot$onPlot()
         }
-        if(!(rzSettings$getPlotViewEnabled()&rzSettings$getCodebookOff())) {
+        if(!(rzSettings$getPlotViewEnabled() & rzSettings$getCodebookOff())) {
           print(codebook(data.set[ row+1 ]))
         }
       } else if (col.title=="val.labs") {

@@ -28,6 +28,10 @@
       <menuitem action='QuickEditorView' />
       <menuitem action='PlotView' />
     </menu>
+    <menu action='MenuHelp'>
+      <menuitem action='Tutorial' />
+      <menuitem action='LoadSample' />
+    </menu>
   </menubar>
   <popup name="PopupVV">
     <menuitem action="EditValueLabels" />
