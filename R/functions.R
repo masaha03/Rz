@@ -1,5 +1,5 @@
-gettext  <- function(...) base::gettext(..., domain = "Rz")
-gettextf <- function(...) base::gettextf(..., domain = "Rz")
+gettext  <- function(...) base::gettext(..., domain = "R-Rz")
+gettextf <- function(...) base::gettextf(..., domain = "R-Rz")
 
 #if(grepl("darwin",R.Version()$os) formals(gettext)$domain <- NULL
 #if(grepl("darwin",R.Version()$os) formals(gettextf)$domain <- NULL
