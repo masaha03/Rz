@@ -331,7 +331,7 @@ setRefClass("RzMain",
         rzDataHandler$removeCurrentData()
         rm(list=data.set.name, envir=.GlobalEnv)
         variable.view$toggleView()
-        variable.view$getSw()$destroy()
+        variable.view$getView()$destroy()
         variable.view <<- NULL
         variable.view.list[data.set.name] <<- NULL
         rzVariableEditorView$setVariableView(variable.view)
@@ -399,7 +399,7 @@ setRefClass("RzMain",
                               win=win, rzPlot=rzPlot)
         variable.view$construct()
         variable.view.list[[data.set.name]] <<- variable.view
-        main.view$packStart(variable.view$getSw())
+        main.view$packStart(variable.view$getView())
         gSourceRemove(timeoutid)
         progress.bar["activity-mode"] <<- FALSE
       }
