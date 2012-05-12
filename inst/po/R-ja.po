@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Rz 0.1\n"
 "Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2012-05-01 13:09\n"
-"PO-Revision-Date: 2012-05-02 13:06+0900\n"
+"POT-Creation-Date: 2012-05-03 03:56\n"
+"PO-Revision-Date: 2012-05-03 03:58+0900\n"
 "Last-Translator: Masahiro Hayashi <mh@m884.jp>\n"
 "Language-Team:  <rinm884@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -12,15 +12,6 @@ msgstr ""
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
-
-msgid "File Path:"
-msgstr "File Path:"
-
-msgid "This file already exists. Overwrite it?"
-msgstr "このファイルは既に存在しています。上書きしますか？"
-
-msgid "Cannot handle character variables longer than 255"
-msgstr "255文字を超える文字変数は取り扱えません"
 
 msgid "_File"
 msgstr "ファイル(_F)"
@@ -289,6 +280,9 @@ msgstr "高さ（cm）"
 msgid "save options"
 msgstr "保存オプション"
 
+msgid "This file already exists. Overwrite it?"
+msgstr "このファイルは既に存在しています。上書きしますか？"
+
 msgid "statistics options"
 msgstr "statisticsオプション"
 
@@ -424,6 +418,12 @@ msgstr "変数名"
 
 msgid "Duplicate label is detected."
 msgstr "ラベルが重複しています。"
+
+msgid "File Path:"
+msgstr "File Path:"
+
+msgid "Cannot handle character variables longer than 255"
+msgstr "255文字を超える文字変数は取り扱えません"
 
 msgid "Start"
 msgstr "スタート"
