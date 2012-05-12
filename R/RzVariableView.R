@@ -110,7 +110,19 @@ setRefClass("RzVariableView",
       lapply(columns, function(column) treeview.selected$appendColumn(column))
       
       # notebook
+      button.selectall <- gtkButtonNew()
+      button.selectall["tooltip-text"] <- gettext("Select All Variables")
+      image <- gtkImageNewFromFile(file.path(rzSettings$getRzPath(), "images", "tick.png"))
+      button.selectall$setImage(image)
+      button.unselect <- gtkButtonNew()
+      button.unselect["tooltip-text"] <- gettext("Unselect All Variables")
+      image <- gtkImageNewFromFile(file.path(rzSettings$getRzPath(), "images", "cross.png"))
+      button.unselect$setImage(image)
+      hbox.select <- gtkHBoxNew(spacing=2)
+      hbox.select$packEnd(button.unselect , expand=FALSE)
+      hbox.select$packEnd(button.selectall, expand=FALSE)
       notebook <<- gtkNotebookNew()
+      notebook$setActionWidget(hbox.select, GtkPackType["end"])
       notebook$appendPage(sw, gtkLabelNew(gettext("All Variables")))
       notebook$appendPage(scrolledWindow.selected, gtkLabelNew(gettext("Selected Variables")))
       
@@ -124,6 +136,8 @@ setRefClass("RzVariableView",
       gSignalConnect(rt.var.labs, "edited", .self$onCellEditedVarLabs)
 #      gSignalConnect(rp.msr     , "edited", .self$onCellEditedMsr)
       gSignalConnect(rt.missing , "edited", .self$onCellEditedMissing)
+      gSignalConnect(button.selectall, "clicked", .self$onSelectAll)
+      gSignalConnect(button.unselect , "clicked", .self$onUnselect)
       
       rzPlot$setModel(main$getModel())
       rzPlot$setData(data)
@@ -306,7 +320,7 @@ setRefClass("RzVariableView",
       .self$changeFont()
       if (is.null(rzSearchEntry)){
         main$setSearchEntry(NULL)
-        sw$hideAll()
+        notebook$hideAll()
         rzPlot$setModel(NULL)
         if(selectable){
           selectable <<- FALSE
@@ -314,7 +328,8 @@ setRefClass("RzVariableView",
       } else {
         main$setSearchEntry(rzSearchEntry$getEntry.search())
         main$setSearchEqualFunc(rzSearchEntry$searchFunc)
-        sw$showAll()
+        notebook$showAll()
+        notebook$setCurrentPage(0)
         rzPlot$setModel(main$getModel())
         rzPlot$setData(data)
         if(rzSettings$getVariableEditorViewEnabled()){
@@ -336,14 +351,14 @@ setRefClass("RzVariableView",
       
     },
     
-    onSelectAll = function(){
+    onSelectAll = function(...){
       liststore$foreach(function(model, path, iter){
         model$setValue(iter, column.definition["select"], TRUE)
         return(FALSE)
       })
     },
     
-    onUnselect = function(){
+    onUnselect = function(...){
       liststore$foreach(function(model, path, iter){
         model$setValue(iter, column.definition["select"], FALSE)
         return(FALSE)

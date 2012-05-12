@@ -87,8 +87,8 @@ setRefClass("RzMain",
       gSignalConnect(rzActionGroup$getA.remove(),    "activate", .self$onRemove)
       gSignalConnect(rzActionGroup$getA.revert(),    "activate", .self$onRevert)
       gSignalConnect(rzActionGroup$getA.reload(),    "activate", .self$onReload)
-      gSignalConnect(rzActionGroup$getA.selectall(), "activate", .self$onSelectAll)
-      gSignalConnect(rzActionGroup$getA.unselect(),  "activate", .self$onUnselect)
+#      gSignalConnect(rzActionGroup$getA.selectall(), "activate", .self$onSelectAll)
+#      gSignalConnect(rzActionGroup$getA.unselect(),  "activate", .self$onUnselect)
       gSignalConnect(rzActionGroup$getA.delete(),    "activate", .self$onDelete)
       gSignalConnect(rzActionGroup$getA.duplicate(), "activate", .self$onDuplicate)
       gSignalConnect(rzActionGroup$getA.quit(),      "activate", win$destroy)
@@ -135,16 +135,6 @@ setRefClass("RzMain",
     onEditValueLabels = function(action){
       if(is.null(variable.view)) return()
       variable.view$onEditValueLabels()
-    },
-
-    onSelectAll = function(action){
-      if(is.null(variable.view)) return()
-      variable.view$onSelectAll()
-    },
-    
-    onUnselect = function(action){
-      if(is.null(variable.view)) return()
-      variable.view$onUnselect()
     },
     
     onDelete = function(action){
