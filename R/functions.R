@@ -149,3 +149,4 @@ write.stata <- function (df, datafile, codefile, varlabels)
     cat("infile", nms, " using ", datafile, ", automatic\n", varlabels,
         file = codefile)
 }
+

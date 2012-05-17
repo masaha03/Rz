@@ -1,4 +1,9 @@
-0.4-0
+0.4.2
+relocate menu
+New Select All Button and Unselect Button
+Selected Variables View
+
+0.4-0 2012-05-02
 Plot when a index cell is double-clicked (in preferences)
 Link to Tutorial (in Help)
 load sample dataset (in Help)
