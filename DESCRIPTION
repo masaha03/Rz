@@ -1,8 +1,8 @@
 Package: Rz
 Type: Package
 Title: GUI Tool for Data Management like SPSS or Stata
-Version: 0.4-5
-Date: 2012-05-02
+Version: 0.4-6
+Date: 2012-05-31
 Author@R: person(given="Masahiro", family="Hayashi",
                  email="rinm884@gmail.com",
                  role=c("aut","cre"))

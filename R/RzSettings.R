@@ -110,8 +110,8 @@ setRefClass("RzSettings",
       themes.hbox$packStart(themes.label, expand=FALSE)
       themes.hbox$packStart(themesCombo)
       
-      checkButtonUseDataSet <- gtkCheckButtonNewWithLabel(gettext("Sync as data.set object"))
-      checkButtonUseDataSet$setActive(useDataSetObject)
+#      checkButtonUseDataSet <- gtkCheckButtonNewWithLabel(gettext("Sync as data.set object"))
+#      checkButtonUseDataSet$setActive(useDataSetObject)
       checkButtonUseEmbededDevice <- gtkCheckButtonNewWithLabel(gettext("Use embeded graphics divice (requires cairoDevice package)"))
       checkButtonUseEmbededDevice$setActive(useEmbededDevice)
       checkButtonRunPlot <- gtkCheckButtonNewWithLabel(gettext("Plot when a index cell is double-clicked"))
@@ -125,7 +125,7 @@ setRefClass("RzSettings",
       general.tab["border-width"] <- 2
       general.tab$packStart(themes.folder.hbox, expand=FALSE)
       general.tab$packStart(themes.hbox, expand=FALSE)
-      general.tab$packStart(checkButtonUseDataSet, expand=FALSE)
+#      general.tab$packStart(checkButtonUseDataSet, expand=FALSE)
       general.tab$packStart(checkButtonUseEmbededDevice, expand=FALSE)
       general.tab$packStart(checkButtonRunPlot, expand=FALSE)
       general.tab$packStart(checkButtonCodebookOff, expand=FALSE)

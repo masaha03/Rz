@@ -79,7 +79,7 @@ setRefClass("RzMain",
       
       rzActionGroup$getA.plot.view()$setActive(rzSettings$getPlotViewEnabled())
       rzActionGroup$getA.variable.editor.view()$setActive(rzSettings$getVariableEditorViewEnabled())
-      rzActionGroup$getA.reload()$setSensitive(rzSettings$getUseDataSetObject())
+      #rzActionGroup$getA.reload()$setSensitive(rzSettings$getUseDataSetObject())
       gSignalConnect(rzActionGroup$getA.open(),      "activate", .self$onOpen)
       gSignalConnect(rzActionGroup$getA.save(),      "activate", .self$onSave)
       gSignalConnect(rzActionGroup$getA.ds(),        "activate", .self$onImportFromGlobalEnv)
