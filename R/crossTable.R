@@ -89,9 +89,9 @@ summary.CrossTable <- function(x, digits=3, latex=FALSE, ...){
     nchar  <- nchar(output[1], type="width")
     if(latex) {
       output <- paste(output, "\\\\")
-      line1 <- "\\midline"
-      line2 <- "\\topline"
-      line3 <- "\\bottomline"      
+      line1 <- "\\midrule"
+      line2 <- "\\toprule"
+      line3 <- "\\bottomrule"      
     } else {
       line1  <- paste(rep("-", nchar), collapse="")
       line2  <- paste(rep("=", nchar), collapse="")
@@ -153,10 +153,10 @@ summary.CrossTable <- function(x, digits=3, latex=FALSE, ...){
     output.header <- output[[1]][2:4]
     if(latex) output.header[2] <- sprintf("\\cline{%s-%s}", 3, 3+dim[3]-1)
     output.header[1] <- paste(
-      paste(rep(" ", nchar(stratumvar)), collapse=""),
+      paste(rep(" ", nchar(stratumvar)+2), collapse=""),
       output.header[1], sep=sep)
     output.header[2] <- paste(
-      paste(rep(" ", nchar(stratumvar)), collapse=""),
+      paste(rep(" ", nchar(stratumvar)+2), collapse=""),
       output.header[2], sep=sep)
     output.header[3] <- paste(stratumvar, output.header[3], sep=sep)
     
@@ -167,7 +167,7 @@ summary.CrossTable <- function(x, digits=3, latex=FALSE, ...){
       output[[i]] <- paste(col, output[[i]], sep=sep)
       nchar  <- nchar(output[[i]][1], type="width")
       if(latex)
-        line <- "\\midline"
+        line <- "\\midrule"
       else
         line <- paste(rep("-", nchar), collapse="")
       
@@ -181,9 +181,9 @@ summary.CrossTable <- function(x, digits=3, latex=FALSE, ...){
     
     nchar  <- nchar(output[1], type="width")
     if(latex) {
-      line1 <- "\\midline"
-      line2 <- "\\topline"
-      line3 <- "\\bottomline"      
+      line1 <- "\\midrule"
+      line2 <- "\\toprule"
+      line3 <- "\\bottomrule"      
     } else {
       line1  <- paste(rep("-", nchar), collapse="")
       line2  <- paste(rep("=", nchar), collapse="")
@@ -192,7 +192,7 @@ summary.CrossTable <- function(x, digits=3, latex=FALSE, ...){
     output <- c(line2, output.header, line1, output, line3)
     if(latex){
       output <- gsub("&\\\\cline",   "\\\\cline", output)
-      output <- gsub("&\\\\midline", "\\\\midline", output)      
+      output <- gsub("&\\\\midrule", "\\\\midrule", output)      
     }
     output <- paste(output, collapse="\n")
     if(latex){
@@ -208,7 +208,7 @@ summary.CrossTable <- function(x, digits=3, latex=FALSE, ...){
                         paste(rep("r",dim[3]+1), collapse=""),output)
     }
     
-    cat(output, fill=TRUE)      
+    cat(output, fill=TRUE)
     cat("\n")
     cat("Chi-Square Test for Independence", fill=TRUE)
     cat("\n")
@@ -226,8 +226,8 @@ summary.CrossTable <- function(x, digits=3, latex=FALSE, ...){
   }
 }
 
-性別 <- factor(rbinom(1:1000, 1, 0.5), labels=c("男性", "女性"))
-年齢 <- factor(rbinom(1:1000, 2, 0.4), labels=c("若年層", "中年層", "高年層"))
-身長 <- factor(rbinom(1:1000, 2, 0.6), labels=c("低", "中", "高"))
-t1 <- crossTable(性別, 身長)
-summary(t1, latex=TRUE)
+#性別 <- factor(rbinom(1:1000, 1, 0.5), labels=c("男性", "女性"))
+#年齢 <- factor(rbinom(1:1000, 2, 0.4), labels=c("若年層", "中年層", "高年層"))
+#身長 <- factor(rbinom(1:1000, 2, 0.6), labels=c("低", "中", "高"))
+#t1 <- crossTable(性別, 年齢, 身長)
+#summary(t1, latex=FALSE)
