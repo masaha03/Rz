@@ -1,7 +1,7 @@
 main <-
 setRefClass("RzMain",
   fields = c("recode.id", "win",
-             "main.hpaned", "main.view", "plot.view", "variable.view", "entry.search",
+             "main.hpaned", "main.vpaned", "main.view", "plot.view", "variable.view", "entry.search",
              "info.bar", "message.label", "status.bar", "progress.bar", "actions", "variable.view.list",
              "rzActionGroup", "rzMenu", "rzDataHandler", "rzSearchEntry", "rzDataSetIO", "rzPlot",
              "rzVariableEditorView", "view.box"),
@@ -15,16 +15,21 @@ setRefClass("RzMain",
       recode.id     <<- NULL
       win           <<- gtkWindowNew(show=FALSE)
       main.hpaned   <<- gtkHPanedNew()
+      main.vpaned   <<- gtkVPanedNew()
       main.view     <<- gtkVBoxNew()
       plot.view     <<- gtkVPanedNew()
       rzVariableEditorView <<- new("RzVariableEditorView")
-      view.box      <<- gtkHBoxNew()
-      view.box$packStart(plot.view)
-      view.box$packStart(rzVariableEditorView$getMain())
+#      view.box      <<- gtkHBoxNew()
+#      view.box$packStart(plot.view)
+#      view.box$packStart(rzVariableEditorView$getMain())
       
-      main.hpaned$pack1(main.view)
-      main.hpaned$pack2(view.box)
-      main.hpaned$setPosition(300)
+      main.vpaned$pack1(main.view, resize=TRUE)
+      main.vpaned$pack2(rzVariableEditorView$getMain(), resize=TRUE)
+      main.vpaned$setPosition(300)
+      
+      main.hpaned$pack1(main.vpaned, resize=TRUE)
+      main.hpaned$pack2(plot.view, resize=TRUE)
+      main.hpaned$setPosition(450)
       
       info.bar      <<- gtkInfoBarRzNew()
       message.label <<- gtkLabelNew()
@@ -62,7 +67,8 @@ setRefClass("RzMain",
       }
       
       win["title"] <<- "Rz"
-      win$setDefaultSize(650, 600)
+      win$setDefaultSize(800, 700)
+      win["window-position"] <<- GtkWindowPosition["center"]
       progress.bar["width-request"] <<- 150
       
       gSignalConnect(info.bar, "response", .self$onInfoBarResponsed)
@@ -119,9 +125,9 @@ setRefClass("RzMain",
       win$show()
       if(!rzSettings$getPlotViewEnabled()) { plot.view$hide() }
       if(!rzSettings$getVariableEditorViewEnabled()) { rzVariableEditorView$getMain()$hide() }
-      if(!rzSettings$getPlotViewEnabled() && !rzSettings$getVariableEditorViewEnabled()) {
-        view.box$hide() 
-      }
+#      if(!rzSettings$getPlotViewEnabled() && !rzSettings$getVariableEditorViewEnabled()) {
+#        view.box$hide() 
+#      }
       
       gSignalConnect(win, "destroy", function(...){
         if(rzSettings$getEmbededDeviceOn()){
@@ -163,41 +169,41 @@ setRefClass("RzMain",
     
     onPlotViewToggled = function(action){
       if(action$getActive()) {
-        view.box$show()
+#        view.box$show()
         plot.view$show()
         rzSettings$setPlotViewEnabled(TRUE)
-        if(rzSettings$getVariableEditorViewEnabled()){
-          action <- rzActionGroup$getA.variable.editor.view()
-          action["active"] <- FALSE
-#          action$toggled()
-        }
+#        if(rzSettings$getVariableEditorViewEnabled()){
+#          action <- rzActionGroup$getA.variable.editor.view()
+#          action["active"] <- FALSE
+##          action$toggled()
+#        }
       } else {
         plot.view$hide()
         rzSettings$setPlotViewEnabled(FALSE)
-        if(!rzSettings$getVariableEditorViewEnabled()){
-          view.box$hide()
-        }
+#        if(!rzSettings$getVariableEditorViewEnabled()){
+#          view.box$hide()
+#        }
       }
     },
     
     onVariableEditorViewToggled = function(action){
       if(action$getActive()) {
-        view.box$show()
+#        view.box$show()
         rzVariableEditorView$getMain()$show()
         rzSettings$setVariableEditorViewEnabled(TRUE)
         if(!is.null(variable.view)) variable.view$selectMode(TRUE)
-        if(rzSettings$getVariableEditorViewEnabled()){
-          action <- rzActionGroup$getA.plot.view()
-          action["active"] <- FALSE
-#          action$toggled()
-        }
+#        if(rzSettings$getVariableEditorViewEnabled()){
+#          action <- rzActionGroup$getA.plot.view()
+#          action["active"] <- FALSE
+##          action$toggled()
+#        }
       } else {
         rzVariableEditorView$getMain()$hide()
         rzSettings$setVariableEditorViewEnabled(FALSE)
         if(!is.null(variable.view)) variable.view$selectMode(FALSE)
-        if(!rzSettings$getPlotViewEnabled()){
-          view.box$hide()
-        }
+#        if(!rzSettings$getPlotViewEnabled()){
+#          view.box$hide()
+#        }
       }
     },
     
