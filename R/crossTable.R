@@ -32,6 +32,8 @@ summary.CrossTable <- function(x, digits=3, latex=FALSE, ...){
     p <- prop.table(x, margin=1) * 100
     x <- addmargins(x, margin=2)
     p <- addmargins(p, margin=2)
+    p[is.nan(p)] <- 0
+    
     
     rowcat <- paste(c(dimnames[[1]], " "), " ", sep="\t", collapse="\t")
     rowcat <- strsplit(rowcat, "\t")[[1]]
@@ -225,9 +227,3 @@ summary.CrossTable <- function(x, digits=3, latex=FALSE, ...){
     cat("\n")
   }
 }
-
-#性別 <- factor(rbinom(1:1000, 1, 0.5), labels=c("男性", "女性"))
-#年齢 <- factor(rbinom(1:1000, 2, 0.4), labels=c("若年層", "中年層", "高年層"))
-#身長 <- factor(rbinom(1:1000, 2, 0.6), labels=c("低", "中", "高"))
-#t1 <- crossTable(性別, 年齢, 身長)
-#summary(t1, latex=FALSE)
