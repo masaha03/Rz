@@ -82,7 +82,7 @@ gtkFileChooserDialogFilteredActivate <- function(obj){
 gtkFileChooserDialogFilteredRun <- function(obj) gtkDialogRun(obj)
 
 Rz <- function(...){
-  main.obj <- new("RzMain")
+  rzMain <- new("RzMain")
 }
 
 gtkInfoBarRzNew <- function(show=TRUE){
