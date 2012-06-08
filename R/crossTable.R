@@ -1,26 +1,11 @@
-setClass("CrossTable", contains="table")
-setMethod("show", signature=c(object="CrossTable"), function(object){
-  print(ftable(object))
-})
-
-crossTable <- function(...,
-                       exclude = if (useNA == "no") c(NA, NaN),
-                       useNA = c("no", "ifany", "always"),
-                       dnn = NULL,
-                       deparse.level = 1) {
-  if (!missing(exclude) && is.null(exclude)) 
-    useNA <- "always"
-  useNA <- match.arg(useNA)
-  if(is.null(dnn))
-    table <- table(..., exclude=exclude, useNA=useNA,
-                   deparse.level=deparse.level)
-  else
-    table <- table(..., exclude=exclude, useNA=useNA,
-                   dnn=dnn, deparse.level=deparse.level)
-  return(new("CrossTable", table))
+crossTable <- function(...){
+  table <- table(...)
+  class(table) <- c("CrossTable", "table")
+  return(table)
 }
 
-summary.CrossTable <- function(x, digits=3, latex=FALSE, ...){
+summary.CrossTable <- function(object, digits=3, latex=FALSE, ...){
+  x      <- object
   sep    <- ifelse(latex, "&", " ")
   twoDimTable <- function(x, digits=3, width=6){
     output <- NULL
