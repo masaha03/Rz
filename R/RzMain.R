@@ -84,7 +84,7 @@ setRefClass("RzMain",
       rzAnalysisView$setAccel(accel.group)
       
       rzActionGroup$getA.plot.view()$setActive(rzSettings$getPlotViewEnabled())
-      rzActionGroup$getA.variable.editor.view()$setActive(rzSettings$getVariableEditorViewEnabled())
+      rzActionGroup$getA.analysis.view()$setActive(rzSettings$getAnalysisViewEnabled())
       #rzActionGroup$getA.reload()$setSensitive(rzSettings$getUseDataSetObject())
       gSignalConnect(rzActionGroup$getA.open(),      "activate", .self$onOpen)
       gSignalConnect(rzActionGroup$getA.save(),      "activate", .self$onSave)
@@ -101,7 +101,7 @@ setRefClass("RzMain",
       gSignalConnect(rzActionGroup$getA.settings(),  "activate", .self$onSetting)
       gSignalConnect(rzActionGroup$getA.data.view(), "activate", .self$onDataView)
       gSignalConnect(rzActionGroup$getA.plot.view(), "toggled" , .self$onPlotViewToggled)
-      gSignalConnect(rzActionGroup$getA.variable.editor.view(), "toggled" , .self$onVariableEditorViewToggled)
+      gSignalConnect(rzActionGroup$getA.analysis.view(), "toggled" , .self$onAnalysisViewToggled)
       gSignalConnect(rzActionGroup$getA.tutorial(),  "activate", function(...) browseURL(gettext("http://m884.jp/RzTutorial.html")))
       gSignalConnect(rzActionGroup$getA.load.sample(), "activate", .self$onLoadSample)
       gSignalConnect(rzActionGroup$getA.value.lab(), "activate", .self$onEditValueLabels)
@@ -124,7 +124,7 @@ setRefClass("RzMain",
       win$add(vbox)
       win$show()
       if(!rzSettings$getPlotViewEnabled()) { plot.view$hide() }
-      if(!rzSettings$getVariableEditorViewEnabled()) { rzAnalysisView$getMain()$hide() }
+      if(!rzSettings$getAnalysisViewEnabled()) { rzAnalysisView$getMain()$hide() }
 #      if(!rzSettings$getPlotViewEnabled() && !rzSettings$getVariableEditorViewEnabled()) {
 #        view.box$hide() 
 #      }
@@ -187,11 +187,11 @@ setRefClass("RzMain",
       }
     },
     
-    onVariableEditorViewToggled = function(action){
+    onAnalysisViewToggled = function(action){
       if(action$getActive()) {
 #        view.box$show()
         rzAnalysisView$getMain()$show()
-        rzSettings$setVariableEditorViewEnabled(TRUE)
+        rzSettings$setAnalysisViewEnabled(TRUE)
         if(!is.null(variable.view)) variable.view$selectMode(TRUE)
 #        if(rzSettings$getVariableEditorViewEnabled()){
 #          action <- rzActionGroup$getA.plot.view()
@@ -200,7 +200,7 @@ setRefClass("RzMain",
 #        }
       } else {
         rzAnalysisView$getMain()$hide()
-        rzSettings$setVariableEditorViewEnabled(FALSE)
+        rzSettings$setAnalysisViewEnabled(FALSE)
         if(!is.null(variable.view)) variable.view$selectMode(FALSE)
 #        if(!rzSettings$getPlotViewEnabled()){
 #          view.box$hide()

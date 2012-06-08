@@ -59,7 +59,7 @@ setRefClass("RzAnalysisStat",
         cat(gettext("\n=============== Output by Rz ===============\n"), fill=TRUE)
         e <- try(eval(parse(text=script), envir=.GlobalEnv), silent=TRUE)
         info.bar <- rzTools$getInfoBar()
-        if (class(e)=="try-error"){
+        if (any(class(e)=="try-error")) {
           info.bar$setMessageType(GtkMessageType["error"])
           info.bar$setText(e[1])
           info.bar$show()

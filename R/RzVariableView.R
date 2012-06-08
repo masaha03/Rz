@@ -332,7 +332,7 @@ setRefClass("RzVariableView",
         notebook$setCurrentPage(0)
         rzPlot$setModel(main$getModel())
         rzPlot$setData(data)
-        if(rzSettings$getVariableEditorViewEnabled()){
+        if(rzSettings$getAnalysisViewEnabled()){
           selectable <<- TRUE
         }
       }

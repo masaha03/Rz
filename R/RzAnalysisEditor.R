@@ -53,7 +53,7 @@ setRefClass("RzAnalysisEditor",
         cat(gettext("\n=============== Output from Quick Editor ===============\n"), fill=TRUE)
         e <- try(eval(parse(text=script), envir=env), silent=TRUE)
         info.bar <- rzTools$getInfoBar()
-        if (class(e)=="try-error"){
+        if (any(class(e)=="try-error")) {
           info.bar$setMessageType(GtkMessageType["error"])
           info.bar$setText(e[1])
           info.bar$show()

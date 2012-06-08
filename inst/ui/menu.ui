@@ -20,7 +20,7 @@
     </menu>
     <menu action='MenuView'>
       <menuitem action='DataView' />
-      <menuitem action='QuickEditorView' />
+      <menuitem action='AnalysisView' />
       <menuitem action='PlotView' />
     </menu>
     <menu action='MenuHelp'>
@@ -48,7 +48,7 @@
     <toolitem action='Settings' />
     <separator/>
     <toolitem action='DataView' />
-    <toolitem action='QuickEditorView' />
+    <toolitem action='AnalysisView' />
     <toolitem action='PlotView' />
   </toolbar>
   <accelerator action="Save As"/>

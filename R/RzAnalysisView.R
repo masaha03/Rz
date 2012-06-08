@@ -8,7 +8,7 @@ setRefClass("RzAnalysisView",
       main <<- gtkNotebookNew()
       main$setTabPos(GtkPositionType["top"])
       rzAnalysisStat <<- new("RzAnalysisStat")
-      main$appendPage(rzAnalysisStat$getMain()                 , gtkLabelNew(gettext("Basic Statistics")))
+      main$appendPage(rzAnalysisStat$getMain()                 , gtkLabelNew(gettext("Descriptive statistics")))
       main$appendPage(new("RzAnalysisEditor")$getMain()        , gtkLabelNew(gettext("Editor")))
       main$appendPage(new("RzAnalysisVariableEditor")$getMain(), gtkLabelNew(gettext("Variable Editor")))
       

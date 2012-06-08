@@ -3,7 +3,7 @@ setRefClass("RzSettings",
   fields = c("RzPath", "path", "theme", "theme.this", "globalFont", "variableViewFont", "monospaceFont", "monospaceFontFamily",
     "plotFont", "plotFontFamily", "useDataSetObject", "themesFolder",
     "useEmbededDevice", "embededDeviceOn", "runPlot", "codebookOff", "popupOff",
-    "plotViewEnabled", "variableEditorViewEnabled", "psFont", "pdfFont"),
+    "plotViewEnabled", "analysisViewEnabled", "psFont", "pdfFont"),
   methods = list(
     load = function(){
       path <<- "~/.Rz"
@@ -79,7 +79,7 @@ setRefClass("RzSettings",
       }
       
       plotViewEnabled <<- FALSE
-      variableEditorViewEnabled <<- FALSE
+      analysisViewEnabled <<- FALSE
     },
     
     runDialog = function(win){
@@ -220,5 +220,5 @@ setRefClass("RzSettings",
 )
 settings$accessors(c("RzPath", "themesFolder", "globalFont", "variableViewFont", "monospaceFont", "monospaceFontFamily", "plotFont", "plotFontFamily",
                      "useDataSetObject","useEmbededDevice", "embededDeviceOn", "runPlot", "codebookOff", "popupOff",
-                     "plotViewEnabled", "variableEditorViewEnabled", "psFont", "pdfFont"))
+                     "plotViewEnabled", "analysisViewEnabled", "psFont", "pdfFont"))
 
