@@ -210,7 +210,6 @@ setRefClass("RzMain",
     
     onSetting = function(action){
       rzSettings$runDialog(win)
-      rzDataHandler$syncAll()
       if(!is.null(variable.view))variable.view$changeFont()
       rzActionGroup$getA.reload()$setSensitive(rzSettings$getUseDataSetObject())
       gtkRcReparseAll()
@@ -267,6 +266,7 @@ setRefClass("RzMain",
           result <- rzDataHandler$changeDataSetName(data.set.name, new.name)
           if(result$result){
             rm(list=data.set.name, envir=.GlobalEnv)
+            rm(list=sprintf("%s.ds", data.set.name), envir=.GlobalEnv)
             match <- which(names(variable.view.list)==data.set.name)
             names(variable.view.list)[match] <<- new.name
             dialog$hide()            
@@ -326,7 +326,6 @@ setRefClass("RzMain",
       
       if(response==GtkResponseType["ok"]){
         rzDataHandler$removeCurrentData()
-        rm(list=data.set.name, envir=.GlobalEnv)
         variable.view$toggleView()
         variable.view$getView()$destroy()
         variable.view <<- NULL
