@@ -1,4 +1,10 @@
-0.5-0
+0.5-1
+bugfix
+Both of data.set and data.frame are now synced. Name of data.set is
+"(name of data.frame).ds" (ex. "dataset1.ds").
+Reload function is now always enabled and reloads data from data.set object.
+
+0.5-0 2012-06-09
 analysis view
 Basic Statistics function
 crossTable function
