@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: R 2.15.0\n"
+"Project-Id-Version: R 2.15.1\n"
 "Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2012-06-08 14:15\n"
+"POT-Creation-Date: 2012-10-01 02:54\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10,15 +10,6 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-
-msgid "File Path:"
-msgstr ""
-
-msgid "This file already exists. Overwrite it?"
-msgstr ""
-
-msgid "Cannot handle character variables longer than 255"
-msgstr ""
 
 msgid "_File"
 msgstr ""
@@ -338,6 +329,9 @@ msgstr ""
 msgid "save options"
 msgstr ""
 
+msgid "This file already exists. Overwrite it?"
+msgstr ""
+
 msgid "statistics options"
 msgstr ""
 
@@ -453,6 +447,12 @@ msgid "Variable Name"
 msgstr ""
 
 msgid "Duplicate label is detected."
+msgstr ""
+
+msgid "File Path:"
+msgstr ""
+
+msgid "Cannot handle character variables longer than 255"
 msgstr ""
 
 msgid "Start"
