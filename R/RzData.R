@@ -2,7 +2,7 @@ rzdata <-
 setRefClass("RzData",
   fields = c("file.path", "data.set.name", "original.name",
              "data.set", "original.data.set", "data.frame",
-             "log",
+             "log", "subset", "subset.on",
              "system", "package.version", "encoding", "time"),
   methods = list(
     initialize        = function(...) {
@@ -17,6 +17,7 @@ setRefClass("RzData",
                                  RGtk2=packageVersion("RGtk2"))
       encoding          <<- localeToCharset()
       time              <<- Sys.time()
+      subset.on         <<- false
     },
 
     save = function(file){
@@ -89,13 +90,14 @@ setRefClass("RzData",
     },
     
     linkDataFrame     = function(){
-#      if(rzSettings$getUseDataSetObject()){
-#        assign(data.set.name, data.set, envir=.GlobalEnv)
-#      } else {
-#        assign(data.set.name, data.frame, envir=.GlobalEnv)
-#      }
-      assign(paste(data.set.name, ".ds", sep=""), data.set, envir=.GlobalEnv)
-      assign(data.set.name                      , data.frame, envir=.GlobalEnv)
+      if(subset.on){
+        data.frame.subset <- subset(data.frame, subset=eval(parse(text=subset)))
+        assign(paste(data.set.name, ".ds", sep=""), data.set, envir=.GlobalEnv)
+        assign(data.set.name                      , data.frame.subset, envir=.GlobalEnv)        
+      } else {
+        assign(paste(data.set.name, ".ds", sep=""), data.set, envir=.GlobalEnv)
+        assign(data.set.name                      , data.frame, envir=.GlobalEnv)        
+      }
     },
 
     import = function(data){
@@ -159,4 +161,5 @@ setRefClass("RzData",
     }
   )
 )
-rzdata$accessors(c("data.set.name", "original.name", "data.set", "data.frame", "file.path"))
+rzdata$accessors(c("data.set.name", "original.name", "data.set", "data.frame", "file.path",
+                   "subset", "subset.on"))
