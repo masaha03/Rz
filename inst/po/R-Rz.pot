@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 2.15.1\n"
 "Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2012-10-01 02:54\n"
+"POT-Creation-Date: 2012-10-02 01:57\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -161,6 +161,9 @@ msgstr ""
 msgid "Variable Editor"
 msgstr ""
 
+msgid "Condition of selecting cases is invalid."
+msgstr ""
+
 msgid "This dataset name is invalid. Please enter a valid dataset name."
 msgstr ""
 
@@ -228,6 +231,9 @@ msgid "Old Name"
 msgstr ""
 
 msgid "New Name"
+msgstr ""
+
+msgid "Cannot reload while Select Cases enabled."
 msgstr ""
 
 msgid "\"%s\" isn't a data.set or don't exist."
@@ -392,6 +398,18 @@ msgstr ""
 msgid "Font"
 msgstr ""
 
+msgid "Enable Select Cases"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Clear"
+msgstr ""
+
+msgid "Select Cases"
+msgstr ""
+
 msgid "Measurement"
 msgstr ""
 
@@ -414,6 +432,9 @@ msgid "All Variables"
 msgstr ""
 
 msgid "Selected Variables"
+msgstr ""
+
+msgid "Management and Manipulation"
 msgstr ""
 
 msgid "This recode syntax is invalid. Please enter a valid recode syntax."

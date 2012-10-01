@@ -2,25 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Rz 0.1\n"
 "Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2012-06-08 14:12\n"
-"PO-Revision-Date: 2012-06-08 15:13+0900\n"
+"POT-Creation-Date: 2012-10-02 01:57\n"
+"PO-Revision-Date: 2012-10-02 02:06+0900\n"
 "Last-Translator: Masahiro Hayashi <rinm884@gmail.com>\n"
 "Language-Team:  <rinm884@gmail.com>\n"
+"Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Japanese\n"
-"X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
-
-msgid "File Path:"
-msgstr "File Path:"
-
-msgid "This file already exists. Overwrite it?"
-msgstr "このファイルは既に存在しています。上書きしますか？"
-
-msgid "Cannot handle character variables longer than 255"
-msgstr "255文字を超える文字変数は取り扱えません"
 
 msgid "_File"
 msgstr "ファイル(_F)"
@@ -172,11 +162,16 @@ msgstr "エディタ"
 msgid "Variable Editor"
 msgstr "変数エディタ"
 
+msgid "Condition of selecting cases is invalid."
+msgstr "ケースの選択の条件が不正です。"
+
 msgid "This dataset name is invalid. Please enter a valid dataset name."
 msgstr "このデータセット名は無効です。有効なデータセット名を入力してください。"
 
 msgid "This dataset name is already exists, please enter another dataset name."
-msgstr "このデータセット名はすでに存在しています。別のデータセット名を入力してください。"
+msgstr ""
+"このデータセット名はすでに存在しています。別のデータセット名を入力してくださ"
+"い。"
 
 msgid "Save Data"
 msgstr "データを保存する"
@@ -221,7 +216,9 @@ msgid "Tab-Separated Text (*.*)"
 msgstr "タブ区切りテキスト (*.*)"
 
 msgid "Changing encoding may takes several or more minutes. Please wait..."
-msgstr "エンコーディングの変更は数分かそれ以上かかることがあります。お待ちください．．．"
+msgstr ""
+"エンコーディングの変更は数分かそれ以上かかることがあります。お待ちくださ"
+"い．．．"
 
 msgid "%s [from Global Environment]"
 msgstr "%s [大局的環境から]"
@@ -240,6 +237,9 @@ msgstr "古い名前"
 
 msgid "New Name"
 msgstr "新しい名前"
+
+msgid "Cannot reload while Select Cases enabled."
+msgstr "ケースの選択の選択が有効になっている間は，リロードはできません。"
 
 msgid "\"%s\" isn't a data.set or don't exist."
 msgstr "\"%s\" はdata.setではないか，存在しません。"
@@ -340,6 +340,9 @@ msgstr "高さ（cm）"
 msgid "save options"
 msgstr "保存オプション"
 
+msgid "This file already exists. Overwrite it?"
+msgstr "このファイルは既に存在しています。上書きしますか？"
+
 msgid "statistics options"
 msgstr "statisticsオプション"
 
@@ -404,6 +407,18 @@ msgstr "全般"
 msgid "Font"
 msgstr "フォント"
 
+msgid "Enable Select Cases"
+msgstr "ケースの選択を有効にする"
+
+msgid "Update"
+msgstr "更新"
+
+msgid "Clear"
+msgstr "消去"
+
+msgid "Select Cases"
+msgstr "ケースの選択"
+
 msgid "Measurement"
 msgstr "尺度"
 
@@ -428,8 +443,13 @@ msgstr "全ての変数"
 msgid "Selected Variables"
 msgstr "選択された変数"
 
+msgid "Management and Manipulation"
+msgstr "管理と操作"
+
 msgid "This recode syntax is invalid. Please enter a valid recode syntax."
-msgstr "このリコード・シンタックスは無効です。有効なリコード・シンタックスを入力してください。"
+msgstr ""
+"このリコード・シンタックスは無効です。有効なリコード・シンタックスを入力して"
+"ください。"
 
 msgid "This variable name is invalid. Please enter a valid variable name."
 msgstr "この変数名は無効です。有効な変数名を入力してください。"
@@ -460,6 +480,12 @@ msgstr "変数名"
 
 msgid "Duplicate label is detected."
 msgstr "ラベルが重複しています。"
+
+msgid "File Path:"
+msgstr "File Path:"
+
+msgid "Cannot handle character variables longer than 255"
+msgstr "255文字を超える文字変数は取り扱えません"
 
 msgid "Start"
 msgstr "スタート"
