@@ -1,19 +1,25 @@
 selectCases <-
   setRefClass("RzVVSelectCases",
-  fields = c("main", "data", "textView", "textBuffer", "button.update"),
+  fields = c("main", "data", "textView", "textBuffer", "button.update", "button.clear"),
   methods = list(
     initialize = function(...) {
       initFields(...)
       
       toggleButton  <- gtkToggleButtonNewWithLabel(gettext("Enable Select Cases"))
       button.update <<- gtkButtonNewWithLabel(gettext("Update"))                  
-      button.clear  <-  gtkButtonNewWithLabel(gettext("Clear"))                  
+      button.clear  <<-  gtkButtonNewWithLabel(gettext("Clear"))                  
       textBuffer    <<- gtkTextBufferNew()
       textBuffer$setText(data$getSubset.condition())
       textView      <<- gtkTextViewNewWithBuffer(textBuffer)
-      textView$setSensitive(FALSE)
       textView$setLeftMargin(5)
       textView$setRightMargin(5)
+      
+      subset.on <- data$getSubset.on()
+      toggleButton$setActive(subset.on)
+      button.update$setSensitive(subset.on)
+      button.clear$setSensitive(subset.on)
+      textView$setSensitive(subset.on)
+      
       scrolledWindow.textView <- gtkScrolledWindowNew()
       scrolledWindow.textView$setShadowType(GtkShadowType["in"])
       scrolledWindow.textView$setPolicy(GtkPolicyType["automatic"], GtkPolicyType["automatic"])
@@ -47,13 +53,11 @@ selectCases <-
     },
     
     onSelectCasesToggled = function(button){
-      if(button$getActive()){
-        textView$setSensitive(TRUE)
-        data$setSubset.on(TRUE)
-      } else {
-        textView$setSensitive(FALSE)
-        data$setSubset.on(FALSE)
-      }
+      subset.on <- button$getActive()
+      button.update$setSensitive(subset.on)
+      button.clear$setSensitive(subset.on)
+      textView$setSensitive(subset.on)
+      data$setSubset.on(subset.on)
       data$linkDataFrame()
     },
     
@@ -62,7 +66,8 @@ selectCases <-
       text <- textBuffer$getText(iter$start, iter$end)
       text <- localize(text)
       data$setSubset.condition(text)
-      data$linkDataFrame()
+      result <- data$linkDataFrame()
+      if(result) rzTools$getVariableView()$setSubsetSummaries()
     }
     
   ))

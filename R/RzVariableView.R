@@ -1,6 +1,7 @@
 variable.view <- 
 setRefClass("RzVariableView",
-  fields = c("data", "win", "notebook", "main", "liststore", "sw", "summaries", "treeview.selected", "model.selected",
+  fields = c("data", "win", "notebook", "main", "liststore", "sw", "summaries", "summaries.subset",
+             "treeview.selected", "model.selected",
              "rt.index", "rtg.select", "rt.vars", "rt.var.labs", "rt.val.labs", "rp.msr", "rt.missing",
              "rzPlot", "selectable", "nominalpix", "ordinalpix", "intervalpix", "ratiopix"),
   methods = list(
@@ -157,6 +158,7 @@ setRefClass("RzVariableView",
       val.labs  <-  data$getValueLabels()
       miss.val  <-  data$getMissingValues()
       summaries <<- data$getSummaries()
+      summaries.subset <<- NULL
       for ( i in seq_len(data$ncol()) ) {
         iter <- liststore$append()$iter
         liststore$set(iter,
@@ -402,6 +404,8 @@ setRefClass("RzVariableView",
       data$linkDataFrame()
       .self$setCell(path, column.definition["vars"], txt)
       summaries[row] <<- data$getSummary(row)
+      if (data$getSubset.on() & nzchar(data$getSubset.condition()))
+        summaries.subset[row] <<- data$getSummary(row, subset=TRUE)
     },
     
     onCellEditedVarLabs = function(renderer, path, new.text){
@@ -473,6 +477,8 @@ setRefClass("RzVariableView",
           cell.row <- as.character(row - 1)
           .self$setCell(cell.row, column.definition["msr"], msr, filtered=FALSE)
           summaries[row] <<- data$getSummary(row)
+          if (data$getSubset.on() & nzchar(data$getSubset.condition()))
+            summaries.subset[row] <<- data$getSummary(row, subset=TRUE)
         }
       }
       gSignalConnect(radio1, "toggled", onToggled)
@@ -515,6 +521,8 @@ setRefClass("RzVariableView",
       data$linkDataFrame()
       .self$setCell(path, column.definition["missing"], txt)
       summaries[row] <<- data$getSummary(row)
+      if (data$getSubset.on() & nzchar(data$getSubset.condition()))
+        summaries.subset[row] <<- data$getSummary(row, subset=TRUE)
     },
     
     onRecode            = function(action, win){
@@ -611,8 +619,10 @@ setRefClass("RzVariableView",
           .self$setCell(cell.row, column.definition["msr.image"], .self$msrPix(msr), filtered=FALSE)
           .self$setCell(cell.row, column.definition["val.labs"], val.labs, filtered=FALSE)
           .self$setCell(cell.row, column.definition["missing"] , miss.val, filtered=FALSE)
-          summary <- data$getSummary(row)
-          summaries[row] <<- summary
+
+          summaries[row] <<- data$getSummary(row)
+          if (data$getSubset.on() & nzchar(data$getSubset.condition()))
+            summaries.subset[row] <<- data$getSummary(row, subset=TRUE)
         } else {
           dialog$hide()
         }
@@ -881,6 +891,8 @@ setRefClass("RzVariableView",
             cell.row <- as.character(row - 1)
             .self$setCell(cell.row, column.definition["val.labs"], labels, filtered=FALSE)
             summaries[row] <<- data$getSummary(row)
+            if (data$getSubset.on() & nzchar(data$getSubset.condition()))
+              summaries.subset[row] <<- data$getSummary(row, subset=TRUE)
           }
         } else {
           dialog$hide()
@@ -894,7 +906,12 @@ setRefClass("RzVariableView",
       col.title <- column$getData("attr")["title"]
 
       if (col.title=="index") {
-        data.set <- data$getData.set()
+        data.set <- NULL
+        if (data$getSubset.on() & nzchar(data$getSubset.condition())){
+          data.set <- data$getData.set.subset()
+        } else {
+          data.set <- data$getData.set()
+        }
         if(rzSettings$getPlotViewEnabled() & rzSettings$getRunPlot()) {
           rzPlot$setX(row)
           rzPlot$onPlot()
@@ -914,8 +931,13 @@ setRefClass("RzVariableView",
       if(rzSettings$getPopupOff()) return(FALSE)
       path <- tw$getPathAtPos(x, y - 20)$path
       if(is.null(path)) return(FALSE)
-      row   <- as.numeric(getCell(path$toString(), column.definition["index"]))
-      char  <- summaries[ row ]
+      row  <- as.numeric(getCell(path$toString(), column.definition["index"]))
+      char <- NULL
+      if (data$getSubset.on() & nzchar(data$getSubset.condition())) {
+        char  <- summaries.subset[ row ]
+      } else {
+        char  <- summaries[ row ]
+      }
       tooltip$setMarkup(paste("<span font_family=\"", rzSettings$getMonospaceFontFamily(), "\">", char, "</span>", sep="", collapse=""))
       tw$setTooltipRow(tooltip, path)
       return(TRUE)
@@ -926,7 +948,11 @@ setRefClass("RzVariableView",
       treeview.selected$modifyFont(pangoFontDescriptionFromString(rzSettings$getVariableViewFont()))
     },
     
-    getView = function() return(notebook)
+    getView = function() return(notebook),
+    
+    setSubsetSummaries = function(){
+      summaries.subset <<- data$getSummaries(subset=TRUE)
+    }
   )
 )
 variable.view$accessors("liststore", "data", "model.selected")

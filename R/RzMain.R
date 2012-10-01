@@ -358,6 +358,14 @@ setRefClass("RzMain",
     
     onReload = function(action){
       if(!is.null(variable.view)){
+        if (variable.view$getData()$getSubset.on()) {
+          dialog <- gtkMessageDialogNew(rzTools$getWindow(), "destroy-with-parent",
+                                        "error", "close", gettext("Cannot reload while Select Cases enabled."))
+          dialog$run()
+          dialog$destroy()
+          return()
+        }
+        
         timeoutid <- gTimeoutAdd(80, progress.bar$start)
         
         dialog <- gtkMessageDialogNew(win, "destroy-with-parent",

@@ -2,6 +2,7 @@ rzdata <-
 setRefClass("RzData",
   fields = c("file.path", "data.set.name", "original.name",
              "data.set", "original.data.set", "data.frame",
+             "data.set.subset", "data.frame.subset",
              "log", "subset.condition", "subset.on",
              "system", "package.version", "encoding", "time"),
   methods = list(
@@ -19,6 +20,8 @@ setRefClass("RzData",
       time              <<- Sys.time()
       subset.condition  <<- ""
       subset.on         <<- FALSE
+      data.set.subset   <<- NULL
+      data.frame.subset <<- NULL
     },
 
     save = function(file){
@@ -92,21 +95,22 @@ setRefClass("RzData",
     
     linkDataFrame     = function(){
       if(subset.on & nzchar(subset.condition)){
-        data.set.subset     <- tryCatch(eval(parse(text=paste("subset(data.set  , subset=", subset.condition, ")"))), error=function(...) return(FALSE))
+        data.set.subset <<- tryCatch(eval(parse(text=paste("subset(data.set, subset=", subset.condition, ")"))), error=function(...) return(FALSE))
         if(!is.data.set(data.set.subset)){
           dialog <- gtkMessageDialogNew(rzTools$getWindow(), "destroy-with-parent",
-                                        "error", "close", "Condition is invalid.")
+                                        "error", "close", gettext("Condition of selecting cases is invalid."))
           dialog$run()
           dialog$destroy()
-          return()
+          return(FALSE)
         }
-        data.frame.subset   <- eval(parse(text=paste("subset(data.frame, subset=", subset.condition, ")")))
+        data.frame.subset <<- eval(parse(text=paste("subset(data.frame, subset=", subset.condition, ")")))
         assign(paste(data.set.name, ".ds", sep=""), data.set.subset  , envir=.GlobalEnv)
-        assign(data.set.name                      , data.frame.subset, envir=.GlobalEnv)        
+        assign(data.set.name                      , data.frame.subset, envir=.GlobalEnv)
       } else {
         assign(paste(data.set.name, ".ds", sep=""), data.set, envir=.GlobalEnv)
         assign(data.set.name                      , data.frame, envir=.GlobalEnv)        
       }
+      return(TRUE)
     },
 
     import = function(data){
@@ -134,8 +138,13 @@ setRefClass("RzData",
       val.labs  <- sapply(val.labs, function(x){ifelse(is.null(x), "", paste(x@values, " \"",x@.Data, "\"", sep="", collapse=", "))})
     },
     
-    getSummaries      = function() {
-      summaries   <- lapply(data.set, summary)
+    getSummaries      = function(subset=FALSE) {
+      summaries <- NULL
+      if (subset) {
+        summaries <- lapply(data.set.subset, summary)
+      } else {
+        summaries <- lapply(data.set, summary)        
+      }
       val <- lapply(summaries, as.character)
       lab <- lapply(summaries, names)
       summaies <- sapply(seq_along(val),
@@ -153,8 +162,13 @@ setRefClass("RzData",
                          )
     },
     
-    getSummary = function(row){
-      summary <- summary(data.set[[row]])
+    getSummary = function(row, subset=FALSE){
+      summary <- NULL
+      if (subset) {
+        summary <- summary(data.set.subset[[row]])        
+      } else {
+        summary <- summary(data.set[[row]])
+      }
       lab <- names(summary)
       val <- as.character(summary)
       lnchar <- nchar(sub("", "", lab), type="width") # "sub()" is for removing invalid character.
@@ -171,4 +185,4 @@ setRefClass("RzData",
   )
 )
 rzdata$accessors(c("data.set.name", "original.name", "data.set", "data.frame", "file.path",
-                   "subset.condition", "subset.on"))
+                   "subset.condition", "subset.on", "data.set.subset", "data.frame.subset"))
