@@ -14,6 +14,7 @@ setRefClass("RzMain",
       rzDataSetIO   <<- new("RzDataSetIO")
       recode.id     <<- NULL
       win           <<- gtkWindowNew(show=FALSE)
+      rzTools$setWindow(win)
       main.hpaned   <<- gtkHPanedNew()
       main.vpaned   <<- gtkVPanedNew()
       main.view     <<- gtkVBoxNew()

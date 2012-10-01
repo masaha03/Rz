@@ -2,22 +2,23 @@ rzdata <-
 setRefClass("RzData",
   fields = c("file.path", "data.set.name", "original.name",
              "data.set", "original.data.set", "data.frame",
-             "log", "subset", "subset.on",
+             "log", "subset.condition", "subset.on",
              "system", "package.version", "encoding", "time"),
   methods = list(
     initialize        = function(...) {
       initFields(...)
-#      data.set.name     <<- NULL
+#      data.set.name    <<- NULL
       original.data.set <<- data.set
       data.frame        <<- suppressWarnings(as.data.frame(data.set))
-#      log               <<- NULL
+#      log              <<- NULL
       system            <<- R.Version()
       package.version   <<- list(Rz = packageVersion("Rz"),
                                  memisc=packageVersion("memisc"),
                                  RGtk2=packageVersion("RGtk2"))
       encoding          <<- localeToCharset()
       time              <<- Sys.time()
-      subset.on         <<- false
+      subset.condition  <<- ""
+      subset.on         <<- FALSE
     },
 
     save = function(file){
@@ -90,9 +91,17 @@ setRefClass("RzData",
     },
     
     linkDataFrame     = function(){
-      if(subset.on){
-        data.frame.subset <- subset(data.frame, subset=eval(parse(text=subset)))
-        assign(paste(data.set.name, ".ds", sep=""), data.set, envir=.GlobalEnv)
+      if(subset.on & nzchar(subset.condition)){
+        data.set.subset     <- tryCatch(eval(parse(text=paste("subset(data.set  , subset=", subset.condition, ")"))), error=function(...) return(FALSE))
+        if(!is.data.set(data.set.subset)){
+          dialog <- gtkMessageDialogNew(rzTools$getWindow(), "destroy-with-parent",
+                                        "error", "close", "Condition is invalid.")
+          dialog$run()
+          dialog$destroy()
+          return()
+        }
+        data.frame.subset   <- eval(parse(text=paste("subset(data.frame, subset=", subset.condition, ")")))
+        assign(paste(data.set.name, ".ds", sep=""), data.set.subset  , envir=.GlobalEnv)
         assign(data.set.name                      , data.frame.subset, envir=.GlobalEnv)        
       } else {
         assign(paste(data.set.name, ".ds", sep=""), data.set, envir=.GlobalEnv)
@@ -162,4 +171,4 @@ setRefClass("RzData",
   )
 )
 rzdata$accessors(c("data.set.name", "original.name", "data.set", "data.frame", "file.path",
-                   "subset", "subset.on"))
+                   "subset.condition", "subset.on"))

@@ -68,6 +68,12 @@ setRefClass("RzVariableView",
       scrolledWindow.selected$setPolicy(GtkPolicyType["automatic"], GtkPolicyType["automatic"])
       scrolledWindow.selected$add(treeview.selected)
       
+      # Data Management
+      rzVVSelectCases <- new("RzVVSelectCases", data=data)
+      notebook.management <- gtkNotebookNew()
+      notebook.management["tab-pos"] <- GtkPositionType["left"]
+      notebook.management$appendPage(rzVVSelectCases$getMain(), gtkLabelNew(gettext("Select Cases")))
+      
       columns <- list(
         index   = gtkTreeViewColumnNewWithAttributes(""                     , rt.index   , "text"=column.definition[["index"]]   ),
         select  = gtkTreeViewColumnNewWithAttributes(""                     , rtg.select , "active"=column.definition[["select"]]),
@@ -125,7 +131,7 @@ setRefClass("RzVariableView",
       notebook$setActionWidget(hbox.select, GtkPackType["end"])
       notebook$appendPage(sw, gtkLabelNew(gettext("All Variables")))
       notebook$appendPage(scrolledWindow.selected, gtkLabelNew(gettext("Selected Variables")))
-      
+      notebook$appendPage(notebook.management, gtkLabelNew(gettext("Management and Manipulation")))
       
       gSignalConnect(main, "row-activated", .self$onRowActivated)
       gSignalConnect(main, "query-tooltip", .self$onQueryTooltip)
