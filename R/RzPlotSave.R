@@ -1,12 +1,12 @@
 rzplot.save <- 
 setRefClass("RzPlotSave",
-  fields = c("win", "expander", "dialog", "file.types", "file.type.list",
+  fields = c("main", "dialog", "file.types", "file.type.list",
              "entry1", "entry2"),
   methods = list(
     initialize  = function(...) {
       initFields(...)
       # save
-      dialog <<- gtkFileChooserDialogNew(title=gettext("Save"), parent=win,
+      dialog <<- gtkFileChooserDialogNew(title=gettext("Save"), parent=rzTools$getWindow(),
                                          action=GtkFileChooserAction["save"],
                                          "gtk-save", GtkResponseType["accept"],
                                          "gtk-cancel", GtkResponseType["cancel"], 
@@ -57,10 +57,8 @@ setRefClass("RzPlotSave",
       table$setColSpacings(5)
       table$setRowSpacings(2)
       
-      expander <<- gtkExpanderNew(gettext("save options"))
-      expander["border-width"] <<- 3
-      expander$setExpanded(FALSE)
-      expander$add(table)
+      main <<- buildPlotOptionPage(table)
+      
     },
     
     onSave = function(response.id, p.current, theme_Rz, legend.position, legend.linetype, legend.justification){
@@ -135,4 +133,4 @@ setRefClass("RzPlotSave",
     }
   )
 )
-rzplot.save$accessors("expander", "dialog")
+rzplot.save$accessors("main", "dialog")

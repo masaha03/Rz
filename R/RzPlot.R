@@ -1,6 +1,6 @@
 rzplot <- 
 setRefClass("RzPlot",
-  fields = c("win", "info.bar", "main", "data", "model",
+  fields = c("info.bar", "main", "data", "model",
              "geom", "stat", "label", "stratum", "button.prev", "button.next",
              "facet", "position", "misc", "save",
              "df", "p.current", "p.list", "p.current.num",
@@ -8,7 +8,7 @@ setRefClass("RzPlot",
   methods = list(
     initialize  = function(...) {
       initFields(...)
-      
+      info.bar <<- rzTools$getInfoBar()
       p.current <<- NULL
       model <<- NULL
       data <<- NULL
@@ -48,29 +48,25 @@ setRefClass("RzPlot",
       facet    <<- new("RzPlotFacet")
       label    <<- new("RzPlotLabel")
       misc     <<- new("RzPlotMisc")
-      save     <<- new("RzPlotSave", win=win)
+      save     <<- new("RzPlotSave")
       theme_Rz <<- theme_grey
       
       # container
-      vbox <- gtkVBoxNew()
-      vbox["border-width"] <- 2
-      vbox$packStart(geom$getExpander(), expand=FALSE)
-      vbox$packStart(stat$getExpander(), expand=FALSE)
-      vbox$packStart(stratum$getExpander(), expand=FALSE)
-      vbox$packStart(position$getExpander(), expand=FALSE)
-      vbox$packStart(facet$getExpander(), expand=FALSE)
-      vbox$packStart(label$getExpander(), expand=FALSE)
-      vbox$packStart(misc$getExpander(), expand=FALSE)
-      vbox$packStart(save$getExpander(), expand=FALSE)
-      
-      sw <- gtkScrolledWindowNew()
-      sw$setPolicy(GtkPolicyType["automatic"], GtkPolicyType["automatic"])
-      sw$setShadowType(GtkShadowType["none"])
-      sw$addWithViewport(vbox)
-      
+      notebook <- gtkNotebookNew()
+      notebook$setScrollable(TRUE)
+      notebook$setTabPos(GtkPositionType["top"])
+      notebook$appendPage(geom$getMain(), tab.label=gtkLabelNew(gettext("geom")))
+      notebook$appendPage(stat$getMain(), tab.label=gtkLabelNew(gettext("stat")))
+      notebook$appendPage(stratum$getMain(), tab.label=gtkLabelNew(gettext("stratum")))
+      notebook$appendPage(position$getMain(), tab.label=gtkLabelNew(gettext("position")))
+      notebook$appendPage(facet$getMain(), tab.label=gtkLabelNew(gettext("facet")))
+      notebook$appendPage(label$getMain(), tab.label=gtkLabelNew(gettext("label")))
+      notebook$appendPage(misc$getMain(), tab.label=gtkLabelNew(gettext("misc")))
+      notebook$appendPage(save$getMain(), tab.label=gtkLabelNew(gettext("save")))
+            
       main <<- gtkVBoxNew()
       main$packStart(button.box1, expand=FALSE, padding=5)
-      main$packStart(sw, expand=TRUE, fill=TRUE)
+      main$packStart(notebook, expand=TRUE, fill=TRUE)
       
       
       gSignalConnect(button.execute, "clicked", function(button){
@@ -646,4 +642,4 @@ setRefClass("RzPlot",
       facet$completionSetModel(model)
     }
 ))
-rzplot$accessors("main", "info.bar", "data")
+rzplot$accessors("main", "data")

@@ -150,3 +150,14 @@ write.stata <- function (df, datafile, codefile, varlabels)
         file = codefile)
 }
 
+buildPlotOptionPage <- function(widget){
+  main <- gtkScrolledWindowNew()
+  main$setBorderWidth(3)
+  main$setPolicy(GtkPolicyType["automatic"], GtkPolicyType["automatic"])
+  main$setShadowType(GtkShadowType["none"])
+  vbox <- gtkVBoxNew()
+  vbox$packStart(widget, expand=FALSE)
+  main$addWithViewport(vbox)
+  main$getChild()$setShadowType(GtkShadowType["none"])
+  return(main)
+}

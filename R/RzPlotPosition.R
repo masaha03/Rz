@@ -1,6 +1,6 @@
 rzplot.position <- 
 setRefClass("RzPlotPosition",
-  fields = c("expander", "combo", "entry.width", "entry.height"),
+  fields = c("main", "combo", "entry.width", "entry.height"),
   methods = list(
     initialize  = function(...) {
       initFields(...)
@@ -26,10 +26,8 @@ setRefClass("RzPlotPosition",
       table$attach        (label.height, 0, 1, 2, 3, "shrink", "shrink", 0, 0)
       table$attachDefaults(entry.height, 1, 2, 2, 3)
 
-      expander <<- gtkExpanderNew(gettext("position options"))
-      expander["border-width"] <<- 3
-      expander$setExpanded(FALSE)
-      expander$add(table)
+      main <<- buildPlotOptionPage(table)
+            
     },
     
     clear = function(){
@@ -50,4 +48,4 @@ setRefClass("RzPlotPosition",
       return(args)
     }
 ))
-rzplot.position$accessors("expander")
+rzplot.position$accessors("main")

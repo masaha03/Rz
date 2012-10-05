@@ -1,6 +1,6 @@
 rzplot.stat <- 
 setRefClass("RzPlotStat",
-  fields = c("expander", "button",
+  fields = c("main", "button",
              "combo", "combo.method", "combo.geom", "combo.geom2",
              "combo.fun", "combo.color", "entry.size"),
   methods = list(
@@ -72,11 +72,8 @@ setRefClass("RzPlotStat",
       table$setColSpacings(5)
       table$setRowSpacings(2)
             
-      expander <<- gtkExpanderNew(gettext("statistics options"))
-      expander["border-width"] <<- 3
-      expander$setExpanded(FALSE)
-      expander$add(table)
-      
+      main <<- buildPlotOptionPage(table)
+            
       gSignalConnect(combo, "changed", function(combo){
         
         stat <- localize(combo$getActiveText())
@@ -143,4 +140,4 @@ setRefClass("RzPlotStat",
     }
   )
 )
-rzplot.stat$accessors("expander", "button")
+rzplot.stat$accessors("main", "button")

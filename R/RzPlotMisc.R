@@ -1,6 +1,6 @@
 rzplot.misc <- 
 setRefClass("RzPlotMisc",
-  fields = c("expander", "combo.theme",
+  fields = c("main", "combo.theme",
              "flip.togglebutton",
              "na.rm.togglebutton",
              "combo.scalex", "combo.scaley",
@@ -86,10 +86,8 @@ setRefClass("RzPlotMisc",
       table$setColSpacings(5)
       table$setRowSpacings(2)
             
-      expander <<- gtkExpanderNew(gettext("misc options"))
-      expander["border-width"] <<- 3
-      expander$setExpanded(FALSE)
-      expander$add(table)        
+      main <<- buildPlotOptionPage(table)
+            
     },
     
     clear = function(){
@@ -133,4 +131,4 @@ setRefClass("RzPlotMisc",
     }
   )
 )
-rzplot.misc$accessors("expander")
+rzplot.misc$accessors("main")

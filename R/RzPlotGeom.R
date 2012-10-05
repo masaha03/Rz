@@ -1,6 +1,6 @@
 rzplot.geom <- 
 setRefClass("RzPlotGeom",
-  fields = c("expander", "button",
+  fields = c("main", "button",
              "combo", "combo.theme",
              "hist.label1", "hist.combo1",
              "combo.x", "combo.y",
@@ -58,11 +58,8 @@ setRefClass("RzPlotGeom",
       table$setColSpacings(5)
       table$setRowSpacings(2)
       
-      expander <<- gtkExpanderNew(gettext("geom options"))
-      expander["border-width"] <<- 3
-      expander$setExpanded(TRUE)
-      expander$add(table)
-            
+      main <<- buildPlotOptionPage(table)
+                  
       gSignalConnect(combo, "changed", .self$onGeomComboChanged)
     },
     
@@ -112,4 +109,4 @@ setRefClass("RzPlotGeom",
     }
   )
 )
-rzplot.geom$accessors("expander", "button")
+rzplot.geom$accessors("main", "button")

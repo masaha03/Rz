@@ -1,6 +1,6 @@
 rzplot.label <-
 setRefClass("RzPlotLabel",
-  fields = c("expander", "title.entry", "xlab.combo", "ylab.combo"),
+  fields = c("main", "title.entry", "xlab.combo", "ylab.combo"),
   methods = list(
     initialize  = function(...) {
       initFields(...)
@@ -32,10 +32,8 @@ setRefClass("RzPlotLabel",
       table$setColSpacings(5)
       table$setRowSpacings(2)
       
-      expander <<- gtkExpanderNew(gettext("label options"))
-      expander["border-width"] <<- 3
-      expander$setExpanded(FALSE)
-      expander$add(table)                  
+      main <<- buildPlotOptionPage(table)
+      
     },
     
     clear = function(){
@@ -53,4 +51,4 @@ setRefClass("RzPlotLabel",
     }
   )
 )
-rzplot.label$accessors("expander")
+rzplot.label$accessors("main")

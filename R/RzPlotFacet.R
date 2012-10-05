@@ -2,7 +2,7 @@ rzplot.facet <-
 setRefClass("RzPlotFacet",
   fields = c("combo", "combo2", "combo.x",
     "combo.y", "entry3", "entry4", "entry5",
-    "label.y", "label3", "label4", "label5", "expander"),
+    "label.y", "label3", "label4", "label5", "main"),
   methods = list(
     initialize  = function(...) {
       initFields(...)
@@ -81,12 +81,8 @@ setRefClass("RzPlotFacet",
       table$setColSpacings(5)
       table$setRowSpacings(2)
 
-      expander <<- gtkExpanderNew(gettext("facet options"))
-      expander["border-width"] <<- 3
-      expander$setExpanded(FALSE)
-      expander$add(table)
-
-
+      main <<- buildPlotOptionPage(table)
+      
     },
     
     completionSetModel = function(model){
@@ -132,4 +128,4 @@ setRefClass("RzPlotFacet",
     }
     )
 )
-rzplot.facet$accessors("expander")
+rzplot.facet$accessors("main")

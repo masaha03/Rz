@@ -8,7 +8,7 @@ setRefClass("RzPlotStratum",
              "combo.line","combo.line.label",
              "combo.position", "position.entry",
              "combo.linetype", "combo.scale",
-             "expander"),
+             "main"),
   methods = list(
     initialize  = function(...) {
       initFields(...)
@@ -176,10 +176,7 @@ setRefClass("RzPlotStratum",
       table$setColSpacings(5)
       table$setRowSpacings(2)
 
-      expander <<- gtkExpanderNew(gettext("stratum options"))
-      expander["border-width"] <<- 3
-      expander$setExpanded(FALSE)
-      expander$add(table)
+      main <<- buildPlotOptionPage(table)
 
       gSignalConnect(locator.button, "clicked", function(button){
         locate <- grid.locator(unit="npc")
@@ -266,4 +263,4 @@ setRefClass("RzPlotStratum",
     }
     )
 )
-rzplot.stratum$accessors("expander")
+rzplot.stratum$accessors("main")
