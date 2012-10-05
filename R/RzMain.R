@@ -20,9 +20,6 @@ setRefClass("RzMain",
       main.view     <<- gtkVBoxNew()
       plot.view     <<- gtkVPanedNew()
       rzAnalysisView <<- new("RzAnalysisView")
-#      view.box      <<- gtkHBoxNew()
-#      view.box$packStart(plot.view)
-#      view.box$packStart(rzAnalysisView$getMain())
       
       main.vpaned$pack1(main.view, resize=TRUE)
       main.vpaned$pack2(rzAnalysisView$getMain(), resize=TRUE)
@@ -49,8 +46,7 @@ setRefClass("RzMain",
       variable.view <<- NULL
       variable.view.list <<- list()
       
-      rzPlot <<- new("RzPlot", win=win)
-      rzPlot$setInfo.bar(info.bar)
+      rzPlot <<- new("RzPlot")
       plot.view$pack2(rzPlot$getMain(), resize=FALSE)
       if(rzSettings$getUseEmbededDevice()){
         if(require(cairoDevice)) {
@@ -86,7 +82,6 @@ setRefClass("RzMain",
       
       rzActionGroup$getA.plot.view()$setActive(rzSettings$getPlotViewEnabled())
       rzActionGroup$getA.analysis.view()$setActive(rzSettings$getAnalysisViewEnabled())
-      #rzActionGroup$getA.reload()$setSensitive(rzSettings$getUseDataSetObject())
       gSignalConnect(rzActionGroup$getA.open(),      "activate", .self$onOpen)
       gSignalConnect(rzActionGroup$getA.save(),      "activate", .self$onSave)
       gSignalConnect(rzActionGroup$getA.ds(),        "activate", .self$onImportFromGlobalEnv)
@@ -94,8 +89,6 @@ setRefClass("RzMain",
       gSignalConnect(rzActionGroup$getA.remove(),    "activate", .self$onRemove)
       gSignalConnect(rzActionGroup$getA.revert(),    "activate", .self$onRevert)
       gSignalConnect(rzActionGroup$getA.reload(),    "activate", .self$onReload)
-#      gSignalConnect(rzActionGroup$getA.selectall(), "activate", .self$onSelectAll)
-#      gSignalConnect(rzActionGroup$getA.unselect(),  "activate", .self$onUnselect)
       gSignalConnect(rzActionGroup$getA.delete(),    "activate", .self$onDelete)
       gSignalConnect(rzActionGroup$getA.duplicate(), "activate", .self$onDuplicate)
       gSignalConnect(rzActionGroup$getA.quit(),      "activate", win$destroy)
@@ -126,9 +119,6 @@ setRefClass("RzMain",
       win$show()
       if(!rzSettings$getPlotViewEnabled()) { plot.view$hide() }
       if(!rzSettings$getAnalysisViewEnabled()) { rzAnalysisView$getMain()$hide() }
-#      if(!rzSettings$getPlotViewEnabled() && !rzSettings$getVariableEditorViewEnabled()) {
-#        view.box$hide() 
-#      }
       
       gSignalConnect(win, "destroy", function(...){
         rzTools$clean()
@@ -171,41 +161,30 @@ setRefClass("RzMain",
     
     onPlotViewToggled = function(action){
       if(action$getActive()) {
-#        view.box$show()
         plot.view$show()
         rzSettings$setPlotViewEnabled(TRUE)
-#        if(rzSettings$getVariableEditorViewEnabled()){
-#          action <- rzActionGroup$getA.variable.editor.view()
-#          action["active"] <- FALSE
-##          action$toggled()
-#        }
       } else {
         plot.view$hide()
         rzSettings$setPlotViewEnabled(FALSE)
-#        if(!rzSettings$getVariableEditorViewEnabled()){
-#          view.box$hide()
-#        }
       }
     },
     
     onAnalysisViewToggled = function(action){
       if(action$getActive()) {
-#        view.box$show()
-        rzAnalysisView$getMain()$show()
+        view <- rzAnalysisView$getMain()
+        parent <- view$getParent()
+        if(class(parent)[1] == "GtkWindow") parent$show()    # if detached
+        view$showAll()
+        rzAnalysisView$toggled()
         rzSettings$setAnalysisViewEnabled(TRUE)
         if(!is.null(variable.view)) variable.view$selectMode(TRUE)
-#        if(rzSettings$getVariableEditorViewEnabled()){
-#          action <- rzActionGroup$getA.plot.view()
-#          action["active"] <- FALSE
-##          action$toggled()
-#        }
       } else {
-        rzAnalysisView$getMain()$hide()
+        view <- rzAnalysisView$getMain()
+        parent <- view$getParent()
+        if(class(parent)[1] == "GtkWindow") parent$hide()    # if detached
+        view$hide()
         rzSettings$setAnalysisViewEnabled(FALSE)
         if(!is.null(variable.view)) variable.view$selectMode(FALSE)
-#        if(!rzSettings$getPlotViewEnabled()){
-#          view.box$hide()
-#        }
       }
     },
     
@@ -246,7 +225,6 @@ setRefClass("RzMain",
     
     onLoadSample = function(action){
       timeoutid <- gTimeoutAdd(80, progress.bar$start)
-#      data <- rzDataSetIO$importFromGlobalEnv(win)
       nes1948.por <- UnZip("anes/NES1948.ZIP","NES1948.POR",package="memisc")
       nes1948 <- spss.portable.file(nes1948.por)
       sample.data.set <- as.data.set(nes1948)
