@@ -5,9 +5,9 @@ selectCases <-
     initialize = function(...) {
       initFields(...)
       
-      toggleButton  <- gtkToggleButtonNewWithLabel(gettext("Enable Select Cases"))
-      button.update <<- gtkButtonNewWithLabel(gettext("Update"))                  
-      button.clear  <<-  gtkButtonNewWithLabel(gettext("Clear"))                  
+      toggleButton  <-  gtkToggleButtonNewWithLabel(gettext("Enable Select Cases"))
+      button.update <<- gtkButtonNewFromStock(GTK_STOCK_REFRESH)
+      button.clear  <<- gtkButtonNewFromStock(GTK_STOCK_CLEAR)
       textBuffer    <<- gtkTextBufferNew()
       textBuffer$setText(data$getSubset.condition())
       textView      <<- gtkTextViewNewWithBuffer(textBuffer)
@@ -46,6 +46,7 @@ selectCases <-
       main$setShadowType(GtkShadowType["none"])
       main$setPolicy(GtkPolicyType["automatic"], GtkPolicyType["automatic"])
       main$addWithViewport(vbox)
+      main$getChild()$setShadowType(GtkShadowType["none"])
       
       gSignalConnect(toggleButton , "toggled", .self$onSelectCasesToggled)
       gSignalConnect(button.clear , "clicked", function(...){textBuffer$setText("")})

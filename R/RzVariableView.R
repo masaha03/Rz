@@ -17,7 +17,7 @@ setRefClass("RzVariableView",
       
       
       sw   <<- gtkScrolledWindowNew()
-      sw["shadow-type"] <<- GtkShadowType["in"]
+      sw["shadow-type"] <<- GtkShadowType["none"]
       sw$add(main)
       sw$setPolicy(GtkPolicyType["automatic"], GtkPolicyType["automatic"])
       main["enable-grid-lines"] <<- GtkTreeViewGridLines["both"]
@@ -65,7 +65,7 @@ setRefClass("RzVariableView",
       treeview.selected$modifyFont(pangoFontDescriptionFromString(rzSettings$getVariableViewFont()))
       
       scrolledWindow.selected <- gtkScrolledWindowNew()
-      scrolledWindow.selected["shadow-type"] <- GtkShadowType["in"]
+      scrolledWindow.selected["shadow-type"] <- GtkShadowType["none"]
       scrolledWindow.selected$setPolicy(GtkPolicyType["automatic"], GtkPolicyType["automatic"])
       scrolledWindow.selected$add(treeview.selected)
       
@@ -430,13 +430,12 @@ setRefClass("RzVariableView",
       msr        <- measurement(var)
       row <- which(names(data.set)==var.name)
       
-      dialog <- gtkDialogNewWithButtons(title=gettext("Change Measurement"),
-                                        parent=win,
-                                        flags=c("modal", "destroy-with-parent"),
-                                        "gtk-cancel", GtkResponseType["cancel"],
-                                        show=FALSE)
+      dialog <- gtkWindowNew(show=FALSE)
+      dialog$setTransientFor(win)
+      dialog$setModal(TRUE)
+      dialog$setDecorated(FALSE)
       dialog["window-position"] <- GtkWindowPosition["mouse"]
-
+      
       radio1 <- gtkRadioButtonNewWithLabel(label="nominal")
       radio2 <- gtkRadioButtonNewWithLabelFromWidget(group=radio1, label="ordinal")
       radio3 <- gtkRadioButtonNewWithLabelFromWidget(radio1, label="interval")
@@ -454,18 +453,27 @@ setRefClass("RzVariableView",
       radio4$setImage(image)
       image$show()
       if(msr=="nominal"){
+        radio1$setCanDefault(TRUE)
+        dialog$setDefault(radio1)
         radio1$setActive(TRUE)
       } else if(msr=="ordinal"){
+        radio2$setCanDefault(TRUE)
+        dialog$setDefault(radio2)
         radio2$setActive(TRUE)
       } else if(msr=="interval"){
+        radio3$setCanDefault(TRUE)
+        dialog$setDefault(radio3)
         radio3$setActive(TRUE)
       } else if(msr=="ratio"){
+        radio4$setCanDefault(TRUE)
+        dialog$setDefault(radio4)
         radio4$setActive(TRUE)
       }
       radio1["draw-indicator"] <- FALSE
       radio2["draw-indicator"] <- FALSE
       radio3["draw-indicator"] <- FALSE
       radio4["draw-indicator"] <- FALSE
+            
       onToggled <- function(button){
         if(button$getActive()){
           dialog$hide()
@@ -481,21 +489,22 @@ setRefClass("RzVariableView",
             summaries.subset[row] <<- data$getSummary(row, subset=TRUE)
         }
       }
-      gSignalConnect(radio1, "toggled", onToggled)
-      gSignalConnect(radio2, "toggled", onToggled)
-      gSignalConnect(radio3, "toggled", onToggled)
-      gSignalConnect(radio4, "toggled", onToggled)
-      
-      dialog[["vbox"]]$setSpacing(2)
-      dialog[["vbox"]]$packStart(radio1, expand=FALSE)
-      dialog[["vbox"]]$packStart(radio2, expand=FALSE)
-      dialog[["vbox"]]$packStart(radio3, expand=FALSE)
-      dialog[["vbox"]]$packStart(radio4, expand=FALSE)
-      
-      dialog$show()
-      dialog$getActionArea()$getChildren()[[1]]$grabFocus()
-      dialog$run()
-      dialog$hide()
+      gSignalConnect(radio1, "clicked", onToggled)
+      gSignalConnect(radio2, "clicked", onToggled)
+      gSignalConnect(radio3, "clicked", onToggled)
+      gSignalConnect(radio4, "clicked", onToggled)
+            
+      vbox <- gtkVBoxNew(spacing=2)
+      vbox$packStart(radio1, expand=FALSE)
+      vbox$packStart(radio2, expand=FALSE)
+      vbox$packStart(radio3, expand=FALSE)
+      vbox$packStart(radio4, expand=FALSE)
+      frame <- gtkFrameNew()
+      frame$setShadowType(GtkShadowType["out"])
+      frame$add(vbox)
+      dialog$add(frame)
+      dialog$showAll()
+            
     },
     
     onCellEditedMissing = function(renderer, path, new.text){
