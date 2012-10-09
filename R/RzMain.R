@@ -11,24 +11,10 @@ setRefClass("RzMain",
       settings <- gtkSettingsGetDefault()
       settings$setStringProperty("gtk-font-name", rzSettings$getGlobalFont(), NULL)
       gtkRcReparseAll()
-      rzDataSetIO   <<- new("RzDataSetIO")
-      recode.id     <<- NULL
-      win           <<- gtkWindowNew(show=FALSE)
+      rzDataSetIO    <<- new("RzDataSetIO")
+      recode.id      <<- NULL
+      win            <<- gtkWindowNew(show=FALSE)
       rzTools$setWindow(win)
-      main.hpaned   <<- gtkHPanedNew()
-      main.vpaned   <<- gtkVPanedNew()
-      main.view     <<- gtkVBoxNew()
-      plot.view     <<- gtkVPanedNew()
-      rzAnalysisView <<- new("RzAnalysisView")
-      
-      main.vpaned$pack1(main.view, resize=TRUE)
-      main.vpaned$pack2(rzAnalysisView$getMain(), resize=TRUE)
-      main.vpaned$setPosition(300)
-      
-      main.hpaned$pack1(main.vpaned, resize=TRUE)
-      main.hpaned$pack2(plot.view, resize=TRUE)
-      main.hpaned$setPosition(450)
-      
       info.bar      <<- gtkInfoBarRzNew()
       message.label <<- gtkLabelNew()
       info.bar$addButton("gtk-ok", GtkResponseType["ok"])
@@ -36,32 +22,30 @@ setRefClass("RzMain",
       info.bar$getContentArea()$packStart(message.label, expand=FALSE, fill=FALSE)
       info.bar$hide()
       info.bar$setNoShowAll(TRUE)
+      # must before new("Rzplot")
       rzTools$setInfoBar(info.bar)
       status.bar    <<- gtkStatusbarNew()
       progress.bar  <<- gtkProgressBarNew()
       
+      main.hpaned    <<- gtkHPanedNew()
+      main.vpaned    <<- gtkVPanedNew()
+      main.view      <<- gtkVBoxNew()
+      rzAnalysisView <<- new("RzAnalysisView")
+      rzPlot         <<- new("RzPlot")
+      
+      main.vpaned$pack1(main.view, resize=TRUE)
+      main.vpaned$pack2(rzAnalysisView$getMain(), resize=TRUE)
+      main.vpaned$setPosition(280)
+      
+      main.hpaned$pack1(main.vpaned, resize=TRUE)
+      main.hpaned$pack2(rzPlot$getMain(), resize=TRUE)
+      main.hpaned$setPosition(450)
+            
       status.bar$packEnd(progress.bar, expand=FALSE)
       
       rzSearchEntry <<- new("RzSearchEntry")
       variable.view <<- NULL
       variable.view.list <<- list()
-      
-      rzPlot <<- new("RzPlot")
-      plot.view$pack2(rzPlot$getMain(), resize=FALSE)
-      if(rzSettings$getUseEmbededDevice()){
-        if(require(cairoDevice)) {
-          plot.area <- gtkDrawingArea()
-          plot.view$pack1(plot.area, resize=TRUE)
-          plot.view$setPosition(300)
-          asCairoDevice(plot.area)
-          rzSettings$setEmbededDeviceOn(TRUE)
-        } else {
-          cat("cairoDevice package isn't installed", fill=TRUE)
-          rzSettings$setEmbededDeviceOn(FALSE)          
-        }
-      } else {
-        rzSettings$setEmbededDeviceOn(FALSE)
-      }
       
       win["title"] <<- "Rz"
       win$setDefaultSize(800, 700)
@@ -117,8 +101,9 @@ setRefClass("RzMain",
       rzMenu$getTool.bar()$showAll()
       win$add(vbox)
       win$show()
-      if(!rzSettings$getPlotViewEnabled()) { plot.view$hide() }
       if(!rzSettings$getAnalysisViewEnabled()) { rzAnalysisView$getMain()$hide() }
+      if(!rzSettings$getPlotViewEnabled()) rzPlot$getMain()$hide()
+      else                                 rzPlot$construct()
       
       gSignalConnect(win, "destroy", function(...){
         rzTools$clean()
@@ -160,27 +145,32 @@ setRefClass("RzMain",
     },
     
     onPlotViewToggled = function(action){
+      if (!rzPlot$getConstructed()) {
+        rzPlot$construct()
+      }
+      view <- rzPlot$getMain()
+      parent <- view$getParent()
       if(action$getActive()) {
-        plot.view$show()
+        if(class(parent)[1] == "GtkWindow") parent$show()    # if detached
+        view$showAll()
         rzSettings$setPlotViewEnabled(TRUE)
       } else {
-        plot.view$hide()
+        if(class(parent)[1] == "GtkWindow") parent$hide()    # if detached
+        view$hide()
         rzSettings$setPlotViewEnabled(FALSE)
       }
     },
     
     onAnalysisViewToggled = function(action){
+      view <- rzAnalysisView$getMain()
+      parent <- view$getParent()
       if(action$getActive()) {
-        view <- rzAnalysisView$getMain()
-        parent <- view$getParent()
         if(class(parent)[1] == "GtkWindow") parent$show()    # if detached
         view$showAll()
         rzAnalysisView$toggled()
         rzSettings$setAnalysisViewEnabled(TRUE)
         if(!is.null(variable.view)) variable.view$selectMode(TRUE)
       } else {
-        view <- rzAnalysisView$getMain()
-        parent <- view$getParent()
         if(class(parent)[1] == "GtkWindow") parent$hide()    # if detached
         view$hide()
         rzSettings$setAnalysisViewEnabled(FALSE)

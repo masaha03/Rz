@@ -161,3 +161,30 @@ buildPlotOptionPage <- function(widget){
   main$getChild()$setShadowType(GtkShadowType["none"])
   return(main)
 }
+
+
+
+calc.hist.breaks <- function(breaks, x){
+  suppressWarnings(binwidth <- as.numeric(breaks))
+  if(breaks[1]=="based on Sturges"){
+    breaks <- nclass.Sturges(x)
+  } else if (breaks[1]=="based on Freedman-Diaconis"){
+    breaks <- nclass.FD(x)
+  } else if (breaks[1]=="based on Scott"){
+    breaks <- nclass.scott(x)
+  } else {
+    breaks <- NA
+  }
+  
+  if(all((!is.na(breaks)))) {
+    breaks <- pretty(range(as.numeric(x), na.rm=TRUE), n = breaks, min.n = 1)
+  }
+  
+  if (all(!is.na(binwidth))) {
+    return(sprintf("binwidth=%s", deparse(binwidth)))
+  } else if (all(!is.na(breaks))) {
+    breaks <- deparse(breaks)
+    breaks <- paste(breaks, collapse="")
+    return(sprintf("breaks=%s", breaks))
+  }
+}

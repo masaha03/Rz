@@ -61,7 +61,7 @@ setRefClass("RzPlotSave",
       
     },
     
-    onSave = function(response.id, p.current, theme_Rz, legend.position, legend.linetype, legend.justification){
+    onSave = function(response.id, p.current, data){
       if (response.id == GtkResponseType["accept"]) {
         dialog$hide()
         
@@ -97,34 +97,13 @@ setRefClass("RzPlotSave",
         height <- ifelse(is.na(height), par("din")[2], height / 2.54)
         
         if(filetype==file.types[["eps"]]){
-          p <- p.current + theme_Rz() + opts(legend.position=legend.position,
-                                             legend.background = theme_rect(fill="white", linetype=legend.linetype),
-                                             legend.justification = legend.justification)
-          ggsave(filename=filename, plot=p, width=width, height=height,
-                 family=rzSettings$getPsFont())
+          ggsave(filename=filename, plot=p.current, width=width, height=height,
+                 family=rzSettings$getPsFont(), units="cm")
         } else if(filetype==file.types[["pdf"]]){
-          p <- p.current + theme_Rz() + opts(legend.position=legend.position,
-                                             legend.background = theme_rect(fill="white", linetype=legend.linetype),
-                                             legend.justification = legend.justification)
-          
-          ggsave(filename=filename, plot=p, width=width, height=height,
-                 family=rzSettings$getPdfFont())
+          ggsave(filename=filename, plot=p.current, width=width, height=height,
+                 family=rzSettings$getPdfFont(), units="cm")
         } else {
-          p <- p.current
-          if(grepl("mingw", R.Version()$os)){
-            windowsFonts(F = windowsFont(rzSettings$getPlotFontFamily()))
-            p <- p + theme_Rz(base_family="F") + opts(legend.position=legend.position,
-                                                      legend.background = theme_rect(fill="white", linetype=legend.linetype),
-                                                      legend.justification= legend.justification)
-          } else if(grepl("darwin", R.Version()$os)){
-            X11Fonts(F=X11Font(sprintf("-*-%s-*-*-*-*-*-*-*-*-*-*-*-*", rzSettings$getPlotFontFamily())))
-            quartzFonts(F = quartzFont(rep(rzSettings$getPlotFontFamily(), 4)))
-            p <- p + theme_Rz(base_family="F") + opts(legend.position=legend.position,
-                                                      legend.background = theme_rect(fill="white", linetype=legend.linetype),
-                                                      legend.justification = legend.justification)
-          }
-          
-          ggsave(filename=filename, plot=p, width=width, height=height)
+          ggsave(filename=filename, plot=p.current, width=width, height=height, units="cm")
         }
       } else {
         dialog$hide()

@@ -1,11 +1,12 @@
 rzplot.misc <- 
 setRefClass("RzPlotMisc",
-  fields = c("main", "combo.theme",
+  fields = c("main", "combo.theme", "rzPlotScript",
              "flip.togglebutton",
              "na.rm.togglebutton",
              "combo.scalex", "combo.scaley",
              "combo.coordx", "combo.coordy",
-             "entry.xlim", "entry.ylim"),
+             "entry.xlim", "entry.ylim", "entry.fontsize",
+             "title.entry", "xlab.combo", "ylab.combo"),
   methods = list(
     initialize  = function(...) {
       initFields(...)
@@ -52,15 +53,36 @@ setRefClass("RzPlotMisc",
       #remove NA
       na.rm.togglebutton <<- gtkToggleButtonNewWithLabel(gettext("remove NA"))
       na.rm.togglebutton$setActive(TRUE)
+      na.rm.togglebutton$hide()
       
       #theme
-      label.theme <- gtkLabelNew("theme")
+      label.theme <-  gtkLabelNew("theme")
       combo.theme <<- gtkComboBoxNewText()
       themes <- c("grey", "bw")
       for(i in themes) combo.theme$appendText(i)
       combo.theme$setActive(0)
       
+      label.fontsize   <-  gtkLabelNew(gettext("base font size"))
+      entry.fontsize   <<- gtkEntryNew()
+      entry.fontsize$setText("12")
       
+      # label options
+      title.label <- gtkLabelNew(gettext("title"))
+      title.entry <<- gtkEntryNew()
+      
+      xlab.label <- gtkLabelNew(gettext("x axis"))
+      xlab.combo <<- gtkComboBoxEntryNewText()
+      xlab.combo$show()
+      labels <- c(gettext("variable label"), gettext("variable name"), gettext("(free text)"))
+      for(i in labels) xlab.combo$appendText(i)
+      xlab.combo$setActive(0)
+      
+      ylab.label <- gtkLabelNew(gettext("y axis"))
+      ylab.combo <<- gtkComboBoxEntryNewText()
+      ylab.combo$show()
+      for(i in labels) ylab.combo$appendText(i)
+      ylab.combo$setActive(0)
+            
       table <- gtkTableNew(6, 5, FALSE)
       table["border-width"] <- 5
       table$attach        (label.scale       , 0, 1, 0, 1, "shrink", "shrink", 0, 0)
@@ -80,14 +102,37 @@ setRefClass("RzPlotMisc",
       table$attachDefaults(entry.ylim        , 4, 5, 2, 3)
       table$attachDefaults(flip.togglebutton , 0, 5, 3, 4)
       table$attachDefaults(na.rm.togglebutton, 0, 5, 4, 5)
-      table$attach        (label.theme       , 0, 1, 5, 6, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.theme       , 1, 5, 5, 6)
+      table$attach        (label.theme       , 0, 2, 5, 6, "shrink", "shrink", 0, 0)
+      table$attachDefaults(combo.theme       , 2, 5, 5, 6)
+      table$attach        (label.fontsize    , 0, 2, 6, 7, "shrink", "shrink", 0, 0)
+      table$attachDefaults(entry.fontsize    , 2, 5, 6, 7)
+      table$attach        (title.label       , 0, 2, 8, 9, "shrink", "shrink", 0, 0)
+      table$attachDefaults(title.entry       , 2, 5, 8, 9)
+      table$attach        (xlab.label        , 0, 2, 9,10, "shrink", "shrink", 0, 0)
+      table$attachDefaults(xlab.combo        , 2, 5, 9,10)
+      table$attach        (ylab.label        , 0, 2,10,11, "shrink", "shrink", 0, 0)
+      table$attachDefaults(ylab.combo        , 2, 5,10,11)
       
       table$setColSpacings(5)
       table$setRowSpacings(2)
             
       main <<- buildPlotOptionPage(table)
-            
+      
+      .self$generateScript()
+      
+      gSignalConnect(combo.scalex, "changed", .self$generateScript)
+      gSignalConnect(combo.scaley, "changed", .self$generateScript)
+      gSignalConnect(combo.coordx, "changed", .self$generateScript)
+      gSignalConnect(combo.coordy, "changed", .self$generateScript)
+      gSignalConnect(entry.xlim  , "changed", .self$generateScript)
+      gSignalConnect(entry.ylim  , "changed", .self$generateScript)
+      gSignalConnect(flip.togglebutton , "toggled", .self$generateScript)
+      gSignalConnect(na.rm.togglebutton, "toggled", .self$generateScript)
+      gSignalConnect(combo.theme , "changed", .self$generateScript)
+      gSignalConnect(entry.fontsize, "changed", .self$generateScript)
+      gSignalConnect(title.entry, "changed", .self$generateScript)
+      gSignalConnect(xlab.combo , "changed", .self$generateScript)
+      gSignalConnect(ylab.combo , "changed", .self$generateScript)
     },
     
     clear = function(){
@@ -100,9 +145,13 @@ setRefClass("RzPlotMisc",
       flip.togglebutton$setActive(FALSE)
       na.rm.togglebutton$setActive(TRUE)
       combo.theme$setActive(0)
+      entry.fontsize$setText("12")
+      title.entry$setText("")
+      xlab.combo$setActive(0)
+      ylab.combo$setActive(0)
     },
     
-    getArgs = function(){
+    generateScript = function(...){
       scalex <- localize(combo.scalex$getActiveText())
       scaley <- localize(combo.scaley$getActiveText())
       coordx <- localize(combo.coordx$getActiveText())
@@ -113,21 +162,49 @@ setRefClass("RzPlotMisc",
       ylim   <- strsplit(ylim, ",")[[1]]
       xlim   <- suppressWarnings(as.numeric(xlim))
       ylim   <- suppressWarnings(as.numeric(ylim))
-      if(any(is.na(xlim)) | length(xlim)==0) xlim <- NULL
-      if(any(is.na(ylim)) | length(ylim)==0) ylim <- NULL
+      
+      if (coordx == "identity") coordx <- NULL
+      if (coordy == "identity") coordy <- NULL
+            
+      if (any(is.na(xlim)) | length(xlim)==0) xlim <- NULL
+      if (any(is.na(ylim)) | length(ylim)==0) ylim <- NULL
+      
       flip   <- flip.togglebutton$getActive()
       na.rm  <- na.rm.togglebutton$getActive()
-      theme  <- combo.theme$getActiveText()
-      args <- list(scalex = scalex,
-                   scaley = scaley,
-                   coordx = coordx,
-                   coordy = coordy,
-                   xlim   = xlim,
-                   ylim   = ylim,
-                   flip   = flip,
-                   na.rm  = na.rm,
-                   theme  = theme)
-      return(args)
+
+      theme    <- combo.theme$getActiveText()
+      fontsize <- localize(entry.fontsize$getText())
+      fontsize <- suppressWarnings(as.numeric(fontsize))
+      if (any(is.na(fontsize)) | length(fontsize)==0) fontsize <- 12
+      
+      if (scalex != "default") rzPlotScript$setScript(layer="scale_x", type=scalex)
+      else                     rzPlotScript$setScript("scale_x")
+
+      if (scaley != "default") rzPlotScript$setScript("scale_y", type=scaley)
+      else                     rzPlotScript$setScript("scale_y")
+      
+      if (!is.null(coordx) || !is.null(coordy)) {
+        rzPlotScript$setScript("coord", type="trans",
+                               args=list(xtrans=deparse(coordx), ytrans=deparse(coordy), limx=deparse(xlim), limy=deparse(ylim)))
+        if (flip) rzPlotScript$setScript("coord", type="flip", add=TRUE)
+        
+      } else if (!is.null(xlim) || !is.null(ylim)) {
+        rzPlotScript$setScript("coord", type="cartesian", args=list(xlim=deparse(xlim), deparse(ylim=ylim)))
+        if (flip) rzPlotScript$setScript("coord", type="flip", add=TRUE)
+        
+      } else if (flip) {
+        rzPlotScript$setScript("coord", type="flip")
+        
+      } else {
+        rzPlotScript$setScript("coord")
+      }
+      
+      rzPlotScript$setBaseTheme(c(theme, fontsize))
+
+      title <- localize(title.entry$getText())
+      xlab  <- localize(xlab.combo$getActiveText())
+      ylab  <- localize(ylab.combo$getActiveText())
+      rzPlotScript$setLabs(c("title", "x", "y"), c(title, xlab, ylab))
     }
   )
 )

@@ -1,4 +1,5 @@
-0.6-0
+0.7-0
+Plot function is almost completely rewritten.
 Both of data.set and data.frame are now synced. Name of data.set is
 "(name of data.frame).ds" (ex. "dataset1.ds").
 Reload function is now always enabled and reloads data from data.set object.

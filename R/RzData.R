@@ -181,6 +181,10 @@ setRefClass("RzData",
                        sapply(sapply(vnchar, function(x) rep(" ", x)), paste, collapse=""),
                        val, sep="", collapse="\n")
       return(summary)
+    },
+    
+    getDataSetName = function(){
+      return(data.set.name)
     }
   )
 )

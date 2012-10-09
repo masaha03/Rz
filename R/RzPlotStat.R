@@ -1,6 +1,6 @@
 rzplot.stat <- 
 setRefClass("RzPlotStat",
-  fields = c("main", "button",
+  fields = c("main", "button", "rzPlotScript",
              "combo", "combo.method", "combo.geom", "combo.geom2",
              "combo.fun", "combo.color", "entry.size"),
   methods = list(
@@ -40,7 +40,7 @@ setRefClass("RzPlotStat",
       entry.size <<- gtkEntryNew()
       entry.size$setText("0.5")
       
-      label.geom2 <- gtkLabelNew("geom (additional)")
+      label.geom2 <- gtkLabelNew("geom2")
       combo.geom2 <<- gtkComboBoxNewText()
       geoms2 <- c("point", "line", "bar", "none")
       for(i in geoms2) combo.geom2$appendText(i)
@@ -73,9 +73,15 @@ setRefClass("RzPlotStat",
       table$setRowSpacings(2)
             
       main <<- buildPlotOptionPage(table)
+      
+      gSignalConnect(combo.method, "changed", .self$generateScript)
+      gSignalConnect(combo.geom  , "changed", .self$generateScript)
+      gSignalConnect(combo.color , "changed", .self$generateScript)
+      gSignalConnect(entry.size  , "changed", .self$generateScript)
+      gSignalConnect(combo.geom2 , "changed", .self$generateScript)
+      gSignalConnect(combo.fun   , "changed", .self$generateScript)
             
       gSignalConnect(combo, "changed", function(combo){
-        
         stat <- localize(combo$getActiveText())
         
         label.geom$hide()
@@ -106,6 +112,8 @@ setRefClass("RzPlotStat",
           label.method$showAll()
           combo.method$showAll()
         }
+        
+        .self$generateScript()
       })
       combo$setActive(0)
     },
@@ -120,23 +128,42 @@ setRefClass("RzPlotStat",
       entry.size$setText("0.5")
     },
     
-    getArgs = function(){
+    generateScript = function(...){
       stat   <- localize(combo$getActiveText())
       method <- localize(combo.method$getActiveText())
       geom   <- localize(combo.geom$getActiveText())
       color  <- localize(combo.color$getActiveText())
-      size   <- as.numeric(localize(entry.size$getText()))
+      size   <- suppressWarnings(as.numeric(localize(entry.size$getText())))
       geom2  <- localize(combo.geom2$getActiveText())
       fun    <- localize(combo.fun$getActiveText())
+      fun.y  <- ifelse(fun=="median_hilow","median", "mean")
+      if(is.na(size)) size <- NULL
       if(any(color==c("", "default"))) color <- NULL
-      args   <- list(stat=stat,
-                     method=method,
-                     geom=geom,
-                     color=color,
-                     size=size,
-                     geom2=geom2,
-                     fun=fun)
-      return(args)
+      
+
+      if (stat == "smooth") {
+        if (method=="auto") {
+          rzPlotScript$setScript(layer="stat", type="smooth")
+        } else {
+          rzPlotScript$setScript(layer="stat", type="smooth", args=list(method=deparse(method)))
+        } 
+      } else if (stat == "quantile") {
+        rzPlotScript$setScript(layer="stat", type="quantile")
+      } else if (stat == "sum") {
+        rzPlotScript$setScript(layer="stat", type="sum")
+      } else if (stat == "summary") {
+        if (geom2=="none") {
+          rzPlotScript$setScript(layer="stat", type="summary",
+                                 args=list(fun.data=deparse(fun), geom=deparse(geom), size=deparse(size), color=deparse(color)))
+        } else {
+          rzPlotScript$setScript(layer="stat", type="summary",
+                                 args=list(fun.data=deparse(fun), geom=deparse(geom), size=deparse(size), color=deparse(color)))
+          rzPlotScript$setScript(layer="stat", type="summary",
+                                 args=list(fun.y=deparse(fun.y) , geom=deparse(geom), size=deparse(size), color=deparse(color)), add=TRUE)
+        }
+      } else {
+        rzPlotScript$setScript(layer="stat")
+      }
     }
   )
 )

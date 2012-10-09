@@ -44,7 +44,8 @@ setRefClass("RzCompletionCombo",
     
     clear = function(){
       entry <- combo$getChild()
-      entry$setText("")      
+      entry$setText("")
+      entry$setText("")
     },
     
     getActiveText = function(){
