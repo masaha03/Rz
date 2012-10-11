@@ -8,6 +8,7 @@ setRefClass("RzSettings",
     load = function(){
       path <<- "~/.Rz"
       RzPath <<- system.file(package = "Rz")
+      embededDeviceOn <<- NULL
       
       # Does a setting file exits?
       if(file.exists(path)) {

@@ -107,7 +107,7 @@ setRefClass("RzMain",
       
       gSignalConnect(win, "destroy", function(...){
         rzTools$clean()
-        if(rzSettings$getEmbededDeviceOn()){
+        if(!is.null(rzSettings$getEmbededDeviceOn()) && rzSettings$getEmbededDeviceOn()){
           try(dev.off(), silent=TRUE)
         }
       })
