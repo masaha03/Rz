@@ -97,9 +97,11 @@ setRefClass("RzPlotSave",
         height <- ifelse(is.na(height), par("din")[2], height / 2.54)
         
         if(filetype==file.types[["eps"]]){
+          p.current <- p.current + theme(text=element_text(family=""))
           ggsave(filename=filename, plot=p.current, width=width, height=height,
                  family=rzSettings$getPsFont(), units="cm")
         } else if(filetype==file.types[["pdf"]]){
+          p.current <- p.current + theme(text=element_text(family=""))
           ggsave(filename=filename, plot=p.current, width=width, height=height,
                  family=rzSettings$getPdfFont(), units="cm")
         } else {
