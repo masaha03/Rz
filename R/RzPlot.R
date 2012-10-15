@@ -1,7 +1,7 @@
 rzplot <- 
 setRefClass("RzPlot",
   fields = c("info.bar", "main", "notebook", "data", "model", "constructed",
-             "geom", "stat", "stratum", "misc", "save",
+             "geom", "stratum", "misc", "save",
              "button.prev", "button.next",
              "p.current", "p.list", "p.current.num", "parent", "parent.win", "rzPlotScript"),
   methods = list(
@@ -125,7 +125,6 @@ setRefClass("RzPlot",
       
       gSignalConnect(button.clear, "clicked", function(button){
         geom$clear()
-        stat$clear()
         stratum$clear()
         misc$clear()
       })
@@ -153,7 +152,6 @@ setRefClass("RzPlot",
       main$hide()
       
       geom     <<- new("RzPlotGeom", rzPlotScript=rzPlotScript)
-      stat     <<- new("RzPlotStat", rzPlotScript=rzPlotScript)
       stratum  <<- new("RzPlotStratum", rzPlotScript=rzPlotScript)
       misc     <<- new("RzPlotMisc", rzPlotScript=rzPlotScript)
       save     <<- new("RzPlotSave")
@@ -163,11 +161,10 @@ setRefClass("RzPlot",
       
       # container
       notebook$foreach(gtkWidgetDestroy)
-      notebook$appendPage(geom$getMain(), tab.label=gtkLabelNew(gettext("geom")))
-      notebook$appendPage(stat$getMain(), tab.label=gtkLabelNew(gettext("stat")))
-      notebook$appendPage(stratum$getMain(), tab.label=gtkLabelNew(gettext("stratum")))
-      notebook$appendPage(misc$getMain(), tab.label=gtkLabelNew(gettext("misc")))
-      notebook$appendPage(save$getMain(), tab.label=gtkLabelNew(gettext("save")))
+      notebook$appendPage(geom$getMain(), tab.label=gtkLabelNew(gettext("Main")))
+      notebook$appendPage(stratum$getMain(), tab.label=gtkLabelNew(gettext("Stratum")))
+      notebook$appendPage(misc$getMain(), tab.label=gtkLabelNew(gettext("Misc")))
+      notebook$appendPage(save$getMain(), tab.label=gtkLabelNew(gettext("Save")))
             
       if(rzSettings$getUseEmbededDevice()){
         if(require(cairoDevice)) {
