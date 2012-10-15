@@ -213,7 +213,7 @@ setRefClass("RzPlotStratum",
       })
       
       
-      table  <- gtkTableNew(10, 3, FALSE)
+      table  <- gtkTableNew(homogeneous=FALSE)
       table["border-width"] <- 5
       table$attach        (label.group           , 0, 1, 0,  1, "shrink", "shrink", 0, 0)
       table$attach        (combo.group$getCombo(), 1, 2,  0,  1, "shrink", "shrink", 0, 0)
@@ -290,6 +290,8 @@ setRefClass("RzPlotStratum",
       gSignalConnect(combo.y$getCombo(), "changed", .self$generateScript)
       gSignalConnect(combo2            , "changed", .self$generateScript)
       
+      .self$generateScript()
+      
     },
     
     clear = function(){
@@ -324,6 +326,8 @@ setRefClass("RzPlotStratum",
       combo.shape$setModel(model)
       combo.size$setModel(model)
       combo.line$setModel(model)
+      combo.x$setModel(model)
+      combo.y$setModel(model)
     },
         
     generateScript = function(...){
@@ -347,7 +351,9 @@ setRefClass("RzPlotStratum",
       legend.linetype <- localize(combo.linetype$getActiveText())
       vals <- c(group, fill, colour, shape, size, line)
       labs <- c(group.label, fill.label, colour.label, shape.label, size.label, line.label)
-      labs <- ifelse(nzchar(vals), labs, "")
+      aes  <- c("group", "fill", "colour", "shape", "size", "linetype")
+      names(vals) <- aes
+      names(labs) <- aes
       if(legend.position=="specify"){
         vec <- localize(position.entry$getText())
         vec <- strsplit(vec, ",")[[1]]
@@ -369,27 +375,37 @@ setRefClass("RzPlotStratum",
         legend.linetype <- sprintf('element_rect(fill="white", linetype="%s")', legend.linetype)
       }
       
-      rzPlotScript$setAes(c("group", "fill", "colour", "shape", "size", "linetype") , vals)
-      rzPlotScript$setLabs(c("group", "fill", "colour", "shape", "size", "linetype"), labs)
+      rzPlotScript$setAes(aes, vals)
+      
+      labs <- labs[nzchar(vals)]
+      labs.tmp <- data.frame(1:2, row.names=c("vars", "labels"))
+      labs.tmp[[1]] <- NULL
+      labs.tmp[aes] <- ""
+      labs <- as.data.frame(rbind(vars=vals[nzchar(vals)], labels=labs), stringsAsFactors=FALSE)
+      labs.tmp[names(labs)] <- labs
+      rzPlotScript$setLabs(labs.tmp)
       
       if(nzchar(fill)) {
-        scale_fill <- switch(scale,
-                             hue="",
-                             grey="scale_fill_grey()",
-                             sprintf("scale_fill_brewer(palette=%s)", scale))
-        rzPlotScript$setScript("scale_fill", scale_fill)
+        if ( scale=="hue" | scale=="grey" ) {
+          rzPlotScript$setScript("scale_fill", type=scale)
+        } else {
+          rzPlotScript$setScript("scale_fill", type="brewer", args=list(palette=deparse(scale)))
+        }
       } else {
-        rzPlotScript$setScript("scale_fill", "")        
+        rzPlotScript$clearScript("scale_fill")
       }
+
       if(nzchar(colour)) {
-        scale_colour <- switch(scale,
-                               hue="",
-                               grey="scale_colour_grey()",
-                               sprintf("scale_colour_brewer(palette=%s)", scale))
-        rzPlotScript$setScript("scale_colour", scale_colour)
+        if ( scale=="hue" | scale=="grey" ) {
+          rzPlotScript$setScript("scale_colour", type=scale)
+        } else {
+          rzPlotScript$setScript("scale_colour", type="brewer", args=list(palette=deparse(scale)))
+        }
       } else {
-        rzPlotScript$setScript("scale_colour", "")        
+        rzPlotScript$clearScript("scale_colour")
       }
+      
+      
       rzPlotScript$setTheme("legend.position"  , legend.position)
       rzPlotScript$setTheme("legend.background", legend.linetype)
       
@@ -399,7 +415,6 @@ setRefClass("RzPlotStratum",
       y      <- localize(combo.y$getActiveText())
       scale  <- localize(combo2$getActiveText())
       if (scale=="fixed") scale <- NULL
-      else scale <- sprintf('scale="%s"', scale)
       
       on     <- FALSE
       if(x!="" || y!=""){
@@ -431,7 +446,7 @@ setRefClass("RzPlotStratum",
                                  args=list(deparse(formula), nrow=deparse(nrow), ncol=deparse(ncol), scale=deparse(scale)))
         }
       } else {
-        rzPlotScript$setScript("facet")        
+        rzPlotScript$clearScript("facet")        
       }
     }
 

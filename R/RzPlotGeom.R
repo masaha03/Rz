@@ -1,119 +1,240 @@
 rzplot.geom <- 
 setRefClass("RzPlotGeom",
-  fields = c("main", "button", "rzPlotScript",
-             "combo", "combo.theme",
-             "hist.label1", "hist.combo1",
-             "combo.x", "combo.y",
-             "combo.position", "entry.width", "entry.height"),
+  fields = c("main", "rzPlotScript",
+             "combo.geom", "combo.stat", "options", "options.obj", "labels",
+             "combo.x", "combo.y", "xlab.combo", "ylab.combo", "title.entry", "model"),
   methods = list(
     initialize  = function(...) {
       initFields(...)
+      model <<- NULL
+      options <<- list()
+      options.obj <<- list()
+      labels <<- list()
+      labels[["geom"]] <<- data.frame(1:2, row.names=c("vars", "labels"), stringsAsFactors=FALSE)
+      labels[["geom"]][[1]] <<- NULL
+      labels[["stat"]] <<- data.frame(1:2, row.names=c("vars", "labels"), stringsAsFactors=FALSE)
+      labels[["stat"]][[1]] <<- NULL
       
-      # x
-      label.x <- gtkLabelNew(show=TRUE)
-      label.x$setText(gettext("x"))
-      combo.x <<- new("RzCompletionCombo")
+      # variables
+      label.x <- gtkLabelNew(gettext("x"))
+      combo.x <<- new("RzCompletionCombo", width=40)      
+      xlab.combo <<- gtkComboBoxEntryNewText()
+      xlab.combo["width-request"] <<- 1
+      xlab.combo$show()
+      labs <- c(gettext("variable label"), gettext("variable name"), gettext("(free text)"))
+      for(i in labs) xlab.combo$appendText(i)
+      xlab.combo$setActive(0)
       
-      # y
-      label.y <- gtkLabelNew(show=TRUE)
-      label.y$setText(gettext("y"))
-      combo.y <<- new("RzCompletionCombo")
+      label.y <- gtkLabelNew(gettext("y"))
+      combo.y <<- new("RzCompletionCombo", width=40)
+      ylab.combo <<- gtkComboBoxEntryNewText()
+      ylab.combo["width-request"] <<- 1
+      ylab.combo$show()
+      for(i in labs) ylab.combo$appendText(i)
+      ylab.combo$setActive(0)
+      
+      title.label <-  gtkLabelNew(gettext("title"))
+      title.entry <<- gtkEntryNew()
+      
+      frame.var <- gtkFrameNew()
+      frame.var$setShadowType(GtkShadowType["etched-in"])
+      table.var <- gtkTableNew(homogeneous=FALSE)
+      table.var["border-width"] <- 5
+      table.var$attach(label.x           , 0, 1, 0, 1, "shrink", "shrink", 5)
+      table.var$attach(combo.x$getCombo(), 1, 2, 0, 1, 5       , "shrink")
+      table.var$attach(xlab.combo        , 2, 3, 0, 1, 5       , "shrink")
+      table.var$attach(label.y           , 0, 1, 1, 2, "shrink", "shrink", 5)
+      table.var$attach(combo.y$getCombo(), 1, 2, 1, 2, 5       , "shrink")
+      table.var$attach(ylab.combo        , 2, 3, 1, 2, 5       , "shrink")
+      table.var$attach(title.label       , 0, 1, 2, 3, "shrink", "shrink", 5)
+      table.var$attach(title.entry       , 1, 3, 2, 3, 5       , "shrink")
+      table.var$setColSpacings(5)
+      table.var$setRowSpacings(2)
+      frame.var$add(table.var)
       
       # geom
-      label <- gtkLabelNew("geom")
-      combo <<- gtkComboBoxNewText()
+      label.geom <- gtkLabelNew("geom")
+      combo.geom <<- gtkComboBoxNewText()
+      combo.geom["width-request"] <<- 1
       geoms <- c("none", "bar", "freqpoly", "histogram", "density", "boxplot", "violin",
                  "line", "area", "point", "jitter", "dotplot", "rug", "smooth", "quantile", "blank")
-      for(i in geoms) combo$appendText(i)
-      combo$setActive(0)
+      for(i in geoms) combo.geom$appendText(i)
+      combo.geom$setActive(0)
+      
+      button.geom.options <- gtkButtonNewWithLabel(gettext("Options"))
+
+      image  <- gtkImageNewFromStock(GTK_STOCK_ADD, GtkIconSize["menu"])
+      button.geom.stack <- gtkButtonNew()
+      button.geom.stack["tooltip-text"] <- gettext("Stack Layer")
+      button.geom.stack$setFocusOnClick(FALSE)
+      button.geom.stack$setImage(image)
+      button.geom.stack$setRelief(GtkReliefStyle["none"])
+      
+      image   <- gtkImageNewFromStock(GTK_STOCK_REMOVE, GtkIconSize["menu"])
+      button.geom.remove <- gtkButtonNew()
+      button.geom.remove["tooltip-text"] <- gettext("Remove Layer")
+      button.geom.remove$setFocusOnClick(FALSE)
+      button.geom.remove$setImage(image)
+      button.geom.remove$setRelief(GtkReliefStyle["none"])
+            
+      # stat
+      label.stat <- gtkLabelNew("stat")
+      combo.stat <<- gtkComboBoxNewText()
+      combo.stat["width-request"] <<- 1
+      stats <- c("none", "sum", "summary", "qq")
+      for(i in stats) combo.stat$appendText(i)
+      combo.stat$setActive(0)
+      
+      button.stat.options <- gtkButtonNewWithLabel(gettext("Options"))
       
       image  <- gtkImageNewFromStock(GTK_STOCK_ADD, GtkIconSize["menu"])
-      button <<- gtkButtonNew()
-      button["tooltip-text"] <<- gettext("Add Layer and Redraw")
-      button$setFocusOnClick(FALSE)
-      button$setImage(image)
-      button$setRelief(GtkReliefStyle["none"])
+      button.stat.stack <- gtkButtonNew()
+      button.stat.stack["tooltip-text"] <- gettext("Stack Layer")
+      button.stat.stack$setFocusOnClick(FALSE)
+      button.stat.stack$setImage(image)
+      button.stat.stack$setRelief(GtkReliefStyle["none"])
       
-      # histogram
-      hist.label1 <<- gtkLabelNew("binwidth", show=FALSE)
-      hist.combo1 <<- gtkComboBoxEntryNewText()
-      hist.combo1$hide()
-      breaks <- c("default", "based on Sturges", "based on Scott", "based on Freedman-Diaconis", "(numeric)")
-      for(i in breaks) hist.combo1$appendText(i)
-      hist.combo1$setActive(0)
+      image   <- gtkImageNewFromStock(GTK_STOCK_REMOVE, GtkIconSize["menu"])
+      button.stat.remove <- gtkButtonNew()
+      button.stat.remove["tooltip-text"] <- gettext("Remove Layer")
+      button.stat.remove$setFocusOnClick(FALSE)
+      button.stat.remove$setImage(image)
+      button.stat.remove$setRelief(GtkReliefStyle["none"])
       
-      # position
-      label.position <- gtkLabelNew(gettext("position"))
-      combo.position <<- gtkComboBoxNewText()
-      combo.position$show()
-      positions <- c("default", "identity", "dodge", "fill", "stack", "jitter")
-      for(i in positions) combo.position$appendText(i)
-      combo.position$setActive(0)
+      # packing
+      table.layer <- gtkTableNew(homogeneous=FALSE)
+      table.layer["border-width"] <- 5
+      table.layer$setColSpacings(5)
+      table.layer$setRowSpacings(0)
+      table.layer$attach        (label.geom         , 0, 1, 0, 1, "shrink", "shrink", 2)
+      table.layer$attachDefaults(combo.geom         , 1, 2, 0, 1)
+      table.layer$attach        (button.geom.options, 2, 3, 0, 1, "shrink", "shrink", 2)
+      table.layer$attach        (button.geom.stack  , 3, 4, 0, 1, "shrink", "shrink")
+      table.layer$attach        (button.geom.remove , 4, 5, 0, 1, "shrink", "shrink")
+      table.layer$attach        (label.stat         , 0, 1, 1, 2, "shrink", "shrink", 2)
+      table.layer$attachDefaults(combo.stat         , 1, 2, 1, 2)
+      table.layer$attach        (button.stat.options, 2, 3, 1, 2, "shrink", "shrink", 2)
+      table.layer$attach        (button.stat.stack  , 3, 4, 1, 2, "shrink", "shrink")
+      table.layer$attach        (button.stat.remove , 4, 5, 1, 2, "shrink", "shrink")
       
-      label.width  <-  gtkLabelNew("width (position)")
-      entry.width  <<- gtkEntryNew()
-      label.height <-  gtkLabelNew("height (position)")
-      entry.height <<- gtkEntryNew()
+      frame.layer <- gtkFrameNew("Layer")
+      frame.layer$setShadowType(GtkShadowType["etched-in"])
+      frame.layer$add(table.layer)
       
-      table <- gtkTableNew(homogeneous=FALSE)
-      table["border-width"] <- 5
-      table$attach        (label,              0, 1, 0, 1, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo,              1, 2, 0, 1)
-      table$attach        (button,             2, 3, 0, 1, "shrink", "shrink", 0, 0)
-      table$attach        (label.x,            0, 1, 1, 2, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.x$getCombo(), 1, 3, 1, 2)
-      table$attach        (label.y,            0, 1, 2, 3, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.y$getCombo(), 1, 3, 2, 3)
-      table$attach        (hist.label1,        0, 1, 3, 4, "shrink", "shrink", 0, 0)
-      table$attachDefaults(hist.combo1,        1, 3, 3, 4)
-      table$attach        (label.position,     0, 1, 4, 5, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.position,     1, 3, 4, 5)
-      table$attach        (label.width   ,     0, 1, 5, 6, "shrink", "shrink", 0, 0)
-      table$attachDefaults(entry.width   ,     1, 3, 5, 6)
-      table$attach        (label.height  ,     0, 1, 6, 7, "shrink", "shrink", 0, 0)
-      table$attachDefaults(entry.height  ,     1, 3, 6, 7)
+      main.vbox <- gtkVBoxNew()
+      main.vbox$packStart(frame.var  , expand=FALSE)
+      main.vbox$packStart(frame.layer, expand=FALSE)
       
-      table$setColSpacings(5)
-      table$setRowSpacings(2)
-      
-      main <<- buildPlotOptionPage(table)
+      main <<- buildPlotOptionPage(main.vbox)
 
-      .self$onGeomComboChanged()
-      gSignalConnect(combo             , "changed", .self$onGeomComboChanged)
+      gSignalConnect(combo.geom, "changed", function(...){
+        options[["geom"]] <<- NULL
+        options.obj[["geom"]] <<- NULL
+        labels[["geom"]] <<- data.frame(1:2, row.names=c("vars", "labels"))
+        labels[["geom"]][[1]] <<- NULL
+        
+        .self$generateScript()
+      })
+      gSignalConnect(combo.stat, "changed", function(...){
+        options[["stat"]] <<- NULL
+        options.obj[["stat"]] <<- NULL
+        labels[["stat"]] <<- data.frame(1:2, row.names=c("vars", "labels"))
+        labels[["stat"]][[1]] <<- NULL
+        .self$generateScript()
+      })
+      
       gSignalConnect(combo.x$getCombo(), "changed", .self$generateScript)
       gSignalConnect(combo.y$getCombo(), "changed", .self$generateScript)
-      gSignalConnect(hist.combo1       , "changed", .self$generateScript)
-      gSignalConnect(combo.position    , "changed", .self$generateScript)
-      gSignalConnect(entry.width       , "changed", .self$generateScript)
-      gSignalConnect(entry.height      , "changed", .self$generateScript)
+      gSignalConnect(xlab.combo        , "changed", .self$generateScript)
+      gSignalConnect(ylab.combo        , "changed", .self$generateScript)
+      gSignalConnect(title.entry       , "changed", .self$generateScript)
+      
+      gSignalConnect(button.geom.stack  , "clicked", .self$stackLayer , "geom")
+      gSignalConnect(button.stat.stack  , "clicked", .self$stackLayer , "stat")
+      gSignalConnect(button.geom.remove , "clicked", .self$removeLayer, "geom")
+      gSignalConnect(button.stat.remove , "clicked", .self$removeLayer, "stat")
+      gSignalConnect(button.geom.options, "clicked", .self$setOptions , "geom")
+      gSignalConnect(button.stat.options, "clicked", .self$setOptions , "stat")
+      
+      .self$generateScript()
       
     },
     
+    stackLayer = function(button, data){
+      layer <- data[[1]]
+      rzPlotScript$stackLayer(layer)
+    },
+
+    removeLayer = function(button, data){
+      layer <- data[[1]]
+      rzPlotScript$removeLayer(layer)
+    },
     
-    onGeomComboChanged = function(combo=NULL){
-      if(is.null(combo)){
-        geom <- "none"
+    setOptions = function(button, data){
+      layer <- data[[1]]
+      type  <- NULL
+      if (layer=="geom") {
+        type <- combo.geom$getActiveText()
       } else {
-        geom <- localize(combo$getActiveText())
+        type <- combo.stat$getActiveText()        
       }
-      hist.label1$hide()
-      hist.combo1$hide()
       
-      if (geom == "histogram" || geom == "freqpoly") {
-        hist.label1$showAll()
-        hist.combo1$showAll()
+      if (type=="none") return()
+      
+      if (is.null(options.obj[[layer]]) || options.obj[[layer]]$getType() != type) {
+        options.obj[[layer]] <<- new("RzPlotLayerOptions", layer=layer, type=type, model=model)
+        
+      } else {
+        options.obj[[layer]]$setModel(model)
       }
+      options[[layer]] <<- options.obj[[layer]]$getOptions()
+#      labels[[layer]]  <<-  options.obj[[layer]]$getMappingLabels()
+      
       .self$generateScript()
     },
     
+    generateScript = function(...){
+      geom  <- combo.geom$getActiveText()
+      stat  <- combo.stat$getActiveText()
+      x     <- localize(combo.x$getActiveText())
+      y     <- localize(combo.y$getActiveText())
+      xlab  <- localize(xlab.combo$getActiveText())
+      ylab  <- localize(ylab.combo$getActiveText())
+      title <- localize(title.entry$getText())
+      
+      if (geom=="none") {
+        rzPlotScript$clearScript("geom")
+      } else {
+        rzPlotScript$setScript("geom", type=geom, args=options[["geom"]])
+      }
+      
+      if (stat=="none") {
+        rzPlotScript$clearScript("stat")
+      } else {
+        rzPlotScript$setScript("stat", type=stat, args=options[["stat"]])
+      }
+      
+      rzPlotScript$setAes(c("x", "y"), c(x, y))
+      
+#      labels.tmp <- labels[["geom"]]
+#      labels.tmp[colnames(labels[["stat"]])] <- labels[["stat"]]        
+
+      labels.tmp        <- data.frame(1:2, row.names=c("vars", "labels"), stringsAsFactors=FALSE)
+      labels.tmp[[1]]   <- NULL
+      labels.tmp[["x"]] <- c(x , xlab)
+      labels.tmp[["y"]] <- c(y , ylab)
+      labels.tmp[["title"]] <- c("", title)
+      rzPlotScript$setLabs(labels.tmp)
+    },
+    
     clear = function(){
-      combo$setActive(0)
-      hist.combo1$setActive(0)
+      combo.geom$setActive(0)
+      combo.stat$setActive(0)
       combo.x$clear()
       combo.y$clear()
-      combo.position$setActive(0)
-      entry.width$setText("")
-      entry.height$setText("")
+      title.entry$setText("")
+      xlab.combo$setActive(0)
+      ylab.combo$setActive(0)
     },
     
     setX = function(txt){
@@ -121,58 +242,13 @@ setRefClass("RzPlotGeom",
       .self$generateScript()
     },
     
-    generateScript = function(...){
-      geom <- combo$getActiveText()
-      hist.break <- localize(hist.combo1$getActiveText())
-      x       <- localize(combo.x$getActiveText())
-      y       <- localize(combo.y$getActiveText())
-      
-      position  <- localize(combo.position$getActiveText())
-      width     <- localize(entry.width$getText())
-      height    <- localize(entry.height$getText())
-      suppressWarnings(width  <- as.numeric(width))
-      suppressWarnings(height <- as.numeric(height))
-      if(is.na(width))  width  <- NULL
-      else width <- sprintf("width=%s", width)
-      if(is.na(height)) height <- NULL
-      else height <- sprintf("height=%s", height)
-      if (position=="default") position <- NULL
-      else position <- sprintf("position_%s(%s)",
-                               position, paste(c(width, height), collapse=","))
-
-      if (geom=="none") {
-        rzPlotScript$setScript("geom")
-      } else if(geom=="histogram" || geom=="freqpoly") {
-        if (hist.break=="default") {
-          rzPlotScript$setScript("geom", type=geom,
-                                 args=list(position=position))          
-        } else {
-          rzPlotScript$setScript("geom", type=geom,
-                                 args=list(hist.break=deparse(hist.break), position=position))
-        }
-      } else {
-        rzPlotScript$setScript("geom", type=geom,
-                               args=list(position=position))
-      }
-      
-      fac <- c("bar")
-      num <- c("freqpoly", "histogram", "density")
-      fac.num <- c("boxplot", "violin")
-      num.num <- c("line", "area", "point", "jitter", "dotplot",
-                   "rug", "smooth", "geom_quantile", "blank")
-      
-      if(geom %in% c(fac, num)) {
-        rzPlotScript$setAes("x", x)        
-      } else {
-        rzPlotScript$setAes(c("x", "y"), c(x, y))        
-      }
-      
-    },
-    
     completionSetModel = function(model){
+      model <<- model
       combo.x$setModel(model)
       combo.y$setModel(model)
+      if (!is.null(options.obj[["geom"]])) options.obj[["geom"]]$setModel(model)
+      if (!is.null(options.obj[["stat"]])) options.obj[["stat"]]$setModel(model)
     }
   )
 )
-rzplot.geom$accessors("main", "button")
+rzplot.geom$accessors("main")

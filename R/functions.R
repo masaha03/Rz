@@ -162,7 +162,29 @@ buildPlotOptionPage <- function(widget){
   return(main)
 }
 
-
+check.class <- function(obj, class){
+  result <- NULL
+  if (class=="numeric") {
+    result <- try(eval(parse(text=(sprintf("c(%s)", obj)))), silent=TRUE)
+    if(class(result) != "numeric") return(NULL)
+    
+  } else if (class=="any") {
+    result <- try(eval(parse(text=(sprintf("c(%s)", obj)))), silent=TRUE)
+    if(class(result) != "numeric") return(obj)
+    
+  } else if (class=="formula") {
+    result <- try(as.formula(obj), silent=TRUE)
+    if(class(result) != "formula") return(NULL)
+    
+  } else if (class=="logical") {
+    result <- try(as.logical(obj), silent=TRUE)
+    if(class(result) != "logical" | is.na(result)) return(NULL)    
+    
+  } else {
+    result <- obj
+  }
+  return(result)
+}
 
 calc.hist.breaks <- function(breaks, x){
   suppressWarnings(binwidth <- as.numeric(breaks))

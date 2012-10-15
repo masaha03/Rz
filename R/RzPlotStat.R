@@ -1,6 +1,6 @@
 rzplot.stat <- 
 setRefClass("RzPlotStat",
-  fields = c("main", "button", "rzPlotScript",
+  fields = c("main", "rzPlotScript",
              "combo", "combo.method", "combo.geom", "combo.geom2",
              "combo.fun", "combo.color", "entry.size"),
   methods = list(
@@ -9,15 +9,26 @@ setRefClass("RzPlotStat",
       
       label <- gtkLabelNew("statistics")
       combo <<- gtkComboBoxNewText()
-      stats <- c("none", "smooth", "quantile", "sum", "summary")
+      stats <- c("none", "sum", "summary", "qq")
       for(i in stats) combo$appendText(i)
 
-      image <- gtkImageNewFromStock(GTK_STOCK_ADD, GtkIconSize["menu"])
-      button <<- gtkButtonNew()
+      image  <- gtkImageNewFromStock(GTK_STOCK_ADD, GtkIconSize["menu"])
+      button <- gtkButtonNew()
+      button["tooltip-text"] <- gettext("Stack Layer")
       button$setFocusOnClick(FALSE)
       button$setImage(image)
       button$setRelief(GtkReliefStyle["none"])
-      button["tooltip-text"] <<- gettext("Add Layer and Redraw")
+      
+      image   <- gtkImageNewFromStock(GTK_STOCK_REMOVE, GtkIconSize["menu"])
+      button2 <- gtkButtonNew()
+      button2["tooltip-text"] <- gettext("Remove Layer")
+      button2$setFocusOnClick(FALSE)
+      button2$setImage(image)
+      button2$setRelief(GtkReliefStyle["none"])
+      
+      button.hbox <- gtkHBoxNew(spacing=2)
+      button.hbox$packStart(button)
+      button.hbox$packStart(button2)
       
       label.method <- gtkLabelNew("method")
       combo.method <<- gtkComboBoxNewText()
@@ -56,7 +67,7 @@ setRefClass("RzPlotStat",
       table["border-width"] <- 5
       table$attach        (label,        0, 1, 0, 1, "shrink", "shrink", 0, 0)
       table$attachDefaults(combo,        1, 2, 0, 1)
-      table$attach        (button,       2, 3, 0, 1, "shrink", "shrink", 0, 0)
+      table$attach        (button.hbox,  2, 3, 0, 1, "shrink", "shrink", 0, 0)
       table$attach        (label.method, 0, 1, 1, 2, "shrink", "shrink", 0, 0)
       table$attachDefaults(combo.method, 1, 3, 1, 2)
       table$attach        (label.geom,   0, 1, 2, 3, "shrink", "shrink", 0, 0)
@@ -80,6 +91,14 @@ setRefClass("RzPlotStat",
       gSignalConnect(entry.size  , "changed", .self$generateScript)
       gSignalConnect(combo.geom2 , "changed", .self$generateScript)
       gSignalConnect(combo.fun   , "changed", .self$generateScript)
+      
+      gSignalConnect(button, "clicked", function(button){
+        rzPlotScript$stackLayer("stat")
+      })
+      gSignalConnect(button2, "clicked", function(button){
+        rzPlotScript$removeLayer("stat")
+      })
+      
             
       gSignalConnect(combo, "changed", function(combo){
         stat <- localize(combo$getActiveText())
@@ -162,9 +181,9 @@ setRefClass("RzPlotStat",
                                  args=list(fun.y=deparse(fun.y) , geom=deparse(geom), size=deparse(size), color=deparse(color)), add=TRUE)
         }
       } else {
-        rzPlotScript$setScript(layer="stat")
+        rzPlotScript$clearScript(layer="stat")
       }
     }
   )
 )
-rzplot.stat$accessors("main", "button")
+rzplot.stat$accessors("main")

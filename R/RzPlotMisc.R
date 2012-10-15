@@ -65,24 +65,7 @@ setRefClass("RzPlotMisc",
       label.fontsize   <-  gtkLabelNew(gettext("base font size"))
       entry.fontsize   <<- gtkEntryNew()
       entry.fontsize$setText("12")
-      
-      # label options
-      title.label <- gtkLabelNew(gettext("title"))
-      title.entry <<- gtkEntryNew()
-      
-      xlab.label <- gtkLabelNew(gettext("x axis"))
-      xlab.combo <<- gtkComboBoxEntryNewText()
-      xlab.combo$show()
-      labels <- c(gettext("variable label"), gettext("variable name"), gettext("(free text)"))
-      for(i in labels) xlab.combo$appendText(i)
-      xlab.combo$setActive(0)
-      
-      ylab.label <- gtkLabelNew(gettext("y axis"))
-      ylab.combo <<- gtkComboBoxEntryNewText()
-      ylab.combo$show()
-      for(i in labels) ylab.combo$appendText(i)
-      ylab.combo$setActive(0)
-            
+                  
       table <- gtkTableNew(6, 5, FALSE)
       table["border-width"] <- 5
       table$attach        (label.scale       , 0, 1, 0, 1, "shrink", "shrink", 0, 0)
@@ -106,12 +89,6 @@ setRefClass("RzPlotMisc",
       table$attachDefaults(combo.theme       , 2, 5, 5, 6)
       table$attach        (label.fontsize    , 0, 2, 6, 7, "shrink", "shrink", 0, 0)
       table$attachDefaults(entry.fontsize    , 2, 5, 6, 7)
-      table$attach        (title.label       , 0, 2, 8, 9, "shrink", "shrink", 0, 0)
-      table$attachDefaults(title.entry       , 2, 5, 8, 9)
-      table$attach        (xlab.label        , 0, 2, 9,10, "shrink", "shrink", 0, 0)
-      table$attachDefaults(xlab.combo        , 2, 5, 9,10)
-      table$attach        (ylab.label        , 0, 2,10,11, "shrink", "shrink", 0, 0)
-      table$attachDefaults(ylab.combo        , 2, 5,10,11)
       
       table$setColSpacings(5)
       table$setRowSpacings(2)
@@ -130,9 +107,6 @@ setRefClass("RzPlotMisc",
       gSignalConnect(na.rm.togglebutton, "toggled", .self$generateScript)
       gSignalConnect(combo.theme , "changed", .self$generateScript)
       gSignalConnect(entry.fontsize, "changed", .self$generateScript)
-      gSignalConnect(title.entry, "changed", .self$generateScript)
-      gSignalConnect(xlab.combo , "changed", .self$generateScript)
-      gSignalConnect(ylab.combo , "changed", .self$generateScript)
     },
     
     clear = function(){
@@ -146,9 +120,6 @@ setRefClass("RzPlotMisc",
       na.rm.togglebutton$setActive(TRUE)
       combo.theme$setActive(0)
       entry.fontsize$setText("12")
-      title.entry$setText("")
-      xlab.combo$setActive(0)
-      ylab.combo$setActive(0)
     },
     
     generateScript = function(...){
@@ -178,10 +149,10 @@ setRefClass("RzPlotMisc",
       if (any(is.na(fontsize)) | length(fontsize)==0) fontsize <- 12
       
       if (scalex != "default") rzPlotScript$setScript(layer="scale_x", type=scalex)
-      else                     rzPlotScript$setScript("scale_x")
+      else                     rzPlotScript$clearScript("scale_x")
 
       if (scaley != "default") rzPlotScript$setScript("scale_y", type=scaley)
-      else                     rzPlotScript$setScript("scale_y")
+      else                     rzPlotScript$clearScript("scale_y")
       
       if (!is.null(coordx) || !is.null(coordy)) {
         rzPlotScript$setScript("coord", type="trans",
@@ -189,22 +160,17 @@ setRefClass("RzPlotMisc",
         if (flip) rzPlotScript$setScript("coord", type="flip", add=TRUE)
         
       } else if (!is.null(xlim) || !is.null(ylim)) {
-        rzPlotScript$setScript("coord", type="cartesian", args=list(xlim=deparse(xlim), deparse(ylim=ylim)))
+        rzPlotScript$setScript("coord", type="cartesian", args=list(xlim=deparse(xlim), ylim=deparse(ylim)))
         if (flip) rzPlotScript$setScript("coord", type="flip", add=TRUE)
         
       } else if (flip) {
         rzPlotScript$setScript("coord", type="flip")
         
       } else {
-        rzPlotScript$setScript("coord")
+        rzPlotScript$clearScript("coord")
       }
       
       rzPlotScript$setBaseTheme(c(theme, fontsize))
-
-      title <- localize(title.entry$getText())
-      xlab  <- localize(xlab.combo$getActiveText())
-      ylab  <- localize(ylab.combo$getActiveText())
-      rzPlotScript$setLabs(c("title", "x", "y"), c(title, xlab, ylab))
     }
   )
 )
