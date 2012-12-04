@@ -15,6 +15,6 @@ Description: R is very powerfull but not enough for social science becouse of la
   plot assistant interface based on ggplot2.
 License: file LICENSE
 URL: http://m884.jp/Rz.html
-Depends: R (>= 2.14), methods, foreign, memisc, psych, ggplot2 (>= 0.9)
+Depends: R (>= 2.14), methods, foreign, memisc, psych, ggplot2 (>= 0.9.2)
 Suggests: quantreg, Hmisc, cairoDevice
 Imports: RGtk2 (>= 2.20), formatR
