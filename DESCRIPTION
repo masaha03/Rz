@@ -3,9 +3,6 @@ Type: Package
 Title: GUI Tool for Data Management like SPSS or Stata
 Version: 0.7-0
 Date: 2012-10-10
-Author@R: person(given="Masahiro", family="Hayashi",
-                 email="rinm884@gmail.com",
-                 role=c("aut","cre"))
 Author: Masahiro Hayashi
 Maintainer: Masahiro Hayashi <rinm884@gmail.com>
 Description: R is very powerfull but not enough for social science becouse of lack
