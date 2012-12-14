@@ -70,7 +70,9 @@ setRefClass("RzPlot",
         table$add(tag)
         
         tw     <- gtkTextViewNew()
-        tw$modifyFont(pangoFontDescriptionFromString(rzSettings$getMonospaceFont()))
+        if(! grepl("darwin",R.Version()$os) {          
+          tw$modifyFont(pangoFontDescriptionFromString(rzSettings$getMonospaceFont()))
+        }
         buffer <- gtkTextBufferNew(table)
         if(!is.null(data)) buffer$setText(rzPlotScript$getScript())
         first1 <- buffer$getStartIter()$iter
