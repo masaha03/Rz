@@ -125,7 +125,7 @@ setRefClass("RzPlotScript",
       ylim         <- freeScript["ylim"]
       
       text <- c(text["data"], geom, stat, facet, scale_x, scale_y, xlim, ylim, coord,
-                scale_fill, scale_colour, text["labs"], text["theme"], "theme_RzCurrent()")
+                scale_fill, scale_colour, text["labs"], text["theme"], "theme_rz()")
       text <- text[!is.na(text)]
 
       
