@@ -17,6 +17,8 @@ setRefClass("RzPlot",
       rzPlotScript  <<- new("RzPlotScript")
       p.list        <<- list()
       p.current.num <<- 1
+      save          <<- new("RzPlotSave")
+      
       
       notebook <<- gtkNotebookNew()
       button.detach <- gtkButtonNewWithLabel(gettext("Detach"))
@@ -24,6 +26,7 @@ setRefClass("RzPlot",
       notebook$setTabPos(GtkPositionType["top"])
       notebook$setScrollable(TRUE)
 
+      button.save          <- save$getButton.save()
       button.execute       <- gtkButtonNewFromStock(GTK_STOCK_EXECUTE)
       
       image  <- gtkImageNewFromStock(GTK_STOCK_CLEAR, GtkIconSize["button"])
@@ -48,6 +51,7 @@ setRefClass("RzPlot",
       entry.script <- gtkEntryNew()
       entry.script$setIconFromStock(GtkPositionType["left"], GTK_STOCK_JUSTIFY_LEFT)
       entry.script$setText("View Script")
+      entry.script$setWidthChars(15)
       entry.script$setEditable(FALSE)
       
       gSignalConnect(entry.script, "motion-notify-event", function(...){
@@ -106,6 +110,7 @@ setRefClass("RzPlot",
       
       button.box1 <- gtkHBoxNew(spacing=5)
       button.box1$packStart(entry.script    , expand=FALSE)
+      button.box1$packEnd(button.save       , expand=FALSE)
       button.box1$packEnd(button.execute    , expand=FALSE)
       button.box1$packEnd(button.box.history, expand=FALSE)
       button.box1$packEnd(button.clear      , expand=FALSE)
@@ -154,7 +159,6 @@ setRefClass("RzPlot",
       geom     <<- new("RzPlotGeom", rzPlotScript=rzPlotScript)
       stratum  <<- new("RzPlotStratum", rzPlotScript=rzPlotScript)
       misc     <<- new("RzPlotMisc", rzPlotScript=rzPlotScript)
-      save     <<- new("RzPlotSave")
       
       geom$completionSetModel(model)
       stratum$completionSetModel(model)
@@ -162,9 +166,10 @@ setRefClass("RzPlot",
       # container
       notebook$foreach(gtkWidgetDestroy)
       notebook$appendPage(geom$getMain(), tab.label=gtkLabelNew(gettext("Main")))
-      notebook$appendPage(stratum$getMain(), tab.label=gtkLabelNew(gettext("Stratum")))
-      notebook$appendPage(misc$getMain(), tab.label=gtkLabelNew(gettext("Misc")))
-      notebook$appendPage(save$getMain(), tab.label=gtkLabelNew(gettext("Save")))
+      notebook$appendPage(stratum$getStratumPage(), tab.label=gtkLabelNew(gettext("Sub-group")))
+      notebook$appendPage(stratum$getFacetPage(), tab.label=gtkLabelNew(gettext("Facet")))
+      notebook$appendPage(misc$getAxisPage(), tab.label=gtkLabelNew(gettext("Axis")))
+      notebook$appendPage(misc$getThemePage(), tab.label=gtkLabelNew(gettext("Theme")))
             
       if(rzSettings$getUseEmbededDevice()){
         if(require(cairoDevice)) {

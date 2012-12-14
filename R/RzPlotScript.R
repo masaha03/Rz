@@ -1,24 +1,23 @@
 rzPlotScript <- 
 setRefClass("RzPlotScript",
-  fields = c("script", "aes","baseTheme", "theme", "labs", "data", "layercount"),
+  fields = c("script", "freeScript", "aes",
+             "theme", "labs", "data", "layercount"),
   methods = list(
     initialize  = function(...) {
       initFields(...)
       script   <<- list()
+      freeScript <<- list()
       aes      <<- ""
       labs <<- data.frame(1:2, row.names=c("vars", "labels"), stringsAsFactors=FALSE)
       labs[[1]] <<- NULL
       theme    <<- ""
       layercount <<- numeric()
-      baseTheme <<- c("grey", "12")
       data     <<- NULL
     },
     
     setScript = function(layer, type=NULL, args=NULL, add=FALSE){
       if(is.na(layercount[layer])) layercount[layer] <<- 1
       
-      script[[layer]][ seq(layercount[layer],length(script[[layer]])) ] <<- NULL
-
       if (add) {
         ind <- length(script[[layer]]) + 1
         script[[layer]][[ind]] <<- list(type=type, args=args)
@@ -34,6 +33,10 @@ setRefClass("RzPlotScript",
       script[[layer]][ seq(layercount[layer],length(script[[layer]])) ] <<- NULL
     },
     
+    setFreeScript = function(name, script){
+      freeScript[name] <<- script
+    },
+        
     stackLayer = function(layer){
       if(is.na(layercount[layer])) layercount[layer] <<- 1
       if(length(script[[layer]]) < layercount[layer] ) return()
@@ -77,7 +80,7 @@ setRefClass("RzPlotScript",
       if (ncol(labs) > 0) {
         labs.tmp <- labs
         title <- labs.tmp[["title"]][2]
-        if(!nzchar(title)) title <- NULL
+        if (is.null(title) || !nzchar(title)) title <- NULL
         labs.tmp[["title"]] <- NULL
         variableNames  <- data$getVariableNames()
         variableLabels <- data$getVariableLabels()
@@ -93,11 +96,10 @@ setRefClass("RzPlotScript",
         labs.tmp.names <- names(vals)
         
         labs.tmp <- ifelse(labels  ==gettext("variable name") , vals   , labels)
-        labs.tmp <- ifelse(labs.tmp==gettext("variable label"), labels2, labels)
-        
+        labs.tmp <- ifelse(labs.tmp==gettext("variable label"), labels2, labs.tmp)
         names(labs.tmp) <- labs.tmp.names
         if (!is.null(title)) labs.tmp["title"] <- title
-        labs.tmp <- labs.tmp[c("title", "x", "y", "group", "fill", "colour", "shape", "size", "linetype")]
+        labs.tmp <- labs.tmp[c("title", "x", "y", "group", "fill", "colour", "shape", "size", "linetype", "alpha")]
         labs.tmp <- labs.tmp[!is.na(labs.tmp)]
         labs.tmp.names <- names(labs.tmp)
         
@@ -107,45 +109,29 @@ setRefClass("RzPlotScript",
         if(length(labs.tmp) > 0 && nzchar(labs.tmp)) {
           text["labs"] <- sprintf("labs(%s)", labs.tmp)          
         }
-      }
-
+      }      
       
       script.tmp <- script
       
-      geom         <- .self$buildLayer("geom"   , script.tmp[["geom"]])
-      stat         <- .self$buildLayer("stat"   , script.tmp[["stat"]])
-      facet        <- .self$buildLayer("facet"  , script.tmp[["facet"]])
-      scale_x      <- .self$buildLayer("scale_x", script.tmp[["scale_x"]])      
-      scale_y      <- .self$buildLayer("scale_y", script.tmp[["scale_y"]])      
-      coord        <- .self$buildLayer("coord"  , script.tmp[["coord"]])
+      geom         <- .self$buildLayer("geom"        , script.tmp[["geom"]])
+      stat         <- .self$buildLayer("stat"        , script.tmp[["stat"]])
+      facet        <- .self$buildLayer("facet"       , script.tmp[["facet"]])
+      scale_x      <- .self$buildLayer("scale_x"     , script.tmp[["scale_x"]])      
+      scale_y      <- .self$buildLayer("scale_y"     , script.tmp[["scale_y"]])      
+      coord        <- .self$buildLayer("coord"       , script.tmp[["coord"]])
       scale_fill   <- .self$buildLayer("scale_fill"  , script.tmp[["scale_fill"]])      
-      scale_colour <- .self$buildLayer("scale_colour", script.tmp[["scale_colour"]])      
+      scale_colour <- .self$buildLayer("scale_colour", script.tmp[["scale_colour"]])
+      xlim         <- freeScript["xlim"]
+      ylim         <- freeScript["ylim"]
       
-      text <- c(text["data"], geom, stat, facet, scale_x, scale_y, coord,
-                scale_fill, scale_colour, text["labs"], text["theme"])
+      text <- c(text["data"], geom, stat, facet, scale_x, scale_y, xlim, ylim, coord,
+                scale_fill, scale_colour, text["labs"], text["theme"], "theme_RzCurrent()")
       text <- text[!is.na(text)]
 
-      font <- rzSettings$getPlotFontFamily()
-      font.tmp <- character()
-      if(grepl("mingw", R.Version()$os)){
-        font.tmp[1] <- sprintf("windowsFonts(\"%s\" = windowsFont(\"%s\"))", font, font)
-        font.tmp[2] <- sprintf("theme_set(theme_%s(base_size=%s, base_family=\"%s\"))",
-                               baseTheme[1], baseTheme[2], font)
-      } else if(grepl("darwin", R.Version()$os)){
-        x11font     <- sprintf("-*-%s-*-*-*-*-*-*-*-*-*-*-*-*", font)
-        quartzfont  <- rep(font, 4)
-        font.tmp[1] <- sprintf("X11Fonts(\"%s\"=X11Font(\"%s\"))", font, x11font)
-        font.tmp[2] <- sprintf("quartzFonts(\"%s\"=quartzFont(\"%s\"))", font, quartzfont)
-        font.tmp[3] <- sprintf("theme_set(theme_%s(base_size=%s, base_family=\"%s\"))",
-                               baseTheme[1], baseTheme[2], font)
-      } else {
-        font.tmp[1] <- sprintf("theme_set(theme_%s(base_size=%s, base_family=\"%s\"))",
-                               baseTheme[1], baseTheme[2], font)
-      }
       
       text <- paste(text, collapse="\np <- p +")
-      text <- c(font.tmp, text, "print(p)")
-      text <- tidy.source(text=text, output=FALSE, keep.blank.line=FALSE, width.cutoff=50)$text.tidy
+      text <- c(text, "print(p)")
+      text <- tidy.source(text=text, output=FALSE, keep.blank.line=FALSE, width.cutoff=60)$text.tidy
       text <- paste(text, collapse="\n")
       return(text)
     },
@@ -172,7 +158,6 @@ setRefClass("RzPlotScript",
       labs <<- data.frame(1:2, row.names=c("vars", "labels"))
       labs[[1]] <<- NULL
       theme    <<- ""
-      baseTheme <<- c("grey", "12")
       data     <<- data
     },
     
@@ -198,4 +183,3 @@ setRefClass("RzPlotScript",
     
   )
 )
-rzPlotScript$accessors(c("baseTheme"))

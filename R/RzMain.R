@@ -8,6 +8,10 @@ setRefClass("RzMain",
   methods = list(
     initialize            = function(...) {
       initFields(...)
+      if (! exists("theme_rz", envir=.GlobalEnv)) {
+        assign("theme_rz", theme_grey, envir=.GlobalEnv)        
+      }
+
       settings <- gtkSettingsGetDefault()
       settings$setStringProperty("gtk-font-name", rzSettings$getGlobalFont(), NULL)
       gtkRcReparseAll()
@@ -325,16 +329,10 @@ setRefClass("RzMain",
     },
     
     onReload = function(action){
+      on.exit(gSourceRemove(timeoutid))
+      on.exit(progress.bar["activity-mode"] <<- FALSE, add = TRUE)
+      timeoutid <- gTimeoutAdd(80, progress.bar$start)
       if(!is.null(variable.view)){
-        if (variable.view$getData()$getSubset.on()) {
-          dialog <- gtkMessageDialogNew(rzTools$getWindow(), "destroy-with-parent",
-                                        "error", "close", gettext("Cannot reload while Select Cases enabled."))
-          dialog$run()
-          dialog$destroy()
-          return()
-        }
-        
-        timeoutid <- gTimeoutAdd(80, progress.bar$start)
         
         dialog <- gtkMessageDialogNew(win, "destroy-with-parent",
                                       GtkMessageType["question"], GtkButtonsType["ok-cancel"],
@@ -343,21 +341,10 @@ setRefClass("RzMain",
         dialog$hide()
         
         if(response==GtkResponseType["ok"]){
-          data   <- rzDataHandler$getCurrentData()
-          result <- data$reloadFromGlobalEnv()
-          if(result==TRUE){
             variable.view$reload()
-          } else {
-            dialog2 <- gtkMessageDialogNew(win, "destroy-with-parent",
-                                           GtkMessageType["error"], GtkButtonsType["close"],
-                                           gettextf("\"%s\" isn't a data.set or don't exist.", result))
-            dialog2$run()
-            dialog2$hide()
-          }
         }
-        gSourceRemove(timeoutid)
-        progress.bar["activity-mode"] <<- FALSE
       }
+      
     },
     
     onDatasetChanged      = function(combo){
@@ -389,6 +376,39 @@ setRefClass("RzMain",
     
     onInfoBarResponsed    = function(widget, response.id){
       info.bar$hide()
+      
+    },
+    
+    # scripting interface
+    addData = function(data){
+      rzDataHandler$addData(data)
+    },
+    
+    reloadData = function(data.set.name=NULL, ask = TRUE){
+      vv.tmp <- NULL
+      if (is.null(data.set.name)) {
+        vv.tmp <- variable.view
+      } else {
+        vv.tmp <- variable.view.list[[data.set.name]]
+      }
+      if (! is.null(vv.tmp)) {
+        response <- 1
+        if (ask) {
+          response <- menu(c(gettext("yes"), gettext("no")),
+                           title = gettext("Are you sure you want to do that?"))
+        }
+        
+        if (response == 1) {
+          vv.tmp$reload()
+        }
+        
+      } else {
+        if (is.null(data.set.name)) {
+          stop("Please select a dataset on Rz or specify \"data.set.name\".")
+        } else {
+          stop("The dataset named \"", data.set.name, "\" doesn't exist.")
+        }
+      }
     }
   )
 )

@@ -71,9 +71,11 @@ setRefClass("RzVariableView",
       
       # Data Management
       rzVVSelectCases <- new("RzVVSelectCases", data=data)
+      rzVVDuplicateData <- new("RzVVDuplicateData", data=data)
       notebook.management <- gtkNotebookNew()
       notebook.management["tab-pos"] <- GtkPositionType["left"]
       notebook.management$appendPage(rzVVSelectCases$getMain(), gtkLabelNew(gettext("Select Cases")))
+      notebook.management$appendPage(rzVVDuplicateData$getMain(), gtkLabelNew(gettext("Duplicate Dataset")))
       
       columns <- list(
         index   = gtkTreeViewColumnNewWithAttributes(""                     , rt.index   , "text"=column.definition[["index"]]   ),
@@ -229,6 +231,33 @@ setRefClass("RzVariableView",
     },
     
     reload = function(){
+      if (data$getSubset.on()) {
+        if (main$getRealized()) {
+          dialog <- gtkMessageDialogNew(rzTools$getWindow(), "destroy-with-parent",
+                                        "error", "close", gettext("Cannot reload while Select Cases enabled."))
+          dialog$run()
+          dialog$hide()
+          return()
+          
+        } else {
+          stop("Cannot reload while \"Select Cases\" enabled.")          
+        }
+      }
+      
+      result <- data$reloadFromGlobalEnv()
+      
+      if (result != TRUE) {
+        if (main$getRealized()) {
+          dialog2 <- gtkMessageDialogNew(win, "destroy-with-parent",
+                                         GtkMessageType["error"], GtkButtonsType["close"],
+                                         gettextf("\"%s\" isn't a data.set or doesn't exist.", result))
+          dialog2$run()
+          dialog2$hide()
+        } else {
+          stop("\"", result, "\" isn't a data.set or doesn't exist.")          
+        }
+      }
+      
       iter <- liststore$getIterFirst()
       selects <- logical(0)
       while(iter$retval){

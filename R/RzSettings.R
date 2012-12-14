@@ -1,16 +1,16 @@
 settings <- 
 setRefClass("RzSettings",
   fields = c("RzPath", "path", "theme", "theme.this", "globalFont", "variableViewFont", "monospaceFont", "monospaceFontFamily",
-    "plotFont", "plotFontFamily", "useDataSetObject", "themesFolder",
-    "useEmbededDevice", "embededDeviceOn", "runPlot", "codebookOff", "popupOff",
-    "plotViewEnabled", "analysisViewEnabled", "psFont", "pdfFont"),
+             "useDataSetObject", "themesFolder",
+             "useEmbededDevice", "embededDeviceOn", "runPlot", "codebookOff", "popupOff",
+             "plotViewEnabled", "analysisViewEnabled", "psFont", "pdfFont"),
   methods = list(
     load = function(){
       path <<- "~/.Rz"
       RzPath <<- system.file(package = "Rz")
       embededDeviceOn <<- NULL
       
-      # Does a setting file exits?
+      # Does a setting file exists?
       if(file.exists(path)) {
         con <- file(path)
         open(con)
@@ -26,16 +26,13 @@ setRefClass("RzSettings",
         if(grepl("darwin", R.Version()$os)){
           globalFont       <<- ifelse(is.null(settings$globalFont)   , "Arial 10"     , settings$globalFont)
           variableViewFont <<- ifelse(is.null(settings$variableViewFont)   , "Arial 10"     , settings$variableViewFont)
-          plotFont         <<- ifelse(is.null(settings$plotFont)     , "Arial 10"     , settings$plotFont)
         } else {
           globalFont       <<- ifelse(is.null(settings$globalFont)   , "sans 10"     , settings$globalFont)
           variableViewFont <<- ifelse(is.null(settings$variableViewFont)   , "sans 10"     , settings$variableViewFont)
-          plotFont         <<- ifelse(is.null(settings$plotFont)     , "sans 10"     , settings$plotFont)
         }
         # settings        
         monospaceFont    <<- ifelse(is.null(settings$monospaceFont), "monospace 10", settings$monospaceFont)
         monospaceFontFamily <<- pangoFontDescriptionFromString(monospaceFont)$getFamily()
-        plotFontFamily   <<- pangoFontDescriptionFromString(plotFont)$getFamily()
         psFont           <<- ifelse(is.null(settings$psFont)       , "sans"        , settings$psFont)
         pdfFont          <<- ifelse(is.null(settings$pdfFont)      , "sans"        , settings$pdfFont)
         useDataSetObject <<- ifelse(is.null(settings$useDataSetObject), FALSE, settings$useDataSetObject)
@@ -45,7 +42,7 @@ setRefClass("RzSettings",
         popupOff         <<- ifelse(is.null(settings$popupOff),         FALSE, settings$popupOff)
       } else {
         # initialize settings
-        themesFolder <<- file.path(RzPath, "themes")
+        themesFolder   <<- file.path(RzPath, "themes")
         if(grepl("linux", R.Version()$os)){
           theme      <<- "Default"
         } else {
@@ -54,15 +51,12 @@ setRefClass("RzSettings",
         if(grepl("darwin", R.Version()$os)){
           globalFont <<- "Arial 10"
           variableViewFont <<- "Arial 10"
-          plotFont <<- "Arial 10"
         } else {
           globalFont <<- "sans 10"
           variableViewFont <<- "sans 10"
-          plotFont <<- "sans 10"
         }
         monospaceFont <<- "monospace 10"
         monospaceFontFamily <<- pangoFontDescriptionFromString(monospaceFont)$getFamily()
-        plotFontFamily      <<- pangoFontDescriptionFromString(plotFont)$getFamily()
         psFont <<- "sans"
         pdfFont <<- "sans"
         useDataSetObject <<- FALSE
@@ -110,9 +104,7 @@ setRefClass("RzSettings",
       themes.hbox <- gtkHBoxNew(spacing=5)
       themes.hbox$packStart(themes.label, expand=FALSE)
       themes.hbox$packStart(themesCombo)
-      
-#      checkButtonUseDataSet <- gtkCheckButtonNewWithLabel(gettext("Sync as data.set object"))
-#      checkButtonUseDataSet$setActive(useDataSetObject)
+            
       checkButtonUseEmbededDevice <- gtkCheckButtonNewWithLabel(gettext("Use embeded graphics divice (requires cairoDevice package)"))
       checkButtonUseEmbededDevice$setActive(useEmbededDevice)
       checkButtonRunPlot <- gtkCheckButtonNewWithLabel(gettext("Plot when a index cell is double-clicked"))
@@ -126,7 +118,6 @@ setRefClass("RzSettings",
       general.tab["border-width"] <- 2
       general.tab$packStart(themes.folder.hbox, expand=FALSE)
       general.tab$packStart(themes.hbox, expand=FALSE)
-#      general.tab$packStart(checkButtonUseDataSet, expand=FALSE)
       general.tab$packStart(checkButtonUseEmbededDevice, expand=FALSE)
       general.tab$packStart(checkButtonRunPlot, expand=FALSE)
       general.tab$packStart(checkButtonCodebookOff, expand=FALSE)
@@ -136,7 +127,6 @@ setRefClass("RzSettings",
       rzFontSettingWidget1 <- new("RzFontSettingWidget", title = gettext("Global Font"), fontName = globalFont, showSize = TRUE, showStyle=TRUE)
       rzFontSettingWidget4 <- new("RzFontSettingWidget", title = gettext("Variable View Font"), fontName = variableViewFont, showSize = TRUE, showStyle=TRUE)
       rzFontSettingWidget2 <- new("RzFontSettingWidget", title = gettext("Monospace Font"), fontName = monospaceFont, showSize = TRUE, showStyle=TRUE)
-      rzFontSettingWidget3 <- new("RzFontSettingWidget", title = gettext("Plot Font"), fontName = plotFont, showSize = FALSE, showStyle=FALSE)
       
       pdf.font.label <- gtkLabelNew(gettext("PDF Font"))
       pdfFontCombo <- gtkComboBoxNewText()
@@ -162,7 +152,6 @@ setRefClass("RzSettings",
       font.tab$packStart(rzFontSettingWidget1$getFontBox(), fill=FALSE, expand=FALSE)
       font.tab$packStart(rzFontSettingWidget4$getFontBox(), fill=FALSE, expand=FALSE)
       font.tab$packStart(rzFontSettingWidget2$getFontBox(), fill=FALSE, expand=FALSE)
-      font.tab$packStart(rzFontSettingWidget3$getFontBox(), fill=FALSE, expand=FALSE)
       font.tab$packStart(pdffont.hbox, fill=FALSE, expand=FALSE)
       font.tab$packStart(psfont.hbox, fill=FALSE, expand=FALSE)
       
@@ -173,17 +162,14 @@ setRefClass("RzSettings",
       
       onResponse <- function(dialog, response.id){
         if(response.id == GtkResponseType["accept"]) {
-          themesFolder     <<- normalizePath(localize(themes.folder.button$getCurrentFolder()), "/")
+          themesFolder     <<- normalizePath(localize(themes.folder.button$getFile()$getPath()), "/")
           theme            <<- localize(themesCombo$getActiveText())
           globalFont       <<- localize(rzFontSettingWidget1$getFontName())
           variableViewFont <<- localize(rzFontSettingWidget4$getFontName())
           monospaceFont    <<- localize(rzFontSettingWidget2$getFontName())
           monospaceFontFamily <<- pangoFontDescriptionFromString(monospaceFont)$getFamily()
-          plotFont         <<- localize(rzFontSettingWidget3$getFontName())
-          plotFontFamily   <<- pangoFontDescriptionFromString(plotFont)$getFamily()
           psFont           <<- localize(psFontCombo$getActiveText())
           pdfFont          <<- localize(pdfFontCombo$getActiveText())
-#          useDataSetObject <<- checkButtonUseDataSet$getActive()
           useEmbededDevice <<- checkButtonUseEmbededDevice$getActive()
           runPlot          <<- checkButtonRunPlot$getActive()
           codebookOff      <<- checkButtonCodebookOff$getActive()
@@ -197,10 +183,8 @@ setRefClass("RzSettings",
             globalFont       = globalFont,
             variableViewFont = variableViewFont,
             monospaceFont    = monospaceFont,
-            plotFont         = plotFont,
             psFont           = psFont,
             pdfFont          = pdfFont,
-#            useDataSetObject = useDataSetObject,
             useEmbededDevice = useEmbededDevice,
             runPlot          = runPlot,
             codebookOff      = codebookOff,
@@ -219,7 +203,7 @@ setRefClass("RzSettings",
     }
   )
 )
-settings$accessors(c("RzPath", "themesFolder", "globalFont", "variableViewFont", "monospaceFont", "monospaceFontFamily", "plotFont", "plotFontFamily",
+settings$accessors(c("RzPath", "themesFolder", "globalFont", "variableViewFont", "monospaceFont", "monospaceFontFamily",
                      "useDataSetObject","useEmbededDevice", "embededDeviceOn", "runPlot", "codebookOff", "popupOff",
                      "plotViewEnabled", "analysisViewEnabled", "psFont", "pdfFont"))
 

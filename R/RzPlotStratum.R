@@ -6,13 +6,14 @@ setRefClass("RzPlotStratum",
              "combo.shape", "combo.shape.label",
              "combo.size","combo.size.label",
              "combo.line","combo.line.label",
+             "combo.alpha", "combo.alpha.label",
              "combo.position", "position.entry",
              "combo.linetype", "combo.scale",
              "combo", "combo2", "combo.x",
              "combo.y", "entry3", "entry4", "entry5",
              "label.y", "label3", "label4", "label5",
              "rzPlotScript",
-             "main"),
+             "stratumPage", "facetPage"),
   methods = list(
     initialize  = function(...) {
       initFields(...)
@@ -28,7 +29,7 @@ setRefClass("RzPlotStratum",
       pixbuf.path <- file.path(rzSettings$getRzPath(), "images", "palette",
                                "scale_grey.png")
       pixbuf <- gdkPixbufNewFromFile(pixbuf.path)$retval
-      iter   <- treestore$append()$iter      
+      iter   <- treestore$append()$iter
       treestore$set(iter, 0, "grey", 2, pixbuf)
 
       pixbuf.path <- file.path(rzSettings$getRzPath(), "images", "palette",
@@ -62,7 +63,7 @@ setRefClass("RzPlotStratum",
       combo.group <<- new("RzCompletionCombo")
       label.fill  <-  gtkLabelNew("fill")
       combo.fill  <<- new("RzCompletionCombo")
-      label.color <-  gtkLabelNew("color")
+      label.color <-  gtkLabelNew("colour")
       combo.color <<- new("RzCompletionCombo")
       label.shape <-  gtkLabelNew("shape")
       combo.shape <<- new("RzCompletionCombo")
@@ -70,6 +71,8 @@ setRefClass("RzPlotStratum",
       combo.size  <<- new("RzCompletionCombo")
       label.line  <-  gtkLabelNew("linetype")
       combo.line  <<- new("RzCompletionCombo")
+      label.alpha <-  gtkLabelNew("alpha")
+      combo.alpha <<- new("RzCompletionCombo")
       
       # group
       combo.group.label <<- gtkComboBoxEntryNewText()
@@ -113,9 +116,44 @@ setRefClass("RzPlotStratum",
       combo.line.label$show()
       for(i in labels) combo.line.label$appendText(i)
       combo.line.label$setActive(0)
+      
+      # alpha
+      combo.alpha.label <<- gtkComboBoxEntryNewText()
+      combo.alpha.label["width-request"] <<- 1
+      combo.alpha.label$show()
+      for(i in labels) combo.alpha.label$appendText(i)
+      combo.alpha.label$setActive(0)
 
+      table  <- gtkTableNew(homogeneous=FALSE)
+      table["border-width"] <- 5
+      table$attach        (label.group           , 0, 1, 0,  1, "shrink", "shrink", 0, 0)
+      table$attach        (combo.group$getCombo(), 1, 2,  0,  1, "shrink", "shrink", 0, 0)
+      table$attachDefaults(combo.group.label     , 2, 3,  0,  1)
+      table$attach        (label.fill            , 0, 1,  1,  2, "shrink", "shrink", 0, 0)
+      table$attach        (combo.fill$getCombo() , 1, 2,  1,  2, "shrink", "shrink", 0, 0)
+      table$attachDefaults(combo.fill.label      , 2, 3,  1,  2)
+      table$attach        (label.color           , 0, 1,  2,  3, "shrink", "shrink", 0, 0)
+      table$attach        (combo.color$getCombo(), 1, 2,  2,  3, "shrink", "shrink", 0, 0)
+      table$attachDefaults(combo.color.label     , 2, 3,  2,  3)
+      table$attach        (label.shape           , 0, 1,  3,  4, "shrink", "shrink", 0, 0)
+      table$attach        (combo.shape$getCombo(), 1, 2,  3,  4, "shrink", "shrink", 0, 0)
+      table$attachDefaults(combo.shape.label     , 2, 3,  3,  4)
+      table$attach        (label.size            , 0, 1,  4,  5, "shrink", "shrink", 0, 0)
+      table$attach        (combo.size$getCombo() , 1, 2,  4,  5, "shrink", "shrink", 0, 0)
+      table$attachDefaults(combo.size.label      , 2, 3,  4,  5)
+      table$attach        (label.line            , 0, 1,  5,  6, "shrink", "shrink", 0, 0)
+      table$attach        (combo.line$getCombo() , 1, 2,  5,  6, "shrink", "shrink", 0, 0)
+      table$attachDefaults(combo.line.label      , 2, 3,  5,  6)
+      table$attach        (label.alpha           , 0, 1,  6,  7, "shrink", "shrink", 0, 0)
+      table$attach        (combo.alpha$getCombo(), 1, 2,  6,  7, "shrink", "shrink", 0, 0)
+      table$attachDefaults(combo.alpha.label     , 2, 3,  6,  7)
+      table$setColSpacings(5)
+      table$setRowSpacings(2)
+      frame.subgroup <- gtkFrameNew()
+      frame.subgroup$setShadowType(GtkShadowType["etched-in"])
+      frame.subgroup$add(table)
+      
       # scale
-      label.scale <- gtkLabelNew("scale")
       combo.scale <<- gtkComboBoxNew(show=TRUE)
       combo.scale$setModel(treestore)
       combo.scale$clear()
@@ -126,6 +164,12 @@ setRefClass("RzPlotStratum",
       combo.scale$addAttribute(renderer2, "text"  , 1)
       combo.scale$addAttribute(renderer3, "pixbuf", 2)
       combo.scale$setActive(0)
+      vbox.brewer <- gtkVBoxNew()
+      vbox.brewer$packStart(combo.scale, expand=TRUE, fill=TRUE)
+      vbox.brewer["border-width"] <- 5
+      frame.brewer <- gtkFrameNew("Palette of ColorBrewer")
+      frame.brewer$setShadowType(GtkShadowType["etched-in"])
+      frame.brewer$add(vbox.brewer)
       
       # position
       label.position <- gtkLabelNew(gettext("legend position"))
@@ -150,10 +194,24 @@ setRefClass("RzPlotStratum",
       for(i in linetypes) combo.linetype$appendText(i)
       combo.linetype$setActive(0)
       
+      table.legend  <- gtkTableNew(homogeneous=FALSE)
+      table.legend["border-width"] <- 5
+      table.legend$setColSpacings(5)
+      table.legend$setRowSpacings(2)
+      table.legend$attach        (label.position        , 0, 1, 0, 1, "shrink", "shrink", 0, 0)
+      table.legend$attachDefaults(combo.position        , 1, 3, 0, 1)
+      table.legend$attachDefaults(position.hbox         , 0, 3, 1, 2)
+      table.legend$attach        (label.linetype        , 0, 1, 2, 3, "shrink", "shrink", 0, 0)
+      table.legend$attachDefaults(combo.linetype        , 1, 3, 2, 3)
+      
+      frame.legend <- gtkFrameNew("Legend")
+      frame.legend$setShadowType(GtkShadowType["etched-in"])
+      frame.legend$add(table.legend)
       
       # facet
       label <- gtkLabelNew("facet")
       combo <<- gtkComboBoxNewText()
+      combo$appendText("none")
       combo$appendText("grid")
       combo$appendText("wrap")
       combo$setActive(0)
@@ -161,40 +219,46 @@ setRefClass("RzPlotStratum",
       combo.x <<- new("RzCompletionCombo")
       label.y <<- gtkLabelNew("y")
       combo.y <<- new("RzCompletionCombo")
-      label3 <<- gtkLabelNew("nrow", show=FALSE)
-      entry3 <<- gtkEntryNew(show=FALSE)
-      label4 <<- gtkLabelNew("ncol", show=FALSE)
-      entry4 <<- gtkEntryNew(show=FALSE)
-      label5 <<- gtkLabelNew("scale", show=FALSE)
-      combo2 <<- gtkComboBoxNewText(show=FALSE)
+      label3 <<- gtkLabelNew("nrow")
+      entry3 <<- gtkEntryNew()
+      label4 <<- gtkLabelNew("ncol")
+      entry4 <<- gtkEntryNew()
+      label5 <<- gtkLabelNew("scale")
+      combo2 <<- gtkComboBoxNewText()
       combo2$appendText("fixed")
       combo2$appendText("free")
       combo2$appendText("free_x")
       combo2$appendText("free_y")
       combo2$setActive(0)
+      combo.x$getCombo()$SetSensitive(FALSE)
+      combo.y$getCombo()$SetSensitive(FALSE)
+      entry3$setSensitive(FALSE)
+      entry4$setSensitive(FALSE)
+      combo2$setSensitive(FALSE)
       gSignalConnect(combo, "changed", function(combo){
         facet <- localize(combo$getActiveText())
-        if(facet == "grid"){
-          label.y$show()
-          combo.y$getCombo()$show()
-          label3$hide()
-          entry3$hide()
-          label4$hide()
-          entry4$hide()
-          label5$hide()
-          combo2$hide()
+        if (facet == "none") {
+          combo.x$getCombo()$SetSensitive(FALSE)
+          combo.y$getCombo()$SetSensitive(FALSE)
+          entry3$setSensitive(FALSE)
+          entry4$setSensitive(FALSE)
+          combo2$setSensitive(FALSE)
+        } else if (facet == "grid") {
+          combo.x$getCombo()$SetSensitive(TRUE)
+          combo.y$getCombo()$setSensitive(TRUE)
+          entry3$setSensitive(FALSE)
+          entry4$setSensitive(FALSE)
+          combo2$setSensitive(TRUE)
         } else {
-          label.y$hide()
-          combo.y$getCombo()$hide()
-          label3$show()
-          entry3$show()
-          label4$show()
-          entry4$show()
-          label5$show()
-          combo2$show()
+          combo.x$getCombo()$SetSensitive(TRUE)
+          combo.y$getCombo()$setSensitive(FALSE)
+          entry3$setSensitive(TRUE)
+          entry4$setSensitive(TRUE)
+          combo2$setSensitive(TRUE)
         }
         .self$generateScript()
       })
+      
       gSignalConnect(entry3, "changed", function(entry){
         if(entry$getText() != ""){
           entry4$setSensitive(FALSE)
@@ -210,54 +274,37 @@ setRefClass("RzPlotStratum",
           entry3$setSensitive(TRUE)
         }
         .self$generateScript()
-      })
+      })      
       
-      
-      table  <- gtkTableNew(homogeneous=FALSE)
-      table["border-width"] <- 5
-      table$attach        (label.group           , 0, 1, 0,  1, "shrink", "shrink", 0, 0)
-      table$attach        (combo.group$getCombo(), 1, 2,  0,  1, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.group.label     , 2, 3,  0,  1)
-      table$attach        (label.fill            , 0, 1,  1,  2, "shrink", "shrink", 0, 0)
-      table$attach        (combo.fill$getCombo() , 1, 2,  1,  2, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.fill.label      , 2, 3,  1,  2)
-      table$attach        (label.color           , 0, 1,  2,  3, "shrink", "shrink", 0, 0)
-      table$attach        (combo.color$getCombo(), 1, 2,  2,  3, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.color.label     , 2, 3,  2,  3)
-      table$attach        (label.shape           , 0, 1,  3,  4, "shrink", "shrink", 0, 0)
-      table$attach        (combo.shape$getCombo(), 1, 2,  3,  4, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.shape.label     , 2, 3,  3,  4)
-      table$attach        (label.size            , 0, 1,  4,  5, "shrink", "shrink", 0, 0)
-      table$attach        (combo.size$getCombo() , 1, 2,  4,  5, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.size.label      , 2, 3,  4,  5)
-      table$attach        (label.line            , 0, 1,  5,  6, "shrink", "shrink", 0, 0)
-      table$attach        (combo.line$getCombo() , 1, 2,  5,  6, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.line.label      , 2, 3,  5,  6)
-      table$attach        (label.scale           , 0, 1,  6,  7, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.scale           , 1, 3,  6,  7)
-      table$attach        (label.position        , 0, 1,  7,  8, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.position        , 1, 3,  7,  8)
-      table$attachDefaults(position.hbox         , 0, 3,  8,  9)
-      table$attach        (label.linetype        , 0, 1,  9, 10, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.linetype        , 1, 3,  9, 10)
-      table$attach        (label                 , 0, 1, 10, 11, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo                 , 1, 3, 10, 11)
-      table$attach        (label.x               , 0, 1, 11, 12, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.x$getCombo()    , 1, 3, 11, 12)
-      table$attach        (label.y               , 0, 1, 12, 13, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo.y$getCombo()    , 1, 3, 12, 13)
-      table$attach        (label3                , 0, 1, 13, 14, "shrink", "shrink", 0, 0)
-      table$attachDefaults(entry3                , 1, 3, 13, 14)
-      table$attach        (label4                , 0, 1, 14, 15, "shrink", "shrink", 0, 0)
-      table$attachDefaults(entry4                , 1, 3, 14, 15)
-      table$attach        (label5                , 0, 1, 15, 16, "shrink", "shrink", 0, 0)
-      table$attachDefaults(combo2                , 1, 3, 15, 16)
-      
-      table$setColSpacings(5)
-      table$setRowSpacings(2)
+      table.facet  <- gtkTableNew(homogeneous=FALSE)
+      table.facet["border-width"] <- 5
+      table.facet$attach        (label                 , 0, 1, 0, 1, "shrink", "shrink", 0, 0)
+      table.facet$attachDefaults(combo                 , 1, 3, 0, 1)
+      table.facet$attach        (label.x               , 0, 1, 1, 2, "shrink", "shrink", 0, 0)
+      table.facet$attachDefaults(combo.x$getCombo()    , 1, 3, 1, 2)
+      table.facet$attach        (label.y               , 0, 1, 2, 3, "shrink", "shrink", 0, 0)
+      table.facet$attachDefaults(combo.y$getCombo()    , 1, 3, 2, 3)
+      table.facet$attach        (label3                , 0, 1, 3, 4, "shrink", "shrink", 0, 0)
+      table.facet$attachDefaults(entry3                , 1, 3, 3, 4)
+      table.facet$attach        (label4                , 0, 1, 4, 5, "shrink", "shrink", 0, 0)
+      table.facet$attachDefaults(entry4                , 1, 3, 4, 5)
+      table.facet$attach        (label5                , 0, 1, 5, 6, "shrink", "shrink", 0, 0)
+      table.facet$attachDefaults(combo2                , 1, 3, 5, 6)
+      table.facet$setColSpacings(5)
+      table.facet$setRowSpacings(2)
 
-      main <<- buildPlotOptionPage(table)
-
+      frame.facet <- gtkFrameNew()
+      frame.facet$setShadowType(GtkShadowType["etched-in"])
+      frame.facet$add(table.facet)
+      
+      main.vbox <- gtkVBoxNew()
+      main.vbox$packStart(frame.subgroup, expand=FALSE)
+      main.vbox$packStart(frame.brewer, expand=FALSE)
+      main.vbox$packStart(frame.legend, expand=FALSE)
+      
+      stratumPage <<- buildPlotOptionPage(main.vbox)
+      facetPage <<- buildPlotOptionPage(frame.facet)
+      
       gSignalConnect(locator.button, "clicked", function(button){
         locate <- grid.locator(unit="npc")
         position.entry$setText(sprintf("%s,%s", as.numeric(locate$x), as.numeric(locate$y)))
@@ -307,6 +354,9 @@ setRefClass("RzPlotStratum",
       combo.size.label$setActive(0)
       combo.line$clear()
       combo.line.label$setActive(0)
+      combo.alpha$clear()
+      combo.alpha.label$setActive(0)
+      
       combo.scale$setActive(0)
       combo.position$setActive(1)
       position.entry$setText("0,1")
@@ -326,6 +376,7 @@ setRefClass("RzPlotStratum",
       combo.shape$setModel(model)
       combo.size$setModel(model)
       combo.line$setModel(model)
+      combo.alpha$setModel(model)
       combo.x$setModel(model)
       combo.y$setModel(model)
     },
@@ -341,17 +392,19 @@ setRefClass("RzPlotStratum",
       shape <- localize(combo.shape$getActiveText())
       size  <- localize(combo.size$getActiveText())
       line  <- localize(combo.line$getActiveText())
+      alpha <- localize(combo.alpha$getActiveText())
       group.label     <- localize(combo.group.label$getActiveText())
       fill.label      <- localize(combo.fill.label$getActiveText())
       colour.label    <- localize(combo.color.label$getActiveText())
       shape.label     <- localize(combo.shape.label$getActiveText())
       size.label      <- localize(combo.size.label$getActiveText())
       line.label      <- localize(combo.line.label$getActiveText())
+      alpha.label     <- localize(combo.alpha.label$getActiveText())
       legend.position <- localize(combo.position$getActiveText())
       legend.linetype <- localize(combo.linetype$getActiveText())
-      vals <- c(group, fill, colour, shape, size, line)
-      labs <- c(group.label, fill.label, colour.label, shape.label, size.label, line.label)
-      aes  <- c("group", "fill", "colour", "shape", "size", "linetype")
+      vals <- c(group, fill, colour, shape, size, line, alpha)
+      labs <- c(group.label, fill.label, colour.label, shape.label, size.label, line.label, alpha.label)
+      aes  <- c("group", "fill", "colour", "shape", "size", "linetype", "alpha")
       names(vals) <- aes
       names(labs) <- aes
       if(legend.position=="specify"){
@@ -415,43 +468,43 @@ setRefClass("RzPlotStratum",
       y      <- localize(combo.y$getActiveText())
       scale  <- localize(combo2$getActiveText())
       if (scale=="fixed") scale <- NULL
+      else                scale <- deparse(scale)      
       
-      on     <- FALSE
-      if(x!="" || y!=""){
-        on   <- TRUE
-      }
-      if(facet=="wrap" & x=="") {
-        on   <- FALSE
-      }
       
-      if (on) {
-        if (facet=="grid") {
-          if(!nzchar(x)) x <- "."
-          if(!nzchar(y)) y <- "."
-          formula <- as.formula(sprintf("%s ~ %s", x, y))
-          rzPlotScript$setScript(layer="facet", type="grid",
-                                 args=list(deparse(formula), scale=deparse(scale)))
-        } else {
-          nrow <- localize(entry3$getText())
-          ncol <- localize(entry4$getText())
-          nrow <- suppressWarnings(as.numeric(nrow))
-          ncol <- suppressWarnings(as.numeric(ncol))
-          if(is.na(nrow)) nrow <- NULL
-          else nrow <- sprintf("nrow=%s", nrow)
-          if(is.na(ncol)) ncol <- NULL
-          else ncol <- sprintf("ncol=%s", ncol)
-          formula <- as.formula(sprintf("~ %s", x))
-          args <- paste(c(, nrow, ncol, scale), collapse=",")
-          rzPlotScript$setScript(layer="facet", type="wrap",
-                                 args=list(deparse(formula), nrow=deparse(nrow), ncol=deparse(ncol), scale=deparse(scale)))
-        }
+      if (x =="" & y =="") {
+        rzPlotScript$clearScript("facet")
+        
+      } else if (facet == "wrap" & x == "") {
+        rzPlotScript$clearScript("facet")
+        
+      } else if (facet == "none") {
+        rzPlotScript$clearScript("facet")
+        
+      } else if (facet == "grid") {
+        if(!nzchar(x)) x <- "."
+        if(!nzchar(y)) y <- "."
+        formula <- as.formula(sprintf("%s ~ %s", x, y))
+        rzPlotScript$setScript(layer="facet", type="grid",
+                               args=list(deparse(formula), scale=scale))
+        
       } else {
-        rzPlotScript$clearScript("facet")        
+        nrow <- localize(entry3$getText())
+        ncol <- localize(entry4$getText())
+        nrow <- suppressWarnings(as.numeric(nrow))
+        ncol <- suppressWarnings(as.numeric(ncol))
+        if(is.na(nrow)) nrow <- NULL
+        else nrow <- deparse(nrow)
+        if(is.na(ncol)) ncol <- NULL
+        else ncol <- deparse(ncol)
+        formula <- as.formula(sprintf("~ %s", x))
+        rzPlotScript$setScript(layer="facet", type="wrap",
+                               args=list(deparse(formula), nrow=nrow, ncol=ncol, scale=scale))
+        
       }
     }
 
     )
 )
-rzplot.stratum$accessors("main")
+rzplot.stratum$accessors(c("stratumPage", "facetPage"))
 
 

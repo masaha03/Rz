@@ -1,10 +1,14 @@
 0.7-0
 Plot function is almost completely rewritten.
+RzThemeEditor. Run from Rz or execute RzThemeEditor().
 Both of data.set and data.frame are now synced. Name of data.set is
 "(name of data.frame).ds" (ex. "dataset1.ds").
-Reload function is now always enabled and reloads data from data.set object.
+Reload function is now always enabled and reloads data from data.set object (ex. "dataset1.ds").
 Select Cases function
-bugfix
+Duplicate Data function
+rzAddData() for add data from script.
+rzReloadData() for reload data from script.
+many bugfix
 
 0.5-1
 bugfix
