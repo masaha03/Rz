@@ -120,8 +120,6 @@ setRefClass("RzPlot",
       vbox$packStart(button.box1, expand=FALSE, padding=5)
       if(is.null(gtkCheckVersion(2, 20, 0))) {
         notebook$setActionWidget(button.detach, GtkPackType["end"])
-      } else {
-        vbox$packStart(button.detach, expand=FALSE)
       }      
       vbox$packStart(notebook, expand=TRUE, fill=TRUE)
       
