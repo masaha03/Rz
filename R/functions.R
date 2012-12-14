@@ -1,9 +1,8 @@
-gettext  <- function(...) base::gettext(..., domain = "R-Rz")
-gettextf <- function(...) base::gettextf(..., domain = "R-Rz")
-stop     <- function(...) base::stop(..., call.=FALSE, domain = "R-Rz")
-
-#if(grepl("darwin",R.Version()$os) formals(gettext)$domain <- NULL
-#if(grepl("darwin",R.Version()$os) formals(gettextf)$domain <- NULL
+if(! grepl("darwin",R.Version()$os) {
+  gettext  <- function(...) base::gettext(..., domain = "R-Rz")
+  gettextf <- function(...) base::gettextf(..., domain = "R-Rz")
+  stop     <- function(...) base::stop(..., call.=FALSE, domain = "R-Rz")  
+}
 
 units   <- c("npc", "cm", "inches", "mm", "points", "picas", "bigpts",
              "dida", "cicero", "scaledpts", "lines", "char", "native", "snpc")
