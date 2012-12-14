@@ -23,7 +23,9 @@ setRefClass("RzVariableView",
       main["enable-grid-lines"] <<- GtkTreeViewGridLines["both"]
       main["rules-hint"] <<- TRUE
       main["has-tooltip"] <<- TRUE
-      main$modifyFont(pangoFontDescriptionFromString(rzSettings$getVariableViewFont()))
+      if(! grepl("darwin",R.Version()$os)) {
+        main$modifyFont(pangoFontDescriptionFromString(rzSettings$getVariableViewFont()))
+      }
       
       rt.index    <<- gtkCellRendererText()
       rtg.select  <<- gtkCellRendererToggleNew()
@@ -62,8 +64,9 @@ setRefClass("RzVariableView",
       treeview.selected["enable-grid-lines"] <<- GtkTreeViewGridLines["both"]
       treeview.selected["rules-hint"] <<- TRUE
       treeview.selected["has-tooltip"] <<- TRUE
-      treeview.selected$modifyFont(pangoFontDescriptionFromString(rzSettings$getVariableViewFont()))
-      
+      if(! grepl("darwin",R.Version()$os)) {
+        treeview.selected$modifyFont(pangoFontDescriptionFromString(rzSettings$getVariableViewFont()))
+      }
       scrolledWindow.selected <- gtkScrolledWindowNew()
       scrolledWindow.selected["shadow-type"] <- GtkShadowType["none"]
       scrolledWindow.selected$setPolicy(GtkPolicyType["automatic"], GtkPolicyType["automatic"])
@@ -729,7 +732,9 @@ setRefClass("RzVariableView",
       entry3$setWidthChars(10)
       entry.var.lab$setWidthChars(10)
       textview <- gtkTextViewNew()
-      textview$modifyFont(pangoFontDescriptionFromString(rzSettings$getMonospaceFont()))
+      if(! grepl("darwin",R.Version()$os)) {
+        textview$modifyFont(pangoFontDescriptionFromString(rzSettings$getMonospaceFont()))
+      }
       textview$setLeftMargin(5)
       textview$setRightMargin(5)
       
@@ -982,8 +987,10 @@ setRefClass("RzVariableView",
     },
     
     changeFont = function(){
-      main$modifyFont(pangoFontDescriptionFromString(rzSettings$getVariableViewFont()))
-      treeview.selected$modifyFont(pangoFontDescriptionFromString(rzSettings$getVariableViewFont()))
+      if(! grepl("darwin",R.Version()$os)) {
+        main$modifyFont(pangoFontDescriptionFromString(rzSettings$getVariableViewFont()))
+        treeview.selected$modifyFont(pangoFontDescriptionFromString(rzSettings$getVariableViewFont()))
+      }
     },
     
     getView = function() return(notebook),

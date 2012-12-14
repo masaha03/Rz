@@ -155,6 +155,12 @@ setRefClass("RzSettings",
       font.tab$packStart(pdffont.hbox, fill=FALSE, expand=FALSE)
       font.tab$packStart(psfont.hbox, fill=FALSE, expand=FALSE)
       
+      if(grepl("darwin",R.Version()$os)) {
+        rzFontSettingWidget1$getFontBox()$setSensitive(FALSE)
+        rzFontSettingWidget4$getFontBox()$setSensitive(FALSE)
+        rzFontSettingWidget2$getFontBox()$setSensitive(FALSE)
+      }
+      
       note <- gtkNotebookNew()
       note$appendPage(general.tab, gtkLabelNew(gettext("General")))
       note$appendPage(font.tab, gtkLabelNew(gettext("Font")))
@@ -175,7 +181,9 @@ setRefClass("RzSettings",
           codebookOff      <<- checkButtonCodebookOff$getActive()
           popupOff         <<- checkButtonPopupOff$getActive()
           settings <- gtkSettingsGetDefault()
-          settings$setStringProperty("gtk-font-name", rzSettings$getGlobalFont(), NULL)
+          if(! grepl("darwin",R.Version()$os)) {
+            settings$setStringProperty("gtk-font-name", rzSettings$getGlobalFont(), NULL)
+          }
           con <- file(path, open="w")
           dput(list(
             themesFolder     = themesFolder,

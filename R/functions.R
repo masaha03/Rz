@@ -1,4 +1,4 @@
-if(! grepl("darwin",R.Version()$os) {
+if(! grepl("darwin",R.Version()$os)) {
   gettext  <- function(...) base::gettext(..., domain = "R-Rz")
   gettextf <- function(...) base::gettextf(..., domain = "R-Rz")
   stop     <- function(...) base::stop(..., call.=FALSE, domain = "R-Rz")  
@@ -395,13 +395,16 @@ gtkFontSelectionButtonNew <- function(fontname=NULL, parent){
   fontname    <- font.dialog$getFontName()
   obj <- gtkButtonNewWithLabel(fontname)
   obj["width-request"] <- 1
-  obj$getChild()$modifyFont(pangoFontDescriptionFromString(sprintf("%s 10", fontname)))
-  
+  if(! grepl("darwin",R.Version()$os)) {
+    obj$getChild()$modifyFont(pangoFontDescriptionFromString(sprintf("%s 10", fontname)))
+  }
   gSignalConnect(font.dialog, "response", function(dialog, response){
     if (response == GtkResponseType["ok"]) {
       new.fontname <- font.dialog$getFontName()
       obj$setLabel(new.fontname)
-      obj$getChild()$modifyFont(pangoFontDescriptionFromString(sprintf("%s 10", new.fontname)))
+      if(! grepl("darwin",R.Version()$os)) {
+        obj$getChild()$modifyFont(pangoFontDescriptionFromString(sprintf("%s 10", new.fontname)))
+      }
     }
   })
   
