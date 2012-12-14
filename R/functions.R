@@ -1,4 +1,7 @@
-if(! grepl("darwin",R.Version()$os)) {
+if(grepl("darwin",R.Version()$os)) {
+  gettext  <- c
+  gettextf <- sprintf  
+} else {
   gettext  <- function(...) base::gettext(..., domain = "R-Rz")
   gettextf <- function(...) base::gettextf(..., domain = "R-Rz")
   stop     <- function(...) base::stop(..., call.=FALSE, domain = "R-Rz")  

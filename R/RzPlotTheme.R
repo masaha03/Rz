@@ -289,9 +289,7 @@ setRefClass("RzPlotTheme",
       sizegroup$addWidget(button.output)
       sizegroup$addWidget(button.apply)
       sizegroup$addWidget(button.ok)
-      
-      note$setActionWidget(button.reset, "end")
-      
+            
       hbox.preview <- gtkHBoxNew(spacing=2)
       hbox.preview$packEnd(button.refresh4, expand=FALSE)
       hbox.preview$packEnd(button.refresh3, expand=FALSE)
@@ -339,8 +337,20 @@ setRefClass("RzPlotTheme",
       vbox.controll$packStart(frame.preview, expand=TRUE)
       vbox.controll$packEnd(hbox.save2,    expand=FALSE)
       
+      vbox.note <- gtkVBoxNew()
+      
+      if(is.null(gtkCheckVersion(2, 20, 0))) {
+        vbox.note$packStart(note)
+        note$setActionWidget(button.reset, "end")        
+      } else {
+        hbox.button.reset <- gtkHBoxNew()
+        hbox.button.reset$packEnd(button.reset, expand=FALSE)
+        vbox.note$packStart(hbox.button.reset, expand=FALSE)
+        vbox.note$packStart(note)
+      }
+      
       paned <- gtkHPanedNew()
-      paned$pack1(note, resize=FALSE, shrink=FALSE)
+      paned$pack1(vbox.note, resize=FALSE, shrink=FALSE)
       paned$pack2(vbox.controll, resize=TRUE, shrink=FALSE)
       paned$setPosition(550)
       paned$setBorderWidth(5)

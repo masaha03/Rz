@@ -134,7 +134,9 @@ setRefClass("RzVariableView",
       hbox.select$packEnd(button.unselect , expand=FALSE)
       hbox.select$packEnd(button.selectall, expand=FALSE)
       notebook <<- gtkNotebookNew()
-      notebook$setActionWidget(hbox.select, GtkPackType["end"])
+      if(is.null(gtkCheckVersion(2, 20, 0))) {
+        notebook$setActionWidget(hbox.select, GtkPackType["end"])
+      }
       notebook$appendPage(sw, gtkLabelNew(gettext("All Variables")))
       notebook$appendPage(scrolledWindow.selected, gtkLabelNew(gettext("Selected Variables")))
       notebook$appendPage(notebook.management, gtkLabelNew(gettext("Management and Manipulation")))

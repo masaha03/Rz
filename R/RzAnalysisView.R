@@ -8,7 +8,9 @@ setRefClass("RzAnalysisView",
       parent <<- NULL
       button.detach <- gtkButtonNewWithLabel(gettext("Detach"))
       main <<- gtkNotebookNew()
-      main$setActionWidget(button.detach, GtkPackType["end"])
+      if(is.null(gtkCheckVersion(2, 20, 0))) { 
+        main$setActionWidget(button.detach, GtkPackType["end"])
+      }
       main$setTabPos(GtkPositionType["top"])
       rzAnalysisStat <<- new("RzAnalysisStat")
       main$appendPage(rzAnalysisStat$getMain()                 , gtkLabelNew(gettext("Descriptive statistics")))
