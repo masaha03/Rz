@@ -5,7 +5,7 @@ crossTable <- function(..., deparse.level = 2){
 }
 
 summary.CrossTable <- function(object, digits=3, latex=FALSE, ...){
-  vcd    <- require(vcd)
+  vcd    <- suppressWarnings(require(vcd, quietly=TRUE))
   x      <- object
   class(x) <- "table"
   sep    <- ifelse(latex, "&", " ")
@@ -226,5 +226,8 @@ summary.CrossTable <- function(object, digits=3, latex=FALSE, ...){
       print(summary.table(margin.table(x, c(2, 3))))
     }
     cat("\n")
+  }
+  if (!vcd) {
+    message("Please install vcd package to output Cramer's V.")
   }
 }

@@ -15,6 +15,10 @@ setRefClass("RzPlotTheme",
   methods = list(
     initialize  = function(...) {
       initFields(...)
+      if (! exists("theme_rz", envir=.GlobalEnv)) {
+        assign("theme_rz", theme_grey, envir=.GlobalEnv)        
+      }
+      
       main <<- gtkWindowNew(show=FALSE)
       main$setDefaultSize(1080, 640)
       main["title"] <<- gettext("Theme Editor")
@@ -52,7 +56,7 @@ setRefClass("RzPlotTheme",
       axis.title.x <<- new("RzPlotElementText", name="axis.title.x", parent=main, inherit.from="axis.title")
       axis.text.x  <<- new("RzPlotElementText", name="axis.text.x", parent=main, inherit.from="axis.text")
       axis.ticks.x <<- new("RzPlotElementLine", name="axis.ticks.x", parent=main, inherit.from="axis.ticks")
-      axis.line.x  <<- new("RzPlotElementLine", name="axis.line.x", parent=main, inherit.from="acis.line")
+      axis.line.x  <<- new("RzPlotElementLine", name="axis.line.x", parent=main, inherit.from="axis.line")
       
       #       axis.title.y	 y axis label (element_text; inherits from axis.title)
       #       axis.text.y	 y axis tick labels (element_text; inherits from axis.text)
@@ -61,7 +65,7 @@ setRefClass("RzPlotTheme",
       axis.title.y <<- new("RzPlotElementText", name="axis.title.y", parent=main, inherit.from="axis.title")
       axis.text.y  <<- new("RzPlotElementText", name="axis.text.y", parent=main, inherit.from="axis.text")
       axis.ticks.y <<- new("RzPlotElementLine", name="axis.ticks.y", parent=main, inherit.from="axis.ticks")
-      axis.line.y  <<- new("RzPlotElementLine", name="axis.line.y", parent=main, inherit.from="acis.line")     
+      axis.line.y  <<- new("RzPlotElementLine", name="axis.line.y", parent=main, inherit.from="axis.line")     
       
       #       legend.background  background of legend (element_rect; inherits from rect)
       #       legend.margin	 extra space added around legend (unit)

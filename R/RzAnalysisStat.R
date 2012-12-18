@@ -64,7 +64,9 @@ setRefClass("RzAnalysisStat",
           info.bar$setText(e[1])
           info.bar$show()
         } else {
-          print(e)
+          if (!is.null(e)) {
+            print(e)
+          }
           info.bar$hide()
         }
       })
