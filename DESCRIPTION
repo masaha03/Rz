@@ -2,7 +2,7 @@ Package: Rz
 Type: Package
 Title: GUI Tool for Data Management like SPSS or Stata
 Version: 0.7-0
-Date: 2012-12-18
+Date: 2013-01-17
 Author: Masahiro Hayashi
 Maintainer: Masahiro Hayashi <rinm884@gmail.com>
 Description: R is very powerfull but not enough for social science becouse of lack
