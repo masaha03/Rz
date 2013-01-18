@@ -9,10 +9,10 @@ setRefClass("RzVariableView",
       initFields(...)
       selectable <<- FALSE
       liststore <<- gtkListStoreNew("character", "logical", "character", "character", "character", "GdkPixbuf", "character", "character")
-      nominalpix    <<- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/cat.png"     ))$retval
-      ordinalpix    <<- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/order.png"   ))$retval
-      intervalpix   <<- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/interval.png"))$retval
-      ratiopix      <<- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/ratio.png"   ))$retval
+      nominalpix    <<- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/oxygen/cat.png"     ))$retval
+      ordinalpix    <<- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/oxygen/order.png"   ))$retval
+      intervalpix   <<- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/oxygen/interval.png"))$retval
+      ratiopix      <<- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/oxygen/ratio.png"   ))$retval
       main <<- gtkTreeViewNewWithModel(liststore)
       
       
@@ -124,11 +124,11 @@ setRefClass("RzVariableView",
       # notebook
       button.selectall <- gtkButtonNew()
       button.selectall["tooltip-text"] <- gettext("Select All Variables")
-      image <- gtkImageNewFromFile(file.path(rzSettings$getRzPath(), "images", "tick.png"))
+      image <- gtkImageNewFromFile(file.path(rzSettings$getRzPath(), "images/oxygen", "tick.png"))
       button.selectall$setImage(image)
       button.unselect <- gtkButtonNew()
       button.unselect["tooltip-text"] <- gettext("Unselect All Variables")
-      image <- gtkImageNewFromFile(file.path(rzSettings$getRzPath(), "images", "cross.png"))
+      image <- gtkImageNewFromFile(file.path(rzSettings$getRzPath(), "images/oxygen", "cross.png"))
       button.unselect$setImage(image)
       hbox.select <- gtkHBoxNew(spacing=2)
       hbox.select$packEnd(button.unselect , expand=FALSE)
@@ -805,8 +805,8 @@ setRefClass("RzVariableView",
       var        <- data.set[[var.name]]
       missing.values(var) <- NULL
       labels     <- labels(var)
-      deletepix  <- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/delete.png"))$retval
-      addpix     <- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/add.png"   ))$retval
+      deletepix  <- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/oxygen/delete.png"))$retval
+      addpix     <- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/oxygen/add.png"   ))$retval
       liststore2 <- gtkListStoreNew("GdkPixbuf", "character", "character", "logical")
       if(!is.null(labels)){
         labels <- data.frame(values=labels@values, labels=labels@.Data, stringsAsFactors=FALSE)

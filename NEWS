@@ -1,3 +1,7 @@
+0.7-1 2013/01/18
+change iconset to solve the license compatibility problem
+enlarge toolbar icon size for visibility
+
 0.7-0
 Plot function is almost completely rewritten.
 RzThemeEditor. Run from Rz or execute RzThemeEditor().

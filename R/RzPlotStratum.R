@@ -181,7 +181,7 @@ setRefClass("RzPlotStratum",
       position.entry <<- gtkEntryNew()
       position.entry$setText("0,1")
       locator.button <- gtkButtonNew()
-      mousepix       <- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/mouse.png"))$retval
+      mousepix       <- gdkPixbufNewFromFile(file.path(rzSettings$getRzPath(), "images/oxygen/mouse.png"))$retval
       image          <- gtkImageNewFromPixbuf(mousepix)
       locator.button$setImage(image)
       position.hbox <- gtkHBoxNew()
