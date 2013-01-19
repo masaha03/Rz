@@ -113,7 +113,11 @@ gtkFileChooserDialogFilteredActivate <- function(obj){
 gtkFileChooserDialogFilteredRun <- function(obj) gtkDialogRun(obj)
 
 Rz <- function(...){
-  rzTools$setMain(new("RzMain"))
+  if (is.null(rzTools$getMain())) {
+    rzTools$setMain(new("RzMain"))    
+  } else {
+    rzTools$getMain()$show()
+  }
 }
 
 RzThemeEditor <- function(new=FALSE, ...) {

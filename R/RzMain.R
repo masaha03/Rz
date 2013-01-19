@@ -105,6 +105,7 @@ setRefClass("RzMain",
       rzMenu$getTool.bar()$showAll()
       win$add(vbox)
       win$show()
+      win$present()
       if(!rzSettings$getAnalysisViewEnabled()) { rzAnalysisView$getMain()$hide() }
       if(!rzSettings$getPlotViewEnabled()) rzPlot$getMain()$hide()
       else                                 rzPlot$construct()
@@ -116,6 +117,11 @@ setRefClass("RzMain",
         }
       })
       
+    },
+    
+    show = function(){
+      win$show()
+      win$present()
     },
     
     # actions

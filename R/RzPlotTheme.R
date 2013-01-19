@@ -377,9 +377,11 @@ setRefClass("RzPlotTheme",
     
     show = function(){
       main$show()
+      main$present()
     },
     
     onRefresh = function(object, data){
+      main$setKeepAbove(TRUE)
       script <- .self$getScript()
       script[[2]] <- paste(script[[2]], collapse=", ")
 
@@ -448,6 +450,8 @@ setRefClass("RzPlotTheme",
       }
 
       image.preview$setFromPixbuf(pixbuf)
+      main$present()
+      main$setKeepAbove(FALSE)
     },
     
     onLoad = function(...){
