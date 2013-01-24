@@ -104,11 +104,11 @@ setRefClass("RzData",
           return(FALSE)
         }
         data.frame.subset <<- eval(parse(text=paste("subset(data.frame, subset=", subset.condition, ")")))
-        assign(paste(data.set.name, ".ds", sep=""), data.set.subset  , envir=.GlobalEnv)
-        assign(data.set.name                      , data.frame.subset, envir=.GlobalEnv)
+        rzTools$sync(paste(data.set.name, ".ds", sep=""), data.set.subset)
+        rzTools$sync(data.set.name                      , data.frame.subset)
       } else {
-        assign(paste(data.set.name, ".ds", sep=""), data.set, envir=.GlobalEnv)
-        assign(data.set.name                      , data.frame, envir=.GlobalEnv)        
+        rzTools$sync(paste(data.set.name, ".ds", sep=""), data.set)
+        rzTools$sync(data.set.name                      , data.frame)
       }
       return(TRUE)
     },

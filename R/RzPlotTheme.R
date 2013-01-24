@@ -16,7 +16,7 @@ setRefClass("RzPlotTheme",
     initialize  = function(...) {
       initFields(...)
       if (! exists("theme_rz", envir=.GlobalEnv)) {
-        assign("theme_rz", theme_grey, envir=.GlobalEnv)        
+        rzTools$sync("theme_rz", theme_grey)        
       }
       
       main <<- gtkWindowNew(show=FALSE)
@@ -271,6 +271,10 @@ setRefClass("RzPlotTheme",
       combo.load$appendText("theme_rz")
       combo.load$appendText("theme_grey")
       combo.load$appendText("theme_bw")
+      if (packageVersion("ggplot2") >= "0.9.3") {
+        combo.load$appendText("theme_minimal")
+        combo.load$appendText("theme_classic")        
+      }
       combo.load$setActive(0)
 
       button.load     <- gtkButtonNewWithLabel("Load")

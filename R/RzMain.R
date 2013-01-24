@@ -9,7 +9,7 @@ setRefClass("RzMain",
     initialize            = function(...) {
       initFields(...)
       if (! exists("theme_rz", envir=.GlobalEnv)) {
-        assign("theme_rz", theme_grey, envir=.GlobalEnv)        
+        rzTools$sync("theme_rz", theme_grey)        
       }
 
       settings <- gtkSettingsGetDefault()

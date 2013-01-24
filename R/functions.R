@@ -98,7 +98,7 @@ gtkFileChooserDialogFilteredNew <- function(title, parent=NULL,
 
 gtkFileChooserDialogFilteredActivate <- function(obj){
   if (! exists("theme_rz", envir=.GlobalEnv)) {
-    assign("theme_rz", theme_grey, envir=.GlobalEnv)        
+    rzTools$sync("theme_rz", theme_grey)        
   }
   
   if (obj$run() == GtkResponseType["accept"]) {

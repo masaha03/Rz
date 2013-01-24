@@ -240,7 +240,6 @@ setRefClass("RzPlot",
         p.current.num <<- 1
         if(length(p.list) >= 2) button.prev["sensitive"] <<- TRUE
         button.next["sensitive"] <<- FALSE
-        assign("rz.last.plot", p.current, envir=.GlobalEnv)
       } else if (!is.list(e)) {
         info.bar$setMessageType(GtkMessageType["error"])
         str <- paste(e[1], collapse="\n")
@@ -255,7 +254,6 @@ setRefClass("RzPlot",
         p.current.num <<- 1
         if(length(p.list) >= 2) button.prev["sensitive"] <<- TRUE
         button.next["sensitive"] <<- FALSE
-        assign("rz.last.plot", p.current, envir=.GlobalEnv)
         info.bar$hide()
       }
       

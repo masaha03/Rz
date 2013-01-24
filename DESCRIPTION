@@ -2,10 +2,10 @@ Package: Rz
 Type: Package
 Title: GUI Tool for Data Management like SPSS or Stata
 Version: 0.7-1
-Date: 2013-01-18
+Date: 2013-01-25
 Author: Masahiro Hayashi
 Maintainer: Masahiro Hayashi <rinm884@gmail.com>
-Description: R is very powerfull but not enough for social science becouse of lack
+Description: R is very powerful but not enough for social science because of lack
   in some functionality for managing survey data SPSS or Stata provides.
   Memisc package supplements these, variable labels, value labels,
   definable missing values and so on, but to efficiently work these functions

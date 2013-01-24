@@ -1,6 +1,7 @@
 tools <-
 setRefClass("RzTools",
-  fields = c("main", "variableView", "infoBar", "window", "datasetName", "themeEditor"),
+  fields = c("main", "variableView", "infoBar", "window", "datasetName",
+             "themeEditor", "tmpObj"),
   methods = list(
     initialize = function(...) {
       initFields(...)
@@ -10,6 +11,7 @@ setRefClass("RzTools",
       window       <<- NULL
       datasetName  <<- NULL
       themeEditor  <<- NULL
+      tmpObj       <<- NULL
     },
     
     clean = function(){
@@ -56,8 +58,14 @@ setRefClass("RzTools",
       } else {
         main$reloadData(data.set.name, ask = ask)
       }
+    },
+    
+    sync = function(name, obj){
+      tmpObj <<- obj
+      eval(parse(text=paste(name, " <- Rz:::rzTools$getTmpObj()")), envir=.GlobalEnv)
     }
   )
 )
-tools$accessors("main", "variableView", "infoBar", "window", "datasetName", "themeEditor")
+tools$accessors("main", "variableView", "infoBar", "window", "datasetName",
+                "themeEditor", "tmpObj")
 
