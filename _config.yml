@@ -16,7 +16,7 @@ author :
   email : rinm884@gmail.com
   github : phosphorm
   twitter : phosphor_m
-  feedburner : feedname
+#  feedburner : feedname
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt 
@@ -79,7 +79,7 @@ JB :
   # Set 'provider' to false to turn commenting off globally.
   #
   comments :
-    provider : disqus
+    provider : false
     disqus :
       short_name : jekyllbootstrap
     livefyre :
