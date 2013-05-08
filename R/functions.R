@@ -979,3 +979,9 @@ rzReloadData <- function(data.set.name = NULL, ask = TRUE){
   rzTools$reloadData(data.set.name, ask = ask)
 }
 
+rzAddItem <- function(item, name = as.character(substitute(item)), data.set.name = NULL, description = name,
+                      measurement = c("auto", "nominal", "ordinal", "interval", "ratio"),
+                      overwrite = FALSE, ask = FALSE){
+  rzTools$addItem(item = item, name = name, data.set.name, description = description,
+                  measurement = measurement, overwrite = overwrite, ask = ask)
+}
