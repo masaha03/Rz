@@ -52,6 +52,18 @@ setRefClass("RzTools",
       }
     },
     
+    addItem = function(item, name = as.character(substitute(item)), data.set.name = NULL, description = name,
+                       measurement = c("auto", "nominal", "ordinal", "interval", "ratio"),
+                       overwrite = FALSE, ask = FALSE) {
+      if (is.null(main)) {
+        stop("Please start Rz.")        
+      } else {
+        main$addItem(item = item, name = name, data.set.name, description = description,
+                     measurement = measurement, overwrite = overwrite, ask = ask)
+      }
+            
+    },
+    
     reloadData = function(data.set.name=NULL, ask = TRUE) {
       if (is.null(main)) {
         stop("Please start Rz.")

@@ -1,10 +1,10 @@
 main <-
 setRefClass("RzMain",
   fields = c("recode.id", "win",
-             "main.hpaned", "main.vpaned", "main.view", "plot.view", "variable.view", "entry.search",
+             "main.hpaned", "main.vpaned", "main.view", "variable.view", "entry.search",
              "info.bar", "message.label", "status.bar", "progress.bar", "actions", "variable.view.list",
-             "rzActionGroup", "rzMenu", "rzDataHandler", "rzSearchEntry", "rzDataSetIO", "rzPlot",
-             "rzAnalysisView", "view.box"),
+             "rzActionGroup", "rzMenu", "rzDataHandler", "rzSearchEntry", "rzDataSetIO",
+             "view.box"),
   methods = list(
     initialize            = function(...) {
       initFields(...)
@@ -26,7 +26,6 @@ setRefClass("RzMain",
       info.bar$getContentArea()$packStart(message.label, expand=FALSE, fill=FALSE)
       info.bar$hide()
       info.bar$setNoShowAll(TRUE)
-      # must before new("Rzplot")
       rzTools$setInfoBar(info.bar)
       status.bar    <<- gtkStatusbarNew()
       progress.bar  <<- gtkProgressBarNew()
@@ -34,15 +33,11 @@ setRefClass("RzMain",
       main.hpaned    <<- gtkHPanedNew()
       main.vpaned    <<- gtkVPanedNew()
       main.view      <<- gtkVBoxNew()
-      rzAnalysisView <<- new("RzAnalysisView")
-      rzPlot         <<- new("RzPlot")
       
       main.vpaned$pack1(main.view, resize=TRUE)
-      main.vpaned$pack2(rzAnalysisView$getMain(), resize=TRUE)
       main.vpaned$setPosition(280)
       
       main.hpaned$pack1(main.vpaned, resize=TRUE)
-      main.hpaned$pack2(rzPlot$getMain(), resize=TRUE)
       main.hpaned$setPosition(450)
             
       status.bar$packEnd(progress.bar, expand=FALSE)
@@ -66,10 +61,7 @@ setRefClass("RzMain",
       accel.group <- rzMenu$getUimanager()$getAccelGroup()
       
       win$addAccelGroup(accel.group)
-      rzAnalysisView$setAccel(accel.group)
       
-      rzActionGroup$getA.plot.view()$setActive(rzSettings$getPlotViewEnabled())
-      rzActionGroup$getA.analysis.view()$setActive(rzSettings$getAnalysisViewEnabled())
       gSignalConnect(rzActionGroup$getA.open(),      "activate", .self$onOpen)
       gSignalConnect(rzActionGroup$getA.save(),      "activate", .self$onSave)
       gSignalConnect(rzActionGroup$getA.ds(),        "activate", .self$onImportFromGlobalEnv)
@@ -81,9 +73,6 @@ setRefClass("RzMain",
       gSignalConnect(rzActionGroup$getA.duplicate(), "activate", .self$onDuplicate)
       gSignalConnect(rzActionGroup$getA.quit(),      "activate", win$destroy)
       gSignalConnect(rzActionGroup$getA.settings(),  "activate", .self$onSetting)
-      gSignalConnect(rzActionGroup$getA.data.view(), "activate", .self$onDataView)
-      gSignalConnect(rzActionGroup$getA.plot.view(), "toggled" , .self$onPlotViewToggled)
-      gSignalConnect(rzActionGroup$getA.analysis.view(), "toggled" , .self$onAnalysisViewToggled)
       gSignalConnect(rzActionGroup$getA.tutorial(),  "activate", function(...) browseURL(gettext("http://m884.jp/RzTutorial.html")))
       gSignalConnect(rzActionGroup$getA.load.sample(), "activate", .self$onLoadSample)
       gSignalConnect(rzActionGroup$getA.value.lab(), "activate", .self$onEditValueLabels)
@@ -106,9 +95,6 @@ setRefClass("RzMain",
       win$add(vbox)
       win$show()
       win$present()
-      if(!rzSettings$getAnalysisViewEnabled()) { rzAnalysisView$getMain()$hide() }
-      if(!rzSettings$getPlotViewEnabled()) rzPlot$getMain()$hide()
-      else                                 rzPlot$construct()
       
       gSignalConnect(win, "destroy", function(...){
         rzTools$clean()
@@ -146,46 +132,6 @@ setRefClass("RzMain",
     onDuplicate = function(action){
       if(is.null(variable.view)) return()
       variable.view$onDuplicate()
-    },
-    
-    onDataView = function(action){
-      if(!is.null(variable.view)){
-        rzDataView <- new("RzDataView", RzData=rzDataHandler$getCurrentData())        
-      }
-    },
-    
-    onPlotViewToggled = function(action){
-      if (!rzPlot$getConstructed()) {
-        rzPlot$construct()
-      }
-      view <- rzPlot$getMain()
-      parent <- view$getParent()
-      if(action$getActive()) {
-        if(class(parent)[1] == "GtkWindow") parent$show()    # if detached
-        view$showAll()
-        rzSettings$setPlotViewEnabled(TRUE)
-      } else {
-        if(class(parent)[1] == "GtkWindow") parent$hide()    # if detached
-        view$hide()
-        rzSettings$setPlotViewEnabled(FALSE)
-      }
-    },
-    
-    onAnalysisViewToggled = function(action){
-      view <- rzAnalysisView$getMain()
-      parent <- view$getParent()
-      if(action$getActive()) {
-        if(class(parent)[1] == "GtkWindow") parent$show()    # if detached
-        view$showAll()
-        rzAnalysisView$toggled()
-        rzSettings$setAnalysisViewEnabled(TRUE)
-        if(!is.null(variable.view)) variable.view$selectMode(TRUE)
-      } else {
-        if(class(parent)[1] == "GtkWindow") parent$hide()    # if detached
-        view$hide()
-        rzSettings$setAnalysisViewEnabled(FALSE)
-        if(!is.null(variable.view)) variable.view$selectMode(FALSE)
-      }
     },
     
     onSetting = function(action){
@@ -310,7 +256,6 @@ setRefClass("RzMain",
         variable.view <<- NULL
         variable.view.list[data.set.name] <<- NULL
         rzTools$setVariableView(variable.view)
-        rzAnalysisView$toggled()
       }
     },
     
@@ -363,7 +308,7 @@ setRefClass("RzMain",
       if ( is.null(variable.view) ) {
         timeoutid <- gTimeoutAdd(80, progress.bar$start)
         variable.view <<- new("RzVariableView", data=rzDataHandler$getData(data.set.name),
-                              win=win, rzPlot=rzPlot)
+                              win=win)
         variable.view$construct()
         variable.view.list[[data.set.name]] <<- variable.view
         main.view$packStart(variable.view$getView())
@@ -371,7 +316,6 @@ setRefClass("RzMain",
         progress.bar["activity-mode"] <<- FALSE
       }
       rzTools$setVariableView(variable.view)
-      rzAnalysisView$toggled()
       rzDataHandler$sync(data.set.name)
       variable.view$toggleView(rzSearchEntry)
       
@@ -388,6 +332,52 @@ setRefClass("RzMain",
     # scripting interface
     addData = function(data){
       rzDataHandler$addData(data)
+    },
+    
+    addItem = function(item, name = as.character(substitute(item)), data.set.name = NULL, description = name,
+                       measurement = c("auto", "nominal", "ordinal", "interval", "ratio"),
+                       overwrite = FALSE, ask = FALSE) {
+      measurement <- match.arg(measurement)
+      item <- as.item(item)
+      if (!is.null(description))
+        description(item) <- description
+      if (measurement != "auto")
+        measurement(item) <- measurement
+      
+      vv.tmp <- NULL
+      if (is.null(data.set.name)) {
+        vv.tmp <- variable.view
+      } else {
+        vv.tmp <- variable.view.list[[data.set.name]]
+      }
+      if (! is.null(vv.tmp)) {
+        response <- 1
+        if (ask) {
+          response <- menu(c(gettext("yes"), gettext("no")),
+                           title = gettext("Are you sure you want to do that?"))
+        }
+        
+        if (response == 1) {
+          data.tmp <- vv.tmp$getData()
+          exist <- data.tmp$existVar(name)
+          if (exist && !overwrite) {
+            response <- menu(c(gettext("yes"), gettext("no")),
+                             title = gettextf("\"%s\" already exists. Are you sure you want to overwrite?",
+                                              name))
+            if (response != 1)
+              return()
+          }
+          data.tmp$addItem(item, name)
+          vv.tmp$reload()
+        }
+        
+      } else {
+        if (is.null(data.set.name)) {
+          stop("Please select a dataset on Rz or specify \"data.set.name\".")
+        } else {
+          stop("The dataset named \"", data.set.name, "\" doesn't exist.")
+        }
+      }
     },
     
     reloadData = function(data.set.name=NULL, ask = TRUE){

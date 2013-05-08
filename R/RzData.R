@@ -58,6 +58,17 @@ setRefClass("RzData",
       }
     },
     
+    existVar = function(varname){
+      var <- data.set[[varname]]
+      return(!is.null(var))
+    },
+    
+    addItem = function(item, name){
+      data.set[[name]]  <<- item
+      data.frame        <<- suppressWarnings(as.data.frame(data.set))      
+      .self$linkDataFrame()
+    },
+    
     deleteVars = function(inds){
       inds <- sort(inds)
       inds <- rev(inds)

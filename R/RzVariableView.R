@@ -3,7 +3,7 @@ setRefClass("RzVariableView",
   fields = c("data", "win", "notebook", "main", "liststore", "sw", "summaries", "summaries.subset",
              "treeview.selected", "model.selected",
              "rt.index", "rtg.select", "rt.vars", "rt.var.labs", "rt.val.labs", "rp.msr", "rt.missing",
-             "rzPlot", "selectable", "nominalpix", "ordinalpix", "intervalpix", "ratiopix"),
+             "selectable", "nominalpix", "ordinalpix", "intervalpix", "ratiopix"),
   methods = list(
     initialize  = function(...) {
       initFields(...)
@@ -130,7 +130,12 @@ setRefClass("RzVariableView",
       button.unselect["tooltip-text"] <- gettext("Unselect All Variables")
       image <- gtkImageNewFromFile(file.path(rzSettings$getRzPath(), "images/oxygen", "cross.png"))
       button.unselect$setImage(image)
+      button.dataview <- gtkButtonNew()
+      button.dataview["tooltip-text"] <- gettext("View Data")
+      image <- gtkImageNewFromFile(file.path(rzSettings$getRzPath(), "images/oxygen", "table.png"))
+      button.dataview$setImage(image)
       hbox.select <- gtkHBoxNew(spacing=2)
+      hbox.select$packEnd(button.dataview, expand=FALSE)
       hbox.select$packEnd(button.unselect , expand=FALSE)
       hbox.select$packEnd(button.selectall, expand=FALSE)
       notebook <<- gtkNotebookNew()
@@ -140,6 +145,10 @@ setRefClass("RzVariableView",
       notebook$appendPage(sw, gtkLabelNew(gettext("All Variables")))
       notebook$appendPage(scrolledWindow.selected, gtkLabelNew(gettext("Selected Variables")))
       notebook$appendPage(notebook.management, gtkLabelNew(gettext("Management and Manipulation")))
+      rzVVDescriptives <- new("RzVVDescriptives", data=data, liststore=liststore)
+      rzVVPlot <- new("RzVVPlot", data=data, liststore=liststore)
+      notebook$appendPage(rzVVDescriptives$getMain(), gtkLabelNew(gettext("Descriptive statistics")))
+      notebook$appendPage(rzVVPlot$getMain(), gtkLabelNew(gettext("Plot")))
       
       gSignalConnect(main, "row-activated", .self$onRowActivated)
       gSignalConnect(main, "query-tooltip", .self$onQueryTooltip)
@@ -152,9 +161,9 @@ setRefClass("RzVariableView",
       gSignalConnect(rt.missing , "edited", .self$onCellEditedMissing)
       gSignalConnect(button.selectall, "clicked", .self$onSelectAll)
       gSignalConnect(button.unselect , "clicked", .self$onUnselect)
-      
-      rzPlot$setModel(main$getModel())
-      rzPlot$setData(data)
+      gSignalConnect(button.dataview, "clicked", function(...){
+        new("RzDataView", RzData=data)
+      })
       
     },
     
@@ -363,7 +372,6 @@ setRefClass("RzVariableView",
       if (is.null(rzSearchEntry)){
         main$setSearchEntry(NULL)
         notebook$hideAll()
-        rzPlot$setModel(NULL)
         if(selectable){
           selectable <<- FALSE
         }
@@ -372,11 +380,6 @@ setRefClass("RzVariableView",
         main$setSearchEqualFunc(rzSearchEntry$searchFunc)
         notebook$showAll()
         notebook$setCurrentPage(0)
-        rzPlot$setModel(main$getModel())
-        rzPlot$setData(data)
-        if(rzSettings$getAnalysisViewEnabled()){
-          selectable <<- TRUE
-        }
       }
     },
     
@@ -466,7 +469,7 @@ setRefClass("RzVariableView",
       
       dialog <- gtkWindowNew(show=FALSE)
       dialog$setTransientFor(win)
-      dialog$setModal(TRUE)
+      dialog$setModal(FALSE)
       dialog$setDecorated(FALSE)
       dialog["window-position"] <- GtkWindowPosition["mouse"]
       
@@ -538,6 +541,13 @@ setRefClass("RzVariableView",
       frame$add(vbox)
       dialog$add(frame)
       dialog$showAll()
+      
+      gSignalConnect(dialog, "leave-notify-event", function(widget, event){
+        size <- widget$getSize()
+        cond <- c(event$x, event$y ,size$width - event$x, size$height - event$y)
+        if (any(cond < 0))  widget$hide()
+        return(FALSE)
+      })
             
     },
     
@@ -957,13 +967,7 @@ setRefClass("RzVariableView",
         } else {
           data.set <- data$getData.set()
         }
-        if(rzSettings$getPlotViewEnabled() & rzSettings$getRunPlot()) {
-          rzPlot$setX(row)
-          rzPlot$onPlot()
-        }
-        if(!(rzSettings$getPlotViewEnabled() & rzSettings$getCodebookOff())) {
-          print(codebook(data.set[ row ]))
-        }
+
       } else if (col.title=="val.labs") {
         .self$onEditValueLabels()
       } else if (col.title=="msr") {

@@ -5,7 +5,6 @@ setRefClass("RzActionGroup",
              "a.quit", "a.edit","a.ch.name", "a.revert", "a.reload",
              "a.remove", "a.vlabs", "a.missing", 
              "a.recode", "a.value.lab", "a.settings",
-             "a.view", "a.data.view", "a.plot.view", "a.analysis.view",
              "a.help", "a.tutorial", "a.load.sample"),
   methods = list(
     initialize            = function(...) {
@@ -33,10 +32,6 @@ setRefClass("RzActionGroup",
       a.duplicate <<- gtkActionNew("Duplicate", gettext("Duplicate Selected Variables"), gettext("Duplicate Selected Variables"))
       a.value.lab <<- gtkActionNew("EditValueLabels", gettext("Edit Value Labels"))
       a.settings  <<- gtkActionNew("Settings", gettext("_Preferences"), gettext("Preferences"))
-      a.view      <<- gtkActionNew("MenuView", gettext("_View"))
-      a.data.view <<- gtkActionNew("DataView", gettext("Data"), gettext("Data"))
-      a.plot.view <<- gtkToggleActionNew("PlotView", gettext("Plot"), gettext("Plot"))
-      a.analysis.view <<- gtkToggleActionNew("AnalysisView", gettext("Analysis"), gettext("Analysis"))
       a.help      <<- gtkActionNew("MenuHelp", gettext("_Help"))
       a.tutorial  <<- gtkActionNew("Tutorial", gettext("Tutorial on Web"), gettext("Tutorial on Web"))
       a.load.sample <<- gtkActionNew("LoadSample", gettext("Load Sample Dataset"), gettext("Load Sample Dataset"))
@@ -51,17 +46,11 @@ setRefClass("RzActionGroup",
       a.reload$setIconFromFile("table_refresh.png")
       a.delete$setIconFromFile("table_row_delete.png")
       a.duplicate$setIconFromFile("table_row_insert.png")
-      a.data.view$setIconFromFile("table.png")
-      a.plot.view$setIconFromFile("plot.png")
-      a.analysis.view$setIconFromFile("application_form.png")
       a.open$setAccelPath("<Rz-Menu>/File/Open")
       a.save$setAccelPath("<Rz-Menu>/File/Save As")
       a.ds$setAccelPath("<Rz-Menu>/File/Import")
       a.quit$setAccelPath("<Rz-Menu>/File/Close")
       a.reload$setAccelPath("<Rz-Menu>/Edit/Reload")
-      a.data.view$setAccelPath("<Rz-Menu>/View/Data View")
-      a.analysis.view$setAccelPath("<Rz-Menu>/View/Analysis View")
-      a.plot.view$setAccelPath("<Rz-Menu>/View/Plot View")
       
       action.group  <<- gtkActionGroupNew()
       action.group$setTranslationDomain("pkg-RGtk2")
@@ -84,11 +73,6 @@ setRefClass("RzActionGroup",
       action.group$addAction(a.delete)
       action.group$addAction(a.duplicate)
       action.group$addAction(a.settings)
-
-      action.group$addAction(a.view)
-      action.group$addAction(a.data.view)
-      action.group$addAction(a.plot.view)
-      action.group$addAction(a.analysis.view)
       
       action.group$addAction(a.help)
       action.group$addAction(a.tutorial)
@@ -107,6 +91,5 @@ ag$accessors(c("action.group", "a.file", "a.open",
                "a.revert", "a.reload",
                "a.vlabs", "a.duplicate", "a.delete", "a.selectall", "a.unselect",
                "a.missing", "a.recode", "a.value.lab", "a.settings",
-               "a.data.view", "a.plot.view", "a.analysis.view",
                "a.tutorial", "a.load.sample"))
 

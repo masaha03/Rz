@@ -18,11 +18,6 @@
       <separator/>
       <menuitem action='Settings' />
     </menu>
-    <menu action='MenuView'>
-      <menuitem action='DataView' />
-      <menuitem action='AnalysisView' />
-      <menuitem action='PlotView' />
-    </menu>
     <menu action='MenuHelp'>
       <menuitem action='Tutorial' />
       <menuitem action='LoadSample' />
@@ -46,10 +41,6 @@
     <toolitem action='Duplicate' />
     <separator/>
     <toolitem action='Settings' />
-    <separator/>
-    <toolitem action='DataView' />
-    <toolitem action='AnalysisView' />
-    <toolitem action='PlotView' />
   </toolbar>
   <accelerator action="Save As"/>
 </ui>
