@@ -151,13 +151,15 @@ setRefClass("RzDataSetIO",
       entry.na$setText("NA")
 
       # File Filter
-      file.types <- c(rzdata   = gettext("Rz Data File (*.rzd)"),
+      file.types <- c(all      = gettext("All Files (*.*)"),
+                      rzdata   = gettext("Rz Data File (*.rzd)"),
                       spss     = gettext("SPSS System File (*.sav)"),
                       spss.por = gettext("SPSS Portable File (*.por)"),
                       stata    = gettext("Stata File (*.dta)"),
                       csv      = gettext("Comma-Separated Text (*.*)"),
                       tsv      = gettext("Tab-Separated Text (*.*)"))
-      file.type.list <- list(spss    = list(name=file.types[["rzdata"]]  , pattern="*.rzd"),
+      file.type.list <- list(all     = list(name=file.types[["all"]]     , pattern="*.*"),
+                             rzdata  = list(name=file.types[["rzdata"]]  , pattern="*.rzd"),
                              spss    = list(name=file.types[["spss"]]    , pattern="*.sav"),
                              spss.por= list(name=file.types[["spss.por"]], pattern="*.por"),
                              stata   = list(name=file.types[["stata"]]   , pattern="*.dta"),
@@ -197,6 +199,17 @@ setRefClass("RzDataSetIO",
 
         dir  <- dirname(file$filename)
         base <- basename(file$filename)
+        
+        if (file$filetype == file.types[["all"]]){
+          ext <- tolower(gsub("^.*\\.", "", base))
+          file$filetype <- switch(ext,
+                                  rzd = file.types[["rzdata"]],
+                                  sav = file.types[["spss"]],
+                                  por = file.types[["spss.por"]],
+                                  dta = file.types[["stata"]],
+                                  csv = file.types[["csv"]],
+                                  file.types[["tsv"]])
+        }
         
         if (file$filetype == file.types[["rzdata"]]){
         # open rzd
