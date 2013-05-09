@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: R 2.15.1\n"
-"Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2012-12-14 15:01\n"
+"Project-Id-Version: Rz 0.8\n"
+"Report-Msgid-Bugs-To: rinm884@gmail.com\n"
+"POT-Creation-Date: 2013-05-08 12:31\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10,6 +10,9 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+
+msgid "Please install vcd package to output Cramer's V."
+msgstr ""
 
 msgid "File Path:"
 msgstr ""
@@ -125,18 +128,6 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-msgid "_View"
-msgstr ""
-
-msgid "Data"
-msgstr ""
-
-msgid "Plot"
-msgstr ""
-
-msgid "Analysis"
-msgstr ""
-
 msgid "_Help"
 msgstr ""
 
@@ -144,9 +135,6 @@ msgid "Tutorial on Web"
 msgstr ""
 
 msgid "Load Sample Dataset"
-msgstr ""
-
-msgid "=============== Output from Quick Editor ==============="
 msgstr ""
 
 msgid "Basic Statistics"
@@ -177,36 +165,6 @@ msgid "method"
 msgstr ""
 
 msgid "adjust"
-msgstr ""
-
-msgid "Change Measurement"
-msgstr ""
-
-msgid "Edit Variable Labels"
-msgstr ""
-
-msgid "Apply Missing Values"
-msgstr ""
-
-msgid "Reverse"
-msgstr ""
-
-msgid "Templates"
-msgstr ""
-
-msgid "Detach"
-msgstr ""
-
-msgid "Descriptive statistics"
-msgstr ""
-
-msgid "Editor"
-msgstr ""
-
-msgid "Variable Editor"
-msgstr ""
-
-msgid "Attach"
 msgstr ""
 
 msgid "Condition of selecting cases is invalid."
@@ -248,6 +206,9 @@ msgstr ""
 msgid "NA Strings"
 msgstr ""
 
+msgid "All Files (*.*)"
+msgstr ""
+
 msgid "SPSS System File (*.sav)"
 msgstr ""
 
@@ -264,6 +225,9 @@ msgid "Changing encoding may takes several or more minutes. Please wait..."
 msgstr ""
 
 msgid "%s [from Global Environment]"
+msgstr ""
+
+msgid "Data"
 msgstr ""
 
 msgid "http://m884.jp/RzTutorial.html"
@@ -287,6 +251,9 @@ msgstr ""
 msgid "no"
 msgstr ""
 
+msgid "\"%s\" already exists. Are you sure you want to overwrite?"
+msgstr ""
+
 msgid "Please select a dataset on Rz or specify \"data.set.name\"."
 msgstr ""
 
@@ -294,6 +261,9 @@ msgid "The dataset named \""
 msgstr ""
 
 msgid "\" doesn't exist."
+msgstr ""
+
+msgid "Detach"
 msgstr ""
 
 msgid "Main"
@@ -309,6 +279,12 @@ msgid "Axis"
 msgstr ""
 
 msgid "Theme"
+msgstr ""
+
+msgid "Attach"
+msgstr ""
+
+msgid "Plot"
 msgstr ""
 
 msgid "Relative sizing"
@@ -548,6 +524,9 @@ msgstr ""
 msgid "Unselect All Variables"
 msgstr ""
 
+msgid "View Data"
+msgstr ""
+
 msgid "All Variables"
 msgstr ""
 
@@ -555,6 +534,9 @@ msgid "Selected Variables"
 msgstr ""
 
 msgid "Management and Manipulation"
+msgstr ""
+
+msgid "Descriptive statistics"
 msgstr ""
 
 msgid "Cannot reload while Select Cases enabled."

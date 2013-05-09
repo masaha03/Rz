@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Rz 0.1\n"
-"Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2012-12-14 15:01\n"
-"PO-Revision-Date: 2012-12-14 15:01+0900\n"
+"Report-Msgid-Bugs-To: rinm884@gmail.com\n"
+"POT-Creation-Date: 2013-05-08 12:31\n"
+"PO-Revision-Date: 2013-05-08 12:37+0900\n"
 "Last-Translator: Masahiro Hayashi <rinm884@gmail.com>\n"
 "Language-Team:  <rinm884@gmail.com>\n"
 "Language: ja_JP\n"
@@ -11,7 +11,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.5\n"
+
+msgid "Please install vcd package to output Cramer's V."
+msgstr "クラマーのVを出力するために、vcdパッケージをインストールしてください。"
 
 msgid "File Path:"
 msgstr "File Path:"
@@ -131,18 +134,6 @@ msgstr "設定(_P)"
 msgid "Preferences"
 msgstr "設定"
 
-msgid "_View"
-msgstr "表示(_V)"
-
-msgid "Data"
-msgstr "データ"
-
-msgid "Plot"
-msgstr "プロット"
-
-msgid "Analysis"
-msgstr "分析"
-
 msgid "_Help"
 msgstr "ヘルプ(_H)"
 
@@ -151,9 +142,6 @@ msgstr "チュートリアル（Web）"
 
 msgid "Load Sample Dataset"
 msgstr "サンプル・データセットの読み込み"
-
-msgid "=============== Output from Quick Editor ==============="
-msgstr "=============== クイックエディタからの出力 ==============="
 
 msgid "Basic Statistics"
 msgstr "基本統計量"
@@ -184,36 +172,6 @@ msgstr "method"
 
 msgid "adjust"
 msgstr "adjust"
-
-msgid "Change Measurement"
-msgstr "尺度を変更する"
-
-msgid "Edit Variable Labels"
-msgstr "変数ラベルを編集する"
-
-msgid "Apply Missing Values"
-msgstr "欠損値を設定する"
-
-msgid "Reverse"
-msgstr "反転する"
-
-msgid "Templates"
-msgstr "テンプレート"
-
-msgid "Detach"
-msgstr "Detach"
-
-msgid "Descriptive statistics"
-msgstr "記述統計量"
-
-msgid "Editor"
-msgstr "エディタ"
-
-msgid "Variable Editor"
-msgstr "変数エディタ"
-
-msgid "Attach"
-msgstr "Attach"
 
 msgid "Condition of selecting cases is invalid."
 msgstr "ケースの選択の条件が不正です。"
@@ -256,6 +214,9 @@ msgstr "ヘッダー（テキスト形式ファイルのみ）"
 msgid "NA Strings"
 msgstr "NAの文字"
 
+msgid "All Files (*.*)"
+msgstr "すべてのファイル (*.*)"
+
 msgid "SPSS System File (*.sav)"
 msgstr "SPSSシステムファイル (*.sav)"
 
@@ -275,6 +236,9 @@ msgstr ""
 
 msgid "%s [from Global Environment]"
 msgstr "%s [大局的環境から]"
+
+msgid "Data"
+msgstr "データ"
 
 msgid "http://m884.jp/RzTutorial.html"
 msgstr "http://m884.jp/RzTutorial_Ja.html"
@@ -297,6 +261,9 @@ msgstr "はい"
 msgid "no"
 msgstr "いいえ"
 
+msgid "\"%s\" already exists. Are you sure you want to overwrite?"
+msgstr "\"%s\"はすでに存在しています。上書きしますか？"
+
 msgid "Please select a dataset on Rz or specify \"data.set.name\"."
 msgstr "Rzでデータ・セットを選択するか\"data.set.name\"を指定してください."
 
@@ -305,6 +272,9 @@ msgstr "次の名前のデータセット \""
 
 msgid "\" doesn't exist."
 msgstr "\"は存在しません."
+
+msgid "Detach"
+msgstr "Detach"
 
 msgid "Main"
 msgstr "メイン"
@@ -320,6 +290,12 @@ msgstr "軸"
 
 msgid "Theme"
 msgstr "テーマ"
+
+msgid "Attach"
+msgstr "Attach"
+
+msgid "Plot"
+msgstr "プロット"
 
 msgid "Relative sizing"
 msgstr "相対的なサイズ"
@@ -588,6 +564,9 @@ msgstr "全ての変数を選択"
 msgid "Unselect All Variables"
 msgstr "選択を解除"
 
+msgid "View Data"
+msgstr "データを見る"
+
 msgid "All Variables"
 msgstr "全ての変数"
 
@@ -596,6 +575,9 @@ msgstr "選択された変数"
 
 msgid "Management and Manipulation"
 msgstr "管理と操作"
+
+msgid "Descriptive statistics"
+msgstr "記述統計量"
 
 msgid "Cannot reload while Select Cases enabled."
 msgstr "ケースの選択の選択が有効になっている間は，リロードはできません。"
@@ -688,6 +670,36 @@ msgstr "Rz() を実行して開始してください．"
 
 msgid "or you can start from menu bar if you use R on Windows."
 msgstr "WindowsでRを使っている場合はメニューバーから起動することもできます．"
+
+#~ msgid "_View"
+#~ msgstr "表示(_V)"
+
+#~ msgid "Analysis"
+#~ msgstr "分析"
+
+#~ msgid "=============== Output from Quick Editor ==============="
+#~ msgstr "=============== クイックエディタからの出力 ==============="
+
+#~ msgid "Change Measurement"
+#~ msgstr "尺度を変更する"
+
+#~ msgid "Edit Variable Labels"
+#~ msgstr "変数ラベルを編集する"
+
+#~ msgid "Apply Missing Values"
+#~ msgstr "欠損値を設定する"
+
+#~ msgid "Reverse"
+#~ msgstr "反転する"
+
+#~ msgid "Templates"
+#~ msgstr "テンプレート"
+
+#~ msgid "Editor"
+#~ msgstr "エディタ"
+
+#~ msgid "Variable Editor"
+#~ msgstr "変数エディタ"
 
 #~ msgid "Please enter valid x."
 #~ msgstr "有効な x を入力してください。"
