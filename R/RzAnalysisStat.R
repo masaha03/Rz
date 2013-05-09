@@ -82,6 +82,7 @@ setRefClass("RzAnalysisStat",
       sw$addWithViewport(vbox)
       sw$setShadowType(GtkShadowType["none"])
       sw$getChild()$setShadowType(GtkShadowType["none"])
+      sw$getChild()$setBorderWidth(5)
       sw$setPolicy(GtkPolicyType["automatic"], GtkPolicyType["automatic"])
       
       gSignalConnect(button.execute, "clicked", function(button){
@@ -153,6 +154,7 @@ setRefClass("RzAnalysisStat",
       sw$addWithViewport(vbox)
       sw$setShadowType(GtkShadowType["none"])
       sw$getChild()$setShadowType(GtkShadowType["none"])
+      sw$getChild()$setBorderWidth(5)
       sw$setPolicy(GtkPolicyType["automatic"], GtkPolicyType["automatic"])
       
       gSignalConnect(button.execute, "clicked", function(button){
@@ -275,6 +277,7 @@ setRefClass("RzAnalysisStat",
       sw$addWithViewport(vbox)
       sw$setShadowType(GtkShadowType["none"])
       sw$getChild()$setShadowType(GtkShadowType["none"])
+      sw$getChild()$setBorderWidth(5)
       sw$setPolicy(GtkPolicyType["automatic"], GtkPolicyType["automatic"])      
       
       gSignalConnect(check1      , "toggled", function(button){
