@@ -967,6 +967,7 @@ setRefClass("RzVariableView",
         } else {
           data.set <- data$getData.set()
         }
+        print(codebook(data.set[ row ]))
 
       } else if (col.title=="val.labs") {
         .self$onEditValueLabels()
