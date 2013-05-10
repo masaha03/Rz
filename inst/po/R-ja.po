@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Rz 0.1\n"
 "Report-Msgid-Bugs-To: rinm884@gmail.com\n"
-"POT-Creation-Date: 2013-05-08 12:31\n"
-"PO-Revision-Date: 2013-05-08 12:37+0900\n"
+"POT-Creation-Date: 2013-05-10 17:52\n"
+"PO-Revision-Date: 2013-05-10 17:54+0900\n"
 "Last-Translator: Masahiro Hayashi <rinm884@gmail.com>\n"
 "Language-Team:  <rinm884@gmail.com>\n"
 "Language: ja_JP\n"
@@ -78,10 +78,10 @@ msgid "Save As"
 msgstr "別名で保存"
 
 msgid "Import from _Grobal Environment"
-msgstr "大局的環境からインポート(_G)"
+msgstr "グローバル環境からインポート(_G)"
 
 msgid "Import from Grobal Environment"
-msgstr "大局的環境からインポート"
+msgstr "グローバル環境からインポート"
 
 msgid "_Close"
 msgstr "閉じる(_C)"
@@ -92,23 +92,23 @@ msgstr "閉じる"
 msgid "_Edit"
 msgstr "編集(_E)"
 
-msgid "_Change the Name of Current Dataset"
-msgstr "現在のデータセットの名前を変更(_C)"
+msgid "_Change the Dataset Name"
+msgstr "データセット名の変更(_C)"
 
-msgid "Change the Name of Current Dataset"
-msgstr "現在のデータセットの名前を変更"
+msgid "Change the Dataset Name"
+msgstr "データセット名の変更"
 
-msgid "_Remove Current Dataset"
-msgstr "現在のデータセットを取り除く(_R)"
+msgid "_Remove Dataset"
+msgstr "データセットを取り除く(_R)"
 
-msgid "Remove Current Dataset"
-msgstr "現在のデータセットを取り除く"
+msgid "Remove Dataset"
+msgstr "データセットを取り除く"
 
 msgid "Revert to Original DataSet"
-msgstr "元のデータセットに戻す"
+msgstr "読み込み時の状態に戻す"
 
 msgid "Reload from Grobal Environment"
-msgstr "大局的環境からリロード"
+msgstr "グローバル環境からリロード"
 
 msgid "Value Labels"
 msgstr "値ラベル"
@@ -119,11 +119,11 @@ msgstr "欠損値"
 msgid "Recode"
 msgstr "リコード"
 
-msgid "Delete Selected Variables"
-msgstr "選択されている変数を削除"
+msgid "Delete Variables"
+msgstr "変数の削除"
 
-msgid "Duplicate Selected Variables"
-msgstr "選択されている変数を複製"
+msgid "Duplicate Variables"
+msgstr "変数の複製"
 
 msgid "Edit Value Labels"
 msgstr "値ラベルを編集する"
@@ -254,6 +254,9 @@ msgstr "古い名前"
 
 msgid "New Name"
 msgstr "新しい名前"
+
+msgid "Change the Name of Current Dataset"
+msgstr "現在のデータセットの名前を変更"
 
 msgid "yes"
 msgstr "はい"
@@ -671,6 +674,9 @@ msgstr "Rz() を実行して開始してください．"
 msgid "or you can start from menu bar if you use R on Windows."
 msgstr "WindowsでRを使っている場合はメニューバーから起動することもできます．"
 
+#~ msgid "Delete Selected Variables"
+#~ msgstr "変数を削除"
+
 #~ msgid "_View"
 #~ msgstr "表示(_V)"
 
@@ -679,9 +685,6 @@ msgstr "WindowsでRを使っている場合はメニューバーから起動す�
 
 #~ msgid "=============== Output from Quick Editor ==============="
 #~ msgstr "=============== クイックエディタからの出力 ==============="
-
-#~ msgid "Change Measurement"
-#~ msgstr "尺度を変更する"
 
 #~ msgid "Edit Variable Labels"
 #~ msgstr "変数ラベルを編集する"

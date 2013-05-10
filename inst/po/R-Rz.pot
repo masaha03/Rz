@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Rz 0.8\n"
 "Report-Msgid-Bugs-To: rinm884@gmail.com\n"
-"POT-Creation-Date: 2013-05-08 12:31\n"
+"POT-Creation-Date: 2013-05-10 17:52\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,16 +86,16 @@ msgstr ""
 msgid "_Edit"
 msgstr ""
 
-msgid "_Change the Name of Current Dataset"
+msgid "_Change the Dataset Name"
 msgstr ""
 
-msgid "Change the Name of Current Dataset"
+msgid "Change the Dataset Name"
 msgstr ""
 
-msgid "_Remove Current Dataset"
+msgid "_Remove Dataset"
 msgstr ""
 
-msgid "Remove Current Dataset"
+msgid "Remove Dataset"
 msgstr ""
 
 msgid "Revert to Original DataSet"
@@ -113,10 +113,10 @@ msgstr ""
 msgid "Recode"
 msgstr ""
 
-msgid "Delete Selected Variables"
+msgid "Delete Variables"
 msgstr ""
 
-msgid "Duplicate Selected Variables"
+msgid "Duplicate Variables"
 msgstr ""
 
 msgid "Edit Value Labels"
@@ -243,6 +243,9 @@ msgid "Old Name"
 msgstr ""
 
 msgid "New Name"
+msgstr ""
+
+msgid "Change the Name of Current Dataset"
 msgstr ""
 
 msgid "yes"
