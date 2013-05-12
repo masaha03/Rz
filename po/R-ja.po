@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Rz 0.1\n"
 "Report-Msgid-Bugs-To: rinm884@gmail.com\n"
-"POT-Creation-Date: 2013-05-10 17:52\n"
+"POT-Creation-Date: 2013-05-12 21:22\n"
 "PO-Revision-Date: 2013-05-10 17:54+0900\n"
 "Last-Translator: Masahiro Hayashi <rinm884@gmail.com>\n"
 "Language-Team:  <rinm884@gmail.com>\n"
@@ -12,55 +12,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 1.5.5\n"
-
-msgid "Please install vcd package to output Cramer's V."
-msgstr "クラマーのVを出力するために、vcdパッケージをインストールしてください。"
-
-msgid "File Path:"
-msgstr "File Path:"
-
-msgid "This file already exists. Overwrite it?"
-msgstr "このファイルは既に存在しています。上書きしますか？"
-
-msgid "Cannot handle character variables longer than 255"
-msgstr "255文字を超える文字変数は取り扱えません"
-
-msgid "Select colour"
-msgstr "色の選択"
-
-msgid "Family:"
-msgstr "ファミリー："
-
-msgid "Preview:"
-msgstr "プレビュー："
-
-msgid "Select Font Family"
-msgstr "フォント・ファミリーの選択"
-
-msgid "Inherit from the current theme"
-msgstr "現在のテーマから継承"
-
-msgid ""
-"Inherit from <span font_style='italic' font_weight='bold' font_size='large'>"
-"%s</span>"
-msgstr ""
-"<span font_style='italic' font_weight='bold' font_size='large'>%s</span>から"
-"継承"
-
-msgid "Top"
-msgstr "上"
-
-msgid "Right"
-msgstr "右"
-
-msgid "Bottom"
-msgstr "下"
-
-msgid "Left"
-msgstr "左"
-
-msgid "Unit"
-msgstr "単位"
 
 msgid "_File"
 msgstr "ファイル(_F)"
@@ -326,6 +277,16 @@ msgstr ""
 "<span font_style='italic' font_weight='bold'>OFF</span>のとき<span "
 "font_style='italic' font_weight='bold'>theme_blank()</span>"
 
+msgid "Inherit from the current theme"
+msgstr "現在のテーマから継承"
+
+msgid ""
+"Inherit from <span font_style='italic' font_weight='bold' font_size='large'>"
+"%s</span>"
+msgstr ""
+"<span font_style='italic' font_weight='bold' font_size='large'>%s</span>から"
+"継承"
+
 msgid "Fill"
 msgstr "塗りつぶし"
 
@@ -452,6 +413,9 @@ msgstr "スケール"
 msgid "dpi"
 msgstr "dpi"
 
+msgid "This file already exists. Overwrite it?"
+msgstr "このファイルは既に存在しています。上書きしますか？"
+
 msgid "legend position"
 msgstr "凡例の位置"
 
@@ -543,12 +507,6 @@ msgstr ") の引数"
 msgid "Please start Rz."
 msgstr "Rzをスタートしてください."
 
-msgid "Select Cases"
-msgstr "ケースの選択"
-
-msgid "Duplicate Dataset"
-msgstr "データセットの複製"
-
 msgid "Measurement"
 msgstr "尺度"
 
@@ -557,6 +515,45 @@ msgstr "変数名"
 
 msgid "Labels"
 msgstr "変数ラベル"
+
+msgid "All variables"
+msgstr "全ての変数"
+
+msgid "Only selected variables"
+msgstr "選択されている変数のみ"
+
+msgid "Only not selected variables"
+msgstr "選択されていない変数のみ"
+
+msgid "Only selected cases"
+msgstr "選択されているケースのみ"
+
+msgid "Exclude missing values"
+msgstr "欠損値を取り除く"
+
+msgid "Variables"
+msgstr "変数"
+
+msgid "Cases"
+msgstr "ケース"
+
+msgid "\"Select Cases\" isn't enabled."
+msgstr "\"ケースの選択\"が有効になっていません。"
+
+msgid "No variables are selected."
+msgstr "変数が一つも選択されていません。"
+
+msgid "[Duplicated from %s]"
+msgstr "[%s からの複製]"
+
+msgid "Enable Select Cases"
+msgstr "ケースの選択を有効にする"
+
+msgid "Select Cases"
+msgstr "ケースの選択"
+
+msgid "Duplicate Dataset"
+msgstr "データセットの複製"
 
 msgid "Missing"
 msgstr "欠損値"
@@ -632,38 +629,41 @@ msgstr "変数名"
 msgid "Duplicate label is detected."
 msgstr "ラベルが重複しています。"
 
-msgid "All variables"
-msgstr "全ての変数"
+msgid "Please install vcd package to output Cramer's V."
+msgstr "クラマーのVを出力するために、vcdパッケージをインストールしてください。"
 
-msgid "Only selected variables"
-msgstr "選択されている変数のみ"
+msgid "File Path:"
+msgstr "File Path:"
 
-msgid "Only not selected variables"
-msgstr "選択されていない変数のみ"
+msgid "Cannot handle character variables longer than 255"
+msgstr "255文字を超える文字変数は取り扱えません"
 
-msgid "Only selected cases"
-msgstr "選択されているケースのみ"
+msgid "Select colour"
+msgstr "色の選択"
 
-msgid "Exclude missing values"
-msgstr "欠損値を取り除く"
+msgid "Family:"
+msgstr "ファミリー："
 
-msgid "Variables"
-msgstr "変数"
+msgid "Preview:"
+msgstr "プレビュー："
 
-msgid "Cases"
-msgstr "ケース"
+msgid "Select Font Family"
+msgstr "フォント・ファミリーの選択"
 
-msgid "\"Select Cases\" isn't enabled."
-msgstr "\"ケースの選択\"が有効になっていません。"
+msgid "Top"
+msgstr "上"
 
-msgid "No variables are selected."
-msgstr "変数が一つも選択されていません。"
+msgid "Right"
+msgstr "右"
 
-msgid "[Duplicated from %s]"
-msgstr "[%s からの複製]"
+msgid "Bottom"
+msgstr "下"
 
-msgid "Enable Select Cases"
-msgstr "ケースの選択を有効にする"
+msgid "Left"
+msgstr "左"
+
+msgid "Unit"
+msgstr "単位"
 
 msgid "Start"
 msgstr "スタート"

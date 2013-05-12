@@ -1,0 +1,633 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Rz 0.8-0\n"
+"Report-Msgid-Bugs-To: rinm884@gmail.com\n"
+"POT-Creation-Date: 2013-05-12 21:22\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+msgid "_File"
+msgstr ""
+
+msgid "_Open"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Save _As"
+msgstr ""
+
+msgid "Save As"
+msgstr ""
+
+msgid "Import from _Grobal Environment"
+msgstr ""
+
+msgid "Import from Grobal Environment"
+msgstr ""
+
+msgid "_Close"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "_Edit"
+msgstr ""
+
+msgid "_Change the Dataset Name"
+msgstr ""
+
+msgid "Change the Dataset Name"
+msgstr ""
+
+msgid "_Remove Dataset"
+msgstr ""
+
+msgid "Remove Dataset"
+msgstr ""
+
+msgid "Revert to Original DataSet"
+msgstr ""
+
+msgid "Reload from Grobal Environment"
+msgstr ""
+
+msgid "Value Labels"
+msgstr ""
+
+msgid "Missing Values"
+msgstr ""
+
+msgid "Recode"
+msgstr ""
+
+msgid "Delete Variables"
+msgstr ""
+
+msgid "Duplicate Variables"
+msgstr ""
+
+msgid "Edit Value Labels"
+msgstr ""
+
+msgid "_Preferences"
+msgstr ""
+
+msgid "Preferences"
+msgstr ""
+
+msgid "_Help"
+msgstr ""
+
+msgid "Tutorial on Web"
+msgstr ""
+
+msgid "Load Sample Dataset"
+msgstr ""
+
+msgid "Basic Statistics"
+msgstr ""
+
+msgid "Cross Tabulation"
+msgstr ""
+
+msgid "Correlation"
+msgstr ""
+
+msgid "=============== Output by Rz ==============="
+msgstr ""
+
+msgid "Row"
+msgstr ""
+
+msgid "Col"
+msgstr ""
+
+msgid "Stratum"
+msgstr ""
+
+msgid "use"
+msgstr ""
+
+msgid "method"
+msgstr ""
+
+msgid "adjust"
+msgstr ""
+
+msgid "Condition of selecting cases is invalid."
+msgstr ""
+
+msgid "This dataset name is invalid. Please enter a valid dataset name."
+msgstr ""
+
+msgid "This dataset name is already exists, please enter another dataset name."
+msgstr ""
+
+msgid "Save Data"
+msgstr ""
+
+msgid "Rz Data File (*.rzd)"
+msgstr ""
+
+msgid "SPSS Syntax and CSV (*.*)"
+msgstr ""
+
+msgid "Stata Do File and CSV (*.*)"
+msgstr ""
+
+msgid "Stata File (*.dta)"
+msgstr ""
+
+msgid "Comma-Separated Text (*.csv)"
+msgstr ""
+
+msgid "Tab-Separated Text (*.csv)"
+msgstr ""
+
+msgid "Encoding"
+msgstr ""
+
+msgid "Hearder(Only for Text File)"
+msgstr ""
+
+msgid "NA Strings"
+msgstr ""
+
+msgid "All Files (*.*)"
+msgstr ""
+
+msgid "SPSS System File (*.sav)"
+msgstr ""
+
+msgid "SPSS Portable File (*.por)"
+msgstr ""
+
+msgid "Comma-Separated Text (*.*)"
+msgstr ""
+
+msgid "Tab-Separated Text (*.*)"
+msgstr ""
+
+msgid "Changing encoding may takes several or more minutes. Please wait..."
+msgstr ""
+
+msgid "%s [from Global Environment]"
+msgstr ""
+
+msgid "Data"
+msgstr ""
+
+msgid "http://m884.jp/RzTutorial.html"
+msgstr ""
+
+msgid "Are you sure you want to do that?"
+msgstr ""
+
+msgid "NES1948 [Sample Dataset in memisc]"
+msgstr ""
+
+msgid "Old Name"
+msgstr ""
+
+msgid "New Name"
+msgstr ""
+
+msgid "Change the Name of Current Dataset"
+msgstr ""
+
+msgid "yes"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "\"%s\" already exists. Are you sure you want to overwrite?"
+msgstr ""
+
+msgid "Please select a dataset on Rz or specify \"data.set.name\"."
+msgstr ""
+
+msgid "The dataset named \""
+msgstr ""
+
+msgid "\" doesn't exist."
+msgstr ""
+
+msgid "Detach"
+msgstr ""
+
+msgid "Main"
+msgstr ""
+
+msgid "Sub-group"
+msgstr ""
+
+msgid "Facet"
+msgstr ""
+
+msgid "Axis"
+msgstr ""
+
+msgid "Theme"
+msgstr ""
+
+msgid "Attach"
+msgstr ""
+
+msgid "Plot"
+msgstr ""
+
+msgid "Relative sizing"
+msgstr ""
+
+msgid "Colour"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "Line\nType"
+msgstr ""
+
+msgid "Line\nEnd"
+msgstr ""
+
+msgid "<span font_style='italic' font_weight='bold'>theme_blank()</span> when turn <span font_style='italic' font_weight='bold'>OFF</span> the button"
+msgstr ""
+
+msgid "Inherit from the current theme"
+msgstr ""
+
+msgid "Inherit from <span font_style='italic' font_weight='bold' font_size='large'>%s</span>"
+msgstr ""
+
+msgid "Fill"
+msgstr ""
+
+msgid "Font\nFamily"
+msgstr ""
+
+msgid "Font\nFace"
+msgstr ""
+
+msgid "Horizontal\nJustification"
+msgstr ""
+
+msgid "Vertical\nJustification"
+msgstr ""
+
+msgid "Angle"
+msgstr ""
+
+msgid "Line\nHeight"
+msgstr ""
+
+msgid "x"
+msgstr ""
+
+msgid "variable label"
+msgstr ""
+
+msgid "variable name"
+msgstr ""
+
+msgid "(free text)"
+msgstr ""
+
+msgid "y"
+msgstr ""
+
+msgid "title"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Stack Layer"
+msgstr ""
+
+msgid "Remove Layer"
+msgstr ""
+
+msgid "position"
+msgstr ""
+
+msgid "No Option"
+msgstr ""
+
+msgid "range"
+msgstr ""
+
+msgid "flip"
+msgstr ""
+
+msgid "Open Theme Editor"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "png (*.png)"
+msgstr ""
+
+msgid "pdf (*.pdf)"
+msgstr ""
+
+msgid "eps/ps (*.eps, *.ps)"
+msgstr ""
+
+msgid "wmf(windows only) (*.wmf)"
+msgstr ""
+
+msgid "svg (*.svg)"
+msgstr ""
+
+msgid "jpeg (*.jpeg)"
+msgstr ""
+
+msgid "bmp (*.bmp)"
+msgstr ""
+
+msgid "tiff (*.tiff)"
+msgstr ""
+
+msgid "pictex (*.tex)"
+msgstr ""
+
+msgid "width"
+msgstr ""
+
+msgid "height"
+msgstr ""
+
+msgid "unit"
+msgstr ""
+
+msgid "scale"
+msgstr ""
+
+msgid "dpi"
+msgstr ""
+
+msgid "This file already exists. Overwrite it?"
+msgstr ""
+
+msgid "legend position"
+msgstr ""
+
+msgid "line type"
+msgstr ""
+
+msgid "Theme Editor"
+msgstr ""
+
+msgid "General"
+msgstr ""
+
+msgid "X Axis"
+msgstr ""
+
+msgid "Y Axis"
+msgstr ""
+
+msgid "Legend"
+msgstr ""
+
+msgid "Panel"
+msgstr ""
+
+msgid "Strip"
+msgstr ""
+
+msgid "Theme Preview"
+msgstr ""
+
+msgid "Name of Theme :"
+msgstr ""
+
+msgid "use filename if blank"
+msgstr ""
+
+msgid "Prev: Up Arrow Key\nNext: Down Arrow Key"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Themes Folder"
+msgstr ""
+
+msgid "Theme (requires restart R)"
+msgstr ""
+
+msgid "Use embeded graphics divice (requires cairoDevice package)"
+msgstr ""
+
+msgid "Plot when a index cell is double-clicked"
+msgstr ""
+
+msgid "Don't output summary while plot view open"
+msgstr ""
+
+msgid "Don't Popup Summary"
+msgstr ""
+
+msgid "Global Font"
+msgstr ""
+
+msgid "Variable View Font"
+msgstr ""
+
+msgid "Monospace Font"
+msgstr ""
+
+msgid "PDF Font"
+msgstr ""
+
+msgid "PostScript Font"
+msgstr ""
+
+msgid "Font"
+msgstr ""
+
+msgid "invalid 'type' ("
+msgstr ""
+
+msgid ") of argument"
+msgstr ""
+
+msgid "Please start Rz."
+msgstr ""
+
+msgid "Measurement"
+msgstr ""
+
+msgid "Names"
+msgstr ""
+
+msgid "Labels"
+msgstr ""
+
+msgid "All variables"
+msgstr ""
+
+msgid "Only selected variables"
+msgstr ""
+
+msgid "Only not selected variables"
+msgstr ""
+
+msgid "Only selected cases"
+msgstr ""
+
+msgid "Exclude missing values"
+msgstr ""
+
+msgid "Variables"
+msgstr ""
+
+msgid "Cases"
+msgstr ""
+
+msgid "\"Select Cases\" isn't enabled."
+msgstr ""
+
+msgid "No variables are selected."
+msgstr ""
+
+msgid "[Duplicated from %s]"
+msgstr ""
+
+msgid "Enable Select Cases"
+msgstr ""
+
+msgid "Select Cases"
+msgstr ""
+
+msgid "Duplicate Dataset"
+msgstr ""
+
+msgid "Missing"
+msgstr ""
+
+msgid "Select All Variables"
+msgstr ""
+
+msgid "Unselect All Variables"
+msgstr ""
+
+msgid "View Data"
+msgstr ""
+
+msgid "All Variables"
+msgstr ""
+
+msgid "Selected Variables"
+msgstr ""
+
+msgid "Management and Manipulation"
+msgstr ""
+
+msgid "Descriptive statistics"
+msgstr ""
+
+msgid "Cannot reload while Select Cases enabled."
+msgstr ""
+
+msgid "Cannot reload while \"Select Cases\" enabled."
+msgstr ""
+
+msgid "\"%s\" isn't a data.set or doesn't exist."
+msgstr ""
+
+msgid "\""
+msgstr ""
+
+msgid "\" isn't a data.set or doesn't exist."
+msgstr ""
+
+msgid "This recode syntax is invalid. Please enter a valid recode syntax."
+msgstr ""
+
+msgid "This variable name is invalid. Please enter a valid variable name."
+msgstr ""
+
+msgid "This Variable already exists. Overwrite it?"
+msgstr ""
+
+msgid "Values"
+msgstr ""
+
+msgid "Existing Values"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "Destination"
+msgstr ""
+
+msgid "Variable Label"
+msgstr ""
+
+msgid "Generate Template"
+msgstr ""
+
+msgid "Variable Name"
+msgstr ""
+
+msgid "Duplicate label is detected."
+msgstr ""
+
+msgid "Please install vcd package to output Cramer's V."
+msgstr ""
+
+msgid "File Path:"
+msgstr ""
+
+msgid "Cannot handle character variables longer than 255"
+msgstr ""
+
+msgid "Select colour"
+msgstr ""
+
+msgid "Family:"
+msgstr ""
+
+msgid "Preview:"
+msgstr ""
+
+msgid "Select Font Family"
+msgstr ""
+
+msgid "Top"
+msgstr ""
+
+msgid "Right"
+msgstr ""
+
+msgid "Bottom"
+msgstr ""
+
+msgid "Left"
+msgstr ""
+
+msgid "Unit"
+msgstr ""
+
+msgid "Start"
+msgstr ""
+
+msgid "Excute Rz() to start,"
+msgstr ""
+
+msgid "or you can start from menu bar if you use R on Windows."
+msgstr ""
