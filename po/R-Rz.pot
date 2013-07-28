@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Rz 0.8-0\n"
+"Project-Id-Version: Rz 0.9-0\n"
 "Report-Msgid-Bugs-To: rinm884@gmail.com\n"
-"POT-Creation-Date: 2013-05-12 21:22\n"
+"POT-Creation-Date: 2013-05-30 16:53\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10,87 +10,6 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-
-msgid "_File"
-msgstr ""
-
-msgid "_Open"
-msgstr ""
-
-msgid "Open"
-msgstr ""
-
-msgid "Save _As"
-msgstr ""
-
-msgid "Save As"
-msgstr ""
-
-msgid "Import from _Grobal Environment"
-msgstr ""
-
-msgid "Import from Grobal Environment"
-msgstr ""
-
-msgid "_Close"
-msgstr ""
-
-msgid "Close"
-msgstr ""
-
-msgid "_Edit"
-msgstr ""
-
-msgid "_Change the Dataset Name"
-msgstr ""
-
-msgid "Change the Dataset Name"
-msgstr ""
-
-msgid "_Remove Dataset"
-msgstr ""
-
-msgid "Remove Dataset"
-msgstr ""
-
-msgid "Revert to Original DataSet"
-msgstr ""
-
-msgid "Reload from Grobal Environment"
-msgstr ""
-
-msgid "Value Labels"
-msgstr ""
-
-msgid "Missing Values"
-msgstr ""
-
-msgid "Recode"
-msgstr ""
-
-msgid "Delete Variables"
-msgstr ""
-
-msgid "Duplicate Variables"
-msgstr ""
-
-msgid "Edit Value Labels"
-msgstr ""
-
-msgid "_Preferences"
-msgstr ""
-
-msgid "Preferences"
-msgstr ""
-
-msgid "_Help"
-msgstr ""
-
-msgid "Tutorial on Web"
-msgstr ""
-
-msgid "Load Sample Dataset"
-msgstr ""
 
 msgid "Basic Statistics"
 msgstr ""
@@ -143,7 +62,7 @@ msgstr ""
 msgid "Stata Do File and CSV (*.*)"
 msgstr ""
 
-msgid "Stata File (*.dta)"
+msgid "Stata Data File (*.dta)"
 msgstr ""
 
 msgid "Comma-Separated Text (*.csv)"
@@ -161,34 +80,103 @@ msgstr ""
 msgid "NA Strings"
 msgstr ""
 
-msgid "All Files (*.*)"
-msgstr ""
-
 msgid "SPSS System File (*.sav)"
 msgstr ""
 
 msgid "SPSS Portable File (*.por)"
 msgstr ""
 
-msgid "Comma-Separated Text (*.*)"
-msgstr ""
-
-msgid "Tab-Separated Text (*.*)"
+msgid "Open"
 msgstr ""
 
 msgid "Changing encoding may takes several or more minutes. Please wait..."
 msgstr ""
 
+msgid "Import from Grobal Environment"
+msgstr ""
+
 msgid "%s [from Global Environment]"
+msgstr ""
+
+msgid "Character code"
+msgstr ""
+
+msgid "Header"
+msgstr ""
+
+msgid "Separator"
+msgstr ""
+
+msgid "Comma"
+msgstr ""
+
+msgid "Whitespace"
+msgstr ""
+
+msgid "Tab"
+msgstr ""
+
+msgid "Semicolon"
+msgstr ""
+
+msgid "Other:"
+msgstr ""
+
+msgid "Missing"
+msgstr ""
+
+msgid "Blank"
+msgstr ""
+
+msgid "Period"
+msgstr ""
+
+msgid "\"NA\""
+msgstr ""
+
+msgid "Decimal"
+msgstr ""
+
+msgid "Quote"
+msgstr ""
+
+msgid "Double quote (\")"
+msgstr ""
+
+msgid "Single quote (')"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Input File (first 20 Lines)"
+msgstr ""
+
+msgid "Preview (first 20 rows)"
+msgstr ""
+
+msgid "Select text file"
+msgstr ""
+
+msgid "Remove Dataset"
+msgstr ""
+
+msgid "Change the Dataset Name"
+msgstr ""
+
+msgid "Reload from Grobal Environment"
+msgstr ""
+
+msgid "Manage Data"
+msgstr ""
+
+msgid "View Data"
 msgstr ""
 
 msgid "Data"
 msgstr ""
 
 msgid "http://m884.jp/RzTutorial.html"
-msgstr ""
-
-msgid "Are you sure you want to do that?"
 msgstr ""
 
 msgid "NES1948 [Sample Dataset in memisc]"
@@ -201,6 +189,9 @@ msgid "New Name"
 msgstr ""
 
 msgid "Change the Name of Current Dataset"
+msgstr ""
+
+msgid "Are you sure you want to do that?"
 msgstr ""
 
 msgid "yes"
@@ -219,6 +210,54 @@ msgid "The dataset named \""
 msgstr ""
 
 msgid "\" doesn't exist."
+msgstr ""
+
+msgid "_File"
+msgstr ""
+
+msgid "_Open Data..."
+msgstr ""
+
+msgid "_Import Data"
+msgstr ""
+
+msgid "From SPSS System File..."
+msgstr ""
+
+msgid "From SPSS Portable File..."
+msgstr ""
+
+msgid "From Stata Data File..."
+msgstr ""
+
+msgid "From Text File..."
+msgstr ""
+
+msgid "From Grobal Environment..."
+msgstr ""
+
+msgid "Save _As..."
+msgstr ""
+
+msgid "_Close"
+msgstr ""
+
+msgid "_Preferences"
+msgstr ""
+
+msgid "_Preferences..."
+msgstr ""
+
+msgid "Preferences..."
+msgstr ""
+
+msgid "_Help"
+msgstr ""
+
+msgid "Tutorial on Web"
+msgstr ""
+
+msgid "Load Sample Dataset"
 msgstr ""
 
 msgid "Detach"
@@ -416,13 +455,13 @@ msgstr ""
 msgid "use filename if blank"
 msgstr ""
 
+msgid "Recode"
+msgstr ""
+
 msgid "Prev: Up Arrow Key\nNext: Down Arrow Key"
 msgstr ""
 
 msgid "Settings"
-msgstr ""
-
-msgid "Themes Folder"
 msgstr ""
 
 msgid "Theme (requires restart R)"
@@ -431,13 +470,10 @@ msgstr ""
 msgid "Use embeded graphics divice (requires cairoDevice package)"
 msgstr ""
 
-msgid "Plot when a index cell is double-clicked"
-msgstr ""
-
-msgid "Don't output summary while plot view open"
-msgstr ""
-
 msgid "Don't Popup Summary"
+msgstr ""
+
+msgid "Automatically save the session"
 msgstr ""
 
 msgid "Global Font"
@@ -476,82 +512,7 @@ msgstr ""
 msgid "Labels"
 msgstr ""
 
-msgid "All variables"
-msgstr ""
-
-msgid "Only selected variables"
-msgstr ""
-
-msgid "Only not selected variables"
-msgstr ""
-
-msgid "Only selected cases"
-msgstr ""
-
-msgid "Exclude missing values"
-msgstr ""
-
-msgid "Variables"
-msgstr ""
-
-msgid "Cases"
-msgstr ""
-
-msgid "\"Select Cases\" isn't enabled."
-msgstr ""
-
-msgid "No variables are selected."
-msgstr ""
-
-msgid "[Duplicated from %s]"
-msgstr ""
-
-msgid "Enable Select Cases"
-msgstr ""
-
-msgid "Select Cases"
-msgstr ""
-
-msgid "Duplicate Dataset"
-msgstr ""
-
-msgid "Missing"
-msgstr ""
-
-msgid "Select All Variables"
-msgstr ""
-
-msgid "Unselect All Variables"
-msgstr ""
-
-msgid "View Data"
-msgstr ""
-
-msgid "All Variables"
-msgstr ""
-
-msgid "Selected Variables"
-msgstr ""
-
-msgid "Management and Manipulation"
-msgstr ""
-
-msgid "Descriptive statistics"
-msgstr ""
-
-msgid "Cannot reload while Select Cases enabled."
-msgstr ""
-
-msgid "Cannot reload while \"Select Cases\" enabled."
-msgstr ""
-
-msgid "\"%s\" isn't a data.set or doesn't exist."
-msgstr ""
-
-msgid "\""
-msgstr ""
-
-msgid "\" isn't a data.set or doesn't exist."
+msgid "Value Labels"
 msgstr ""
 
 msgid "This recode syntax is invalid. Please enter a valid recode syntax."
@@ -584,7 +545,82 @@ msgstr ""
 msgid "Variable Name"
 msgstr ""
 
+msgid "Edit Value Labels"
+msgstr ""
+
 msgid "Duplicate label is detected."
+msgstr ""
+
+msgid "All variables"
+msgstr ""
+
+msgid "Only selected variables"
+msgstr ""
+
+msgid "Only not selected variables"
+msgstr ""
+
+msgid "Only selected cases"
+msgstr ""
+
+msgid "Exclude missing values"
+msgstr ""
+
+msgid "Variables"
+msgstr ""
+
+msgid "Cases"
+msgstr ""
+
+msgid "\"Select Cases\" isn't enabled."
+msgstr ""
+
+msgid "No variables are selected."
+msgstr ""
+
+msgid "[Duplicated from %s]"
+msgstr ""
+
+msgid "Select Cases"
+msgstr ""
+
+msgid "Duplicate Dataset"
+msgstr ""
+
+msgid "Enable Select Cases"
+msgstr ""
+
+msgid "Delete Variables"
+msgstr ""
+
+msgid "Duplicate Variables"
+msgstr ""
+
+msgid "Select All Variables"
+msgstr ""
+
+msgid "Unselect All Variables"
+msgstr ""
+
+msgid "Show Selected Variables Only"
+msgstr ""
+
+msgid "Descriptive statistics"
+msgstr ""
+
+msgid "Cannot reload while Select Cases enabled."
+msgstr ""
+
+msgid "Cannot reload while \"Select Cases\" enabled."
+msgstr ""
+
+msgid "\"%s\" isn't a data.set or doesn't exist."
+msgstr ""
+
+msgid "\""
+msgstr ""
+
+msgid "\" isn't a data.set or doesn't exist."
 msgstr ""
 
 msgid "Please install vcd package to output Cramer's V."
@@ -621,6 +657,9 @@ msgid "Left"
 msgstr ""
 
 msgid "Unit"
+msgstr ""
+
+msgid "Create the directory below to save the config file and/or the session.\n\t%s\nIs it OK?\n\nOr you can change the directory by\n\toptions(RzConfPath=\"/path/to/dir\")"
 msgstr ""
 
 msgid "Start"

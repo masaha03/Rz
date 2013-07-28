@@ -1,9 +1,10 @@
 main <-
 setRefClass("RzMain",
-  fields = c("recode.id", "win",
-             "main.hpaned", "main.vpaned", "main.view", "variable.view", "entry.search",
-             "info.bar", "message.label", "status.bar", "progress.bar", "actions", "variable.view.list",
-             "rzActionGroup", "rzMenu", "rzDataHandler", "rzSearchEntry", "rzDataSetIO",
+  fields = c("win",
+             "main.hpaned", "main.vpaned", "main.view", "variable.view",
+             "info.bar", "message.label",
+             "variable.view.list",
+             "rzMenu", "rzDataHandler", "rzDataSetIO",
              "view.box"),
   methods = list(
     initialize            = function(...) {
@@ -11,12 +12,15 @@ setRefClass("RzMain",
       if (! exists("theme_rz", envir=.GlobalEnv)) {
         rzTools$sync("theme_rz", theme_grey)        
       }
+      
+      if (rzSettings$getAutosave() && ! rzTools$getInitialized()) loadSession()
+      rzTools$setInitialized(TRUE)
+      
 
       settings <- gtkSettingsGetDefault()
       settings$setStringProperty("gtk-font-name", rzSettings$getGlobalFont(), NULL)
       gtkRcReparseAll()
       rzDataSetIO    <<- new("RzDataSetIO")
-      recode.id      <<- NULL
       win            <<- gtkWindowNew(show=FALSE)
       rzTools$setWindow(win)
       info.bar      <<- gtkInfoBarRzNew()
@@ -27,8 +31,9 @@ setRefClass("RzMain",
       info.bar$hide()
       info.bar$setNoShowAll(TRUE)
       rzTools$setInfoBar(info.bar)
-      status.bar    <<- gtkStatusbarNew()
-      progress.bar  <<- gtkProgressBarNew()
+      spinner       <- gtkSpinnerNew(show=FALSE)
+      spinner$setSizeRequest(22, 22)
+      rzTools$setSpinner(spinner)
       
       main.hpaned    <<- gtkHPanedNew()
       main.vpaned    <<- gtkVPanedNew()
@@ -39,69 +44,59 @@ setRefClass("RzMain",
       
       main.hpaned$pack1(main.vpaned, resize=TRUE)
       main.hpaned$setPosition(450)
-            
-      status.bar$packEnd(progress.bar, expand=FALSE)
       
-      rzSearchEntry <<- new("RzSearchEntry")
       variable.view <<- NULL
       variable.view.list <<- list()
       
       win["title"] <<- "Rz"
       win$setDefaultSize(800, 700)
       win["window-position"] <<- GtkWindowPosition["center"]
-      progress.bar["width-request"] <<- 150
       
       gSignalConnect(info.bar, "response", .self$onInfoBarResponsed)
       
-      rzActionGroup <<- new("RzActionGroup")
-      rzActionGroup$load()
-      
-      rzMenu <<- new("RzMenu", action.group=rzActionGroup$getAction.group())
-      gSignalConnect(main.view, "button-release-event" , rzMenu$popupmenu)
+      rzMenu <<- new("RzMenu")
       accel.group <- rzMenu$getUimanager()$getAccelGroup()
       
       win$addAccelGroup(accel.group)
       
-      gSignalConnect(rzActionGroup$getA.open(),      "activate", .self$onOpen)
-      gSignalConnect(rzActionGroup$getA.save(),      "activate", .self$onSave)
-      gSignalConnect(rzActionGroup$getA.ds(),        "activate", .self$onImportFromGlobalEnv)
-      gSignalConnect(rzActionGroup$getA.ch.name(),   "activate", .self$onChangeDataSetName)
-      gSignalConnect(rzActionGroup$getA.remove(),    "activate", .self$onRemove)
-      gSignalConnect(rzActionGroup$getA.revert(),    "activate", .self$onRevert)
-      gSignalConnect(rzActionGroup$getA.reload(),    "activate", .self$onReload)
-      gSignalConnect(rzActionGroup$getA.delete(),    "activate", .self$onDelete)
-      gSignalConnect(rzActionGroup$getA.duplicate(), "activate", .self$onDuplicate)
-      gSignalConnect(rzActionGroup$getA.quit(),      "activate", win$destroy)
-      gSignalConnect(rzActionGroup$getA.settings(),  "activate", .self$onSetting)
-      gSignalConnect(rzActionGroup$getA.tutorial(),  "activate", function(...) browseURL(gettext("http://m884.jp/RzTutorial.html")))
-      gSignalConnect(rzActionGroup$getA.load.sample(), "activate", .self$onLoadSample)
-      gSignalConnect(rzActionGroup$getA.value.lab(), "activate", .self$onEditValueLabels)
+      gSignalConnect(rzMenu$getA.open(),      "activate", .self$onOpen, "rzdata")
+      gSignalConnect(rzMenu$getA.save(),      "activate", .self$onSave)
+      gSignalConnect(rzMenu$getA.importsav(), "activate", .self$onOpen, "spss")
+      gSignalConnect(rzMenu$getA.importpor(), "activate", .self$onOpen, "spss.por")
+      gSignalConnect(rzMenu$getA.importdta(), "activate", .self$onOpen, "stata")
+      gSignalConnect(rzMenu$getA.importt(),   "activate", .self$onOpen, "text")
+      gSignalConnect(rzMenu$getA.importg(),   "activate", .self$onImportFromGlobalEnv)
+      gSignalConnect(rzMenu$getA.quit(),      "activate", win$destroy)
+      gSignalConnect(rzMenu$getA.settings(),  "activate", .self$onSetting)
+      gSignalConnect(rzMenu$getA.tutorial(),  "activate", function(...) browseURL(gettext("http://m884.jp/RzTutorial.html")))
+      gSignalConnect(rzMenu$getA.load.sample(), "activate", .self$onLoadSample)
       
-      rzDataHandler <<- new("RzDataHandler", data.collection=data.collection.obj)
+      rzDataHandler <<- new("RzDataHandler")
+      rzTools$setDataHandler(rzDataHandler)
       gSignalConnect(rzDataHandler$getData.set.list.combo(), "changed", .self$onDatasetChanged)
       
-      vbox       <- gtkVBoxNew()
-      data.handler.box  <- gtkHBoxNew(spacing=1)
-      data.handler.box$packStart(rzDataHandler$getData.set.list.combo(), expand=TRUE, fill=TRUE)
-      data.handler.box$packStart(rzSearchEntry$getEntry.search(), expand=FALSE)
+      vbox      <- gtkVBoxNew()
+      hbox.menu <- gtkHBoxNew()
+      hbox.menu$packStart(rzMenu$getMenu.bar(), expand=TRUE, fill=TRUE)
+      hbox.menu$packEnd(spinner, expand=FALSE, padding=5)
+      hbox.menu$packEnd(rzDataHandler$getData.set.list.combo(), expand=FALSE)
       
-      vbox$packStart(rzMenu$getMenu.bar(),     expand=FALSE, fill=FALSE)
-      vbox$packStart(rzMenu$getTool.bar(),     expand=FALSE, fill=FALSE)
+      vbox$packStart(hbox.menu,    expand=FALSE, fill=FALSE)
       vbox$packStart(info.bar,     expand=FALSE, fill=FALSE)
-      vbox$packStart(data.handler.box, expand=FALSE, fill=FALSE, padding=2)
-      vbox$packStart(main.hpaned,    expand=TRUE , fill=TRUE )
-      vbox$packEnd  (status.bar,   expand=FALSE, fill=FALSE)
-      rzMenu$getTool.bar()$showAll()
+      vbox$packStart(main.hpaned,  expand=TRUE , fill=TRUE)
       win$add(vbox)
       win$show()
       win$present()
-      
+
       gSignalConnect(win, "destroy", function(...){
         rzTools$clean()
         if(!is.null(rzSettings$getEmbededDeviceOn()) && rzSettings$getEmbededDeviceOn()){
           try(dev.off(), silent=TRUE)
         }
+        if (rzSettings$getAutosave()) saveSession()
       })
+      
+      rzDataHandler$changeData(0)
       
     },
     
@@ -111,77 +106,50 @@ setRefClass("RzMain",
     },
     
     # actions
-    onEditValueLabels = function(action){
-      if(is.null(variable.view)) return()
-      variable.view$onEditValueLabels()
-    },
-    
-    onDelete = function(action){
-      if(is.null(variable.view)) return()
-      dialog <- gtkMessageDialogNew(win, "destroy-with-parent",
-                                    GtkMessageType["question"], GtkButtonsType["ok-cancel"],
-                                    gettext("Are you sure you want to do that?"))
-      response <- dialog$run()
-      dialog$hide()
-      
-      if(response==GtkResponseType["ok"]){
-        variable.view$onDelete()
-      }
-    },
-
-    onDuplicate = function(action){
-      if(is.null(variable.view)) return()
-      variable.view$onDuplicate()
-    },
-    
     onSetting = function(action){
       rzSettings$runDialog(win)
       if(!is.null(variable.view))variable.view$changeFont()
-      rzActionGroup$getA.reload()$setSensitive(rzSettings$getUseDataSetObject())
       gtkRcReparseAll()
     },
     
-    onOpen                = function(action){
-      timeoutid <- gTimeoutAdd(80, progress.bar$start)
-      data <- rzDataSetIO$open(win, info.bar)
-      gSourceRemove(timeoutid)
-      progress.bar["activity-mode"] <<- FALSE
+    onOpen                = function(action, type){
+      on.exit(spinStop())
+      if (type=="text") {
+        data <- rzDataSetIO$importFromText(win)
+      } else {
+        data <- rzDataSetIO$open(win, type, info.bar)
+      }
       if(!is.null(data)) {
         rzDataHandler$addData(data)
       }
     },
     
     onSave                = function(action){
-      timeoutid <- gTimeoutAdd(80, progress.bar$start)
+      on.exit(spinStop())
       data <- rzDataHandler$getCurrentData()
       rzDataSetIO$save(win, data)
-      gSourceRemove(timeoutid)
-      progress.bar["activity-mode"] <<- FALSE
     },
     
     onImportFromGlobalEnv = function(action){
-      timeoutid <- gTimeoutAdd(80, progress.bar$start)
+      on.exit(spinStop())
       data <- rzDataSetIO$importFromGlobalEnv(win)
       if(!is.null(data)) {
         rzDataHandler$addData(data)
       }
-      gSourceRemove(timeoutid)
-      progress.bar["activity-mode"] <<- FALSE
     },
     
     onLoadSample = function(action){
-      timeoutid <- gTimeoutAdd(80, progress.bar$start)
+      on.exit(spinStop())
+      spinStart()
       nes1948.por <- UnZip("anes/NES1948.ZIP","NES1948.POR",package="memisc")
       nes1948 <- spss.portable.file(nes1948.por)
       sample.data.set <- as.data.set(nes1948)
       data <- new("RzData", file.path=NULL, data.set=sample.data.set,
                   original.name=gettext("NES1948 [Sample Dataset in memisc]"))
       rzDataHandler$addData(data)
-      gSourceRemove(timeoutid)
-      progress.bar["activity-mode"] <<- FALSE
     },
     
-    onChangeDataSetName   = function(action){
+    changeDataSetName   = function(){
       onActivate <- function(entry, dialog){
         dialog$response(GtkResponseType["ok"])
       }
@@ -204,12 +172,12 @@ setRefClass("RzMain",
             dialog2$hide()
             dialog$run()
             return()
-            
           }
         } else {
           dialog$hide()
         }        
       }
+      
       data.set.name <- rzDataHandler$getCurrentDataSetName()
       if ( length(data.set.name) == 0 ) return()
       txt <- paste(gettextf("Old Name"),":", sprintf(" <b>%s</b>", data.set.name), sep="")
@@ -240,7 +208,7 @@ setRefClass("RzMain",
       response <- dialog$run()
     },
     
-    onRemove              = function(action){
+    remove              = function(){
       data.set.name <- rzDataHandler$getCurrentDataSetName()
       if ( length(data.set.name) == 0 ) return()
       dialog <- gtkMessageDialogNew(win, "destroy-with-parent",
@@ -250,19 +218,19 @@ setRefClass("RzMain",
       dialog$hide()
       
       if(response==GtkResponseType["ok"]){
-        rzDataHandler$removeCurrentData()
-        variable.view$toggleView()
+        ind <- rzDataHandler$removeCurrentData()
         variable.view$getView()$destroy()
         variable.view <<- NULL
         variable.view.list[data.set.name] <<- NULL
         rzTools$setVariableView(variable.view)
+        rzDataHandler$changeData(ifelse(ind==0, 0, ind-1))
       }
     },
     
     onRevert = function(action){
+      on.exit(spinStop())
+      spinStart()
       if(!is.null(variable.view)){
-        timeoutid <- gTimeoutAdd(80, progress.bar$start)
-        
         dialog <- gtkMessageDialogNew(win, "destroy-with-parent",
                                       GtkMessageType["question"], GtkButtonsType["ok-cancel"],
                                       gettext("Are you sure you want to do that?"))
@@ -274,54 +242,32 @@ setRefClass("RzMain",
           data$revert()
           variable.view$reload()
         }
-        gSourceRemove(timeoutid)
-        progress.bar["activity-mode"] <<- FALSE
       }
-    },
-    
-    onReload = function(action){
-      on.exit(gSourceRemove(timeoutid))
-      on.exit(progress.bar["activity-mode"] <<- FALSE, add = TRUE)
-      timeoutid <- gTimeoutAdd(80, progress.bar$start)
-      if(!is.null(variable.view)){
-        
-        dialog <- gtkMessageDialogNew(win, "destroy-with-parent",
-                                      GtkMessageType["question"], GtkButtonsType["ok-cancel"],
-                                      gettext("Are you sure you want to do that?"))
-        response <- dialog$run()
-        dialog$hide()
-        
-        if(response==GtkResponseType["ok"]){
-            variable.view$reload()
-        }
-      }
-      
     },
     
     onDatasetChanged      = function(combo){
+      on.exit(spinStop())
+      spinStart()
       data.set.name <- rzDataHandler$getCurrentDataSetName()
       if ( length(data.set.name) == 0 ) return()
-      if ( !is.null(variable.view) ){
-        variable.view$toggleView()
+      
+      if ( !is.null(variable.view) ) {
+        variable.view$hide()
       }
-      variable.view <<- variable.view.list[[data.set.name]]
-      if ( is.null(variable.view) ) {
-        timeoutid <- gTimeoutAdd(80, progress.bar$start)
+      
+      if ( ! data.set.name %in% names(variable.view.list) ) {
         variable.view <<- new("RzVariableView", data=rzDataHandler$getData(data.set.name),
                               win=win)
-        variable.view$construct()
         variable.view.list[[data.set.name]] <<- variable.view
         main.view$packStart(variable.view$getView())
-        gSourceRemove(timeoutid)
-        progress.bar["activity-mode"] <<- FALSE
+      } else {
+        variable.view <<- variable.view.list[[data.set.name]]
+        variable.view$showAll()
       }
       rzTools$setVariableView(variable.view)
       rzDataHandler$sync(data.set.name)
-      variable.view$toggleView(rzSearchEntry)
       
       win["title"] <<- paste("Rz -", data.set.name)
-      if (!is.null(recode.id)) gSignalHandlerDisconnect(rzActionGroup$getA.recode(), recode.id)
-      recode.id <<- gSignalConnect(rzActionGroup$getA.recode(),  "activate", variable.view$onRecode, win)
     },
     
     onInfoBarResponsed    = function(widget, response.id){

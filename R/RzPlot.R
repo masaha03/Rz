@@ -1,6 +1,6 @@
 rzplot <- 
 setRefClass("RzPlot",
-  fields = c("info.bar", "main", "notebook", "data", "model", "constructed",
+  fields = c("info.bar", "main", "notebook", "data", "model", "constructed", "vvcore",
              "geom", "stratum", "misc", "save",
              "button.prev", "button.next",
              "p.current", "p.list", "p.current.num", "parent", "parent.win", "rzPlotScript"),
@@ -69,9 +69,8 @@ setRefClass("RzPlot",
         table$add(tag)
         
         tw     <- gtkTextViewNew()
-        if(! grepl("darwin",R.Version()$os)) {          
-          tw$modifyFont(pangoFontDescriptionFromString(rzSettings$getMonospaceFont()))
-        }
+        tw$modifyFont(pangoFontDescriptionFromString(rzSettings$getMonospaceFont()))
+        
         buffer <- gtkTextBufferNew(table)
         if(!is.null(data)) buffer$setText(rzPlotScript$getScript())
         first1 <- buffer$getStartIter()$iter

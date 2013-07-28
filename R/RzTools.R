@@ -1,7 +1,7 @@
 tools <-
 setRefClass("RzTools",
-  fields = c("main", "variableView", "infoBar", "window", "datasetName",
-             "themeEditor", "tmpObj"),
+  fields = c("main", "variableView", "infoBar", "window", "datasetName", "dataHandler",
+             "themeEditor", "tmpObj", "spinner", "RzPath", "initialized"),
   methods = list(
     initialize = function(...) {
       initFields(...)
@@ -12,6 +12,9 @@ setRefClass("RzTools",
       datasetName  <<- NULL
       themeEditor  <<- NULL
       tmpObj       <<- NULL
+      dataHandler  <<- NULL
+      spinner      <<- NULL
+      initialized  <<- FALSE
     },
     
     clean = function(){
@@ -20,6 +23,8 @@ setRefClass("RzTools",
       infoBar      <<- NULL
       window       <<- NULL
       datasetName  <<- NULL
+      dataHandler  <<- NULL
+      spinner      <<- NULL
     },
     
     runDialog = function(message, type = c("info", "warning", "question", "error")){
@@ -79,5 +84,5 @@ setRefClass("RzTools",
   )
 )
 tools$accessors("main", "variableView", "infoBar", "window", "datasetName",
-                "themeEditor", "tmpObj")
+                "themeEditor", "tmpObj", "dataHandler", "spinner", "RzPath", "initialized")
 

@@ -2,20 +2,18 @@
   <menubar name='MenuBar'>
     <menu action='MenuFile'>
       <menuitem action='Open' />
+      <menu action='MenuImport'>
+        <menuitem action='ImportSav' />
+        <menuitem action='ImportPor' />
+        <menuitem action='ImportDta' />
+        <menuitem action='ImportText' />
+        <menuitem action='ImportFromGlobalEnv' />
+      </menu>
       <menuitem action='Save As' />
-      <menuitem action='RevertToOriginal' />
-      <menuitem action='ImportFromGlobalEnv' />
-      <menuitem action='RemoveDataSet' />
       <separator/>
       <menuitem action='Close'/>
     </menu>
-    <menu action='MenuEdit'>
-      <menuitem action='ChageDataSetName'/>
-      <menuitem action='ReloadFromGlobalEnv' />
-      <separator/>
-      <menuitem action='Delete' />
-      <menuitem action='Duplicate' />
-      <separator/>
+    <menu action='MenuSettings'>
       <menuitem action='Settings' />
     </menu>
     <menu action='MenuHelp'>
@@ -23,24 +21,5 @@
       <menuitem action='LoadSample' />
     </menu>
   </menubar>
-  <popup name="PopupVV">
-    <menuitem action="EditValueLabels" />
-    <menuitem action="Recode" />
-  </popup>
-  <toolbar  name='ToolBar'>
-    <toolitem action='Open' />
-    <toolitem action='Save As' />
-    <toolitem action='RevertToOriginal' />
-    <toolitem action='ImportFromGlobalEnv' />
-    <toolitem action='RemoveDataSet' />
-    <separator/>
-    <toolitem action='ChageDataSetName' />
-    <toolitem action='ReloadFromGlobalEnv' />
-    <separator/>
-    <toolitem action='Delete' />
-    <toolitem action='Duplicate' />
-    <separator/>
-    <toolitem action='Settings' />
-  </toolbar>
   <accelerator action="Save As"/>
 </ui>

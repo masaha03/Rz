@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Rz 0.1\n"
 "Report-Msgid-Bugs-To: rinm884@gmail.com\n"
-"POT-Creation-Date: 2013-05-12 21:22\n"
-"PO-Revision-Date: 2013-05-10 17:54+0900\n"
+"POT-Creation-Date: 2013-05-30 16:53\n"
+"PO-Revision-Date: 2013-05-30 16:54+0900\n"
 "Last-Translator: Masahiro Hayashi <rinm884@gmail.com>\n"
 "Language-Team:  <rinm884@gmail.com>\n"
 "Language: ja_JP\n"
@@ -12,87 +12,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 1.5.5\n"
-
-msgid "_File"
-msgstr "ファイル(_F)"
-
-msgid "_Open"
-msgstr "開く(_O)"
-
-msgid "Open"
-msgstr "開く"
-
-msgid "Save _As"
-msgstr "別名で保存(_A)"
-
-msgid "Save As"
-msgstr "別名で保存"
-
-msgid "Import from _Grobal Environment"
-msgstr "グローバル環境からインポート(_G)"
-
-msgid "Import from Grobal Environment"
-msgstr "グローバル環境からインポート"
-
-msgid "_Close"
-msgstr "閉じる(_C)"
-
-msgid "Close"
-msgstr "閉じる"
-
-msgid "_Edit"
-msgstr "編集(_E)"
-
-msgid "_Change the Dataset Name"
-msgstr "データセット名の変更(_C)"
-
-msgid "Change the Dataset Name"
-msgstr "データセット名の変更"
-
-msgid "_Remove Dataset"
-msgstr "データセットを取り除く(_R)"
-
-msgid "Remove Dataset"
-msgstr "データセットを取り除く"
-
-msgid "Revert to Original DataSet"
-msgstr "読み込み時の状態に戻す"
-
-msgid "Reload from Grobal Environment"
-msgstr "グローバル環境からリロード"
-
-msgid "Value Labels"
-msgstr "値ラベル"
-
-msgid "Missing Values"
-msgstr "欠損値"
-
-msgid "Recode"
-msgstr "リコード"
-
-msgid "Delete Variables"
-msgstr "変数の削除"
-
-msgid "Duplicate Variables"
-msgstr "変数の複製"
-
-msgid "Edit Value Labels"
-msgstr "値ラベルを編集する"
-
-msgid "_Preferences"
-msgstr "設定(_P)"
-
-msgid "Preferences"
-msgstr "設定"
-
-msgid "_Help"
-msgstr "ヘルプ(_H)"
-
-msgid "Tutorial on Web"
-msgstr "チュートリアル（Web）"
-
-msgid "Load Sample Dataset"
-msgstr "サンプル・データセットの読み込み"
 
 msgid "Basic Statistics"
 msgstr "基本統計量"
@@ -147,8 +66,8 @@ msgstr "SPSSシンタックスとCSV (*.*)"
 msgid "Stata Do File and CSV (*.*)"
 msgstr "Stata Do ファイルとCSV (*.dta)"
 
-msgid "Stata File (*.dta)"
-msgstr "Stataファイル (*.dta)"
+msgid "Stata Data File (*.dta)"
+msgstr "Stataデータファイル (*.dta)"
 
 msgid "Comma-Separated Text (*.csv)"
 msgstr "コンマ区切りテキスト (*.csv)"
@@ -165,37 +84,106 @@ msgstr "ヘッダー（テキスト形式ファイルのみ）"
 msgid "NA Strings"
 msgstr "NAの文字"
 
-msgid "All Files (*.*)"
-msgstr "すべてのファイル (*.*)"
-
 msgid "SPSS System File (*.sav)"
 msgstr "SPSSシステムファイル (*.sav)"
 
 msgid "SPSS Portable File (*.por)"
 msgstr "SPSSポータブルファイル (*.por)"
 
-msgid "Comma-Separated Text (*.*)"
-msgstr "コンマ区切りテキスト (*.*)"
-
-msgid "Tab-Separated Text (*.*)"
-msgstr "タブ区切りテキスト (*.*)"
+msgid "Open"
+msgstr "開く"
 
 msgid "Changing encoding may takes several or more minutes. Please wait..."
 msgstr ""
 "エンコーディングの変更は数分かそれ以上かかることがあります。お待ちくださ"
 "い．．．"
 
+msgid "Import from Grobal Environment"
+msgstr "グローバル環境からインポート"
+
 msgid "%s [from Global Environment]"
 msgstr "%s [大局的環境から]"
+
+msgid "Character code"
+msgstr "文字コード"
+
+msgid "Header"
+msgstr "ヘッダー"
+
+msgid "Separator"
+msgstr "区切り文字"
+
+msgid "Comma"
+msgstr "コンマ"
+
+msgid "Whitespace"
+msgstr "空白"
+
+msgid "Tab"
+msgstr "タブ"
+
+msgid "Semicolon"
+msgstr "セミコロン"
+
+msgid "Other:"
+msgstr "その他:"
+
+msgid "Missing"
+msgstr "欠損値"
+
+msgid "Blank"
+msgstr "ブランク"
+
+msgid "Period"
+msgstr "ピリオド"
+
+msgid "\"NA\""
+msgstr "\"NA\""
+
+msgid "Decimal"
+msgstr "小数点"
+
+msgid "Quote"
+msgstr "文字列のクォーテーション"
+
+msgid "Double quote (\")"
+msgstr "ダブルクォーテーション (\")"
+
+msgid "Single quote (')"
+msgstr "シングルクォーテーション (')"
+
+msgid "None"
+msgstr "なし"
+
+msgid "Input File (first 20 Lines)"
+msgstr "入力ファイル（最初の20行）"
+
+msgid "Preview (first 20 rows)"
+msgstr "プレビュー（最初の20行）"
+
+msgid "Select text file"
+msgstr "テキストファイルの選択"
+
+msgid "Remove Dataset"
+msgstr "データセットを取り除く"
+
+msgid "Change the Dataset Name"
+msgstr "データセット名の変更"
+
+msgid "Reload from Grobal Environment"
+msgstr "グローバル環境からリロード"
+
+msgid "Manage Data"
+msgstr "データを管理する"
+
+msgid "View Data"
+msgstr "データを見る"
 
 msgid "Data"
 msgstr "データ"
 
 msgid "http://m884.jp/RzTutorial.html"
 msgstr "http://m884.jp/RzTutorial_Ja.html"
-
-msgid "Are you sure you want to do that?"
-msgstr "本当に実行しますか？"
 
 msgid "NES1948 [Sample Dataset in memisc]"
 msgstr "NES1948 [memiscのサンプル・データセット]"
@@ -208,6 +196,9 @@ msgstr "新しい名前"
 
 msgid "Change the Name of Current Dataset"
 msgstr "現在のデータセットの名前を変更"
+
+msgid "Are you sure you want to do that?"
+msgstr "本当に実行しますか？"
 
 msgid "yes"
 msgstr "はい"
@@ -226,6 +217,54 @@ msgstr "次の名前のデータセット \""
 
 msgid "\" doesn't exist."
 msgstr "\"は存在しません."
+
+msgid "_File"
+msgstr "ファイル(_F)"
+
+msgid "_Open Data..."
+msgstr "データを開く...(_O)"
+
+msgid "_Import Data"
+msgstr "データをインポート(_I)"
+
+msgid "From SPSS System File..."
+msgstr "SPSSシステムファイルから..."
+
+msgid "From SPSS Portable File..."
+msgstr "SPSSポータブルファイルから..."
+
+msgid "From Stata Data File..."
+msgstr "Stataデータファイルから..."
+
+msgid "From Text File..."
+msgstr "テキスト形式ファイルから..."
+
+msgid "From Grobal Environment..."
+msgstr "グローバル環境から..."
+
+msgid "Save _As..."
+msgstr "別名で保存...(_A)"
+
+msgid "_Close"
+msgstr "閉じる(_C)"
+
+msgid "_Preferences"
+msgstr "設定(_P)"
+
+msgid "_Preferences..."
+msgstr "設定...(_P)"
+
+msgid "Preferences..."
+msgstr "設定..."
+
+msgid "_Help"
+msgstr "ヘルプ(_H)"
+
+msgid "Tutorial on Web"
+msgstr "チュートリアル（Web）"
+
+msgid "Load Sample Dataset"
+msgstr "サンプル・データセットの読み込み"
 
 msgid "Detach"
 msgstr "Detach"
@@ -452,6 +491,9 @@ msgstr "テーマの名前 :"
 msgid "use filename if blank"
 msgstr "空欄のときはファイル名が使われます"
 
+msgid "Recode"
+msgstr "リコード"
+
 msgid ""
 "Prev: Up Arrow Key\n"
 "Next: Down Arrow Key"
@@ -462,23 +504,17 @@ msgstr ""
 msgid "Settings"
 msgstr "設定"
 
-msgid "Themes Folder"
-msgstr "テーマフォルダ"
-
 msgid "Theme (requires restart R)"
 msgstr "テーマ（Rの再起動が必要）"
 
 msgid "Use embeded graphics divice (requires cairoDevice package)"
 msgstr "埋め込みグラフィックスデバイスを使う (cairoDeviceパッケージが必要です)"
 
-msgid "Plot when a index cell is double-clicked"
-msgstr "インデックスをダブルクリックしたときにプロットを実行する"
-
-msgid "Don't output summary while plot view open"
-msgstr "プロットビューを開いている間はサマリーを出力しない"
-
 msgid "Don't Popup Summary"
 msgstr "サマリーをポップアップしない"
+
+msgid "Automatically save the session"
+msgstr "セッションを自動的に保存する"
 
 msgid "Global Font"
 msgstr "全般のフォント"
@@ -516,83 +552,8 @@ msgstr "変数名"
 msgid "Labels"
 msgstr "変数ラベル"
 
-msgid "All variables"
-msgstr "全ての変数"
-
-msgid "Only selected variables"
-msgstr "選択されている変数のみ"
-
-msgid "Only not selected variables"
-msgstr "選択されていない変数のみ"
-
-msgid "Only selected cases"
-msgstr "選択されているケースのみ"
-
-msgid "Exclude missing values"
-msgstr "欠損値を取り除く"
-
-msgid "Variables"
-msgstr "変数"
-
-msgid "Cases"
-msgstr "ケース"
-
-msgid "\"Select Cases\" isn't enabled."
-msgstr "\"ケースの選択\"が有効になっていません。"
-
-msgid "No variables are selected."
-msgstr "変数が一つも選択されていません。"
-
-msgid "[Duplicated from %s]"
-msgstr "[%s からの複製]"
-
-msgid "Enable Select Cases"
-msgstr "ケースの選択を有効にする"
-
-msgid "Select Cases"
-msgstr "ケースの選択"
-
-msgid "Duplicate Dataset"
-msgstr "データセットの複製"
-
-msgid "Missing"
-msgstr "欠損値"
-
-msgid "Select All Variables"
-msgstr "全ての変数を選択"
-
-msgid "Unselect All Variables"
-msgstr "選択を解除"
-
-msgid "View Data"
-msgstr "データを見る"
-
-msgid "All Variables"
-msgstr "全ての変数"
-
-msgid "Selected Variables"
-msgstr "選択された変数"
-
-msgid "Management and Manipulation"
-msgstr "管理と操作"
-
-msgid "Descriptive statistics"
-msgstr "記述統計量"
-
-msgid "Cannot reload while Select Cases enabled."
-msgstr "ケースの選択の選択が有効になっている間は，リロードはできません。"
-
-msgid "Cannot reload while \"Select Cases\" enabled."
-msgstr "ケースの選択の選択が有効になっている間は，リロードはできません。"
-
-msgid "\"%s\" isn't a data.set or doesn't exist."
-msgstr "\"%s\" はdata.setではないか，存在しません。"
-
-msgid "\""
-msgstr "\""
-
-msgid "\" isn't a data.set or doesn't exist."
-msgstr "\" はdata.setではないか，存在しません。"
+msgid "Value Labels"
+msgstr "値ラベル"
 
 msgid "This recode syntax is invalid. Please enter a valid recode syntax."
 msgstr ""
@@ -626,8 +587,83 @@ msgstr "テンプレートの生成"
 msgid "Variable Name"
 msgstr "変数名"
 
+msgid "Edit Value Labels"
+msgstr "値ラベルを編集する"
+
 msgid "Duplicate label is detected."
 msgstr "ラベルが重複しています。"
+
+msgid "All variables"
+msgstr "全ての変数"
+
+msgid "Only selected variables"
+msgstr "選択されている変数のみ"
+
+msgid "Only not selected variables"
+msgstr "選択されていない変数のみ"
+
+msgid "Only selected cases"
+msgstr "選択されているケースのみ"
+
+msgid "Exclude missing values"
+msgstr "欠損値を取り除く"
+
+msgid "Variables"
+msgstr "変数"
+
+msgid "Cases"
+msgstr "ケース"
+
+msgid "\"Select Cases\" isn't enabled."
+msgstr "\"ケースの選択\"が有効になっていません。"
+
+msgid "No variables are selected."
+msgstr "変数が一つも選択されていません。"
+
+msgid "[Duplicated from %s]"
+msgstr "[%s からの複製]"
+
+msgid "Select Cases"
+msgstr "ケースの選択"
+
+msgid "Duplicate Dataset"
+msgstr "データセットの複製"
+
+msgid "Enable Select Cases"
+msgstr "ケースの選択を有効にする"
+
+msgid "Delete Variables"
+msgstr "変数の削除"
+
+msgid "Duplicate Variables"
+msgstr "変数の複製"
+
+msgid "Select All Variables"
+msgstr "全ての変数を選択"
+
+msgid "Unselect All Variables"
+msgstr "選択を解除"
+
+msgid "Show Selected Variables Only"
+msgstr "選択されている変数のみ表示"
+
+msgid "Descriptive statistics"
+msgstr "記述統計量"
+
+msgid "Cannot reload while Select Cases enabled."
+msgstr "ケースの選択の選択が有効になっている間は，リロードはできません。"
+
+msgid "Cannot reload while \"Select Cases\" enabled."
+msgstr "ケースの選択の選択が有効になっている間は，リロードはできません。"
+
+msgid "\"%s\" isn't a data.set or doesn't exist."
+msgstr "\"%s\" はdata.setではないか，存在しません。"
+
+msgid "\""
+msgstr "\""
+
+msgid "\" isn't a data.set or doesn't exist."
+msgstr "\" はdata.setではないか，存在しません。"
 
 msgid "Please install vcd package to output Cramer's V."
 msgstr "クラマーのVを出力するために、vcdパッケージをインストールしてください。"
@@ -665,6 +701,21 @@ msgstr "左"
 msgid "Unit"
 msgstr "単位"
 
+msgid ""
+"Create the directory below to save the config file and/or the session.\n"
+"\t%s\n"
+"Is it OK?\n"
+"\n"
+"Or you can change the directory by\n"
+"\toptions(RzConfPath=\"/path/to/dir\")"
+msgstr ""
+"設定ファイルやセッションを保存するために、以下のディレクトリを作成します。\n"
+"\t%s\n"
+"よろしいですか？\n"
+"\n"
+"または、以下のようにしてディレクトリを変更することができます。\n"
+"\toptions(RzConfPath=\"/path/to/dir\")"
+
 msgid "Start"
 msgstr "スタート"
 
@@ -673,6 +724,61 @@ msgstr "Rz() を実行して開始してください．"
 
 msgid "or you can start from menu bar if you use R on Windows."
 msgstr "WindowsでRを使っている場合はメニューバーから起動することもできます．"
+
+#~ msgid "Themes Folder"
+#~ msgstr "テーマフォルダ"
+
+#~ msgid "Plot when a index cell is double-clicked"
+#~ msgstr "インデックスをダブルクリックしたときにプロットを実行する"
+
+#~ msgid "Don't output summary while plot view open"
+#~ msgstr "プロットビューを開いている間はサマリーを出力しない"
+
+#, fuzzy
+#~ msgid "Show Only Selected Variables"
+#~ msgstr "選択されている変数のみ"
+
+#~ msgid "_Open"
+#~ msgstr "開く(_O)"
+
+#~ msgid "Save As"
+#~ msgstr "別名で保存"
+
+#~ msgid "Import from _Grobal Environment"
+#~ msgstr "グローバル環境からインポート(_G)"
+
+#~ msgid "Close"
+#~ msgstr "閉じる"
+
+#~ msgid "_Edit"
+#~ msgstr "編集(_E)"
+
+#~ msgid "_Change the Dataset Name"
+#~ msgstr "データセット名の変更(_C)"
+
+#~ msgid "_Remove Dataset"
+#~ msgstr "データセットを取り除く(_R)"
+
+#~ msgid "Revert to Original DataSet"
+#~ msgstr "読み込み時の状態に戻す"
+
+#~ msgid "Missing Values"
+#~ msgstr "欠損値"
+
+#~ msgid "All Files (*.*)"
+#~ msgstr "すべてのファイル (*.*)"
+
+#~ msgid "Comma-Separated Text (*.*)"
+#~ msgstr "コンマ区切りテキスト (*.*)"
+
+#~ msgid "Tab-Separated Text (*.*)"
+#~ msgstr "タブ区切りテキスト (*.*)"
+
+#~ msgid "All Variables"
+#~ msgstr "全ての変数"
+
+#~ msgid "Management and Manipulation"
+#~ msgstr "管理と操作"
 
 #~ msgid "Delete Selected Variables"
 #~ msgstr "変数を削除"
@@ -842,14 +948,8 @@ msgstr "WindowsでRを使っている場合はメニューバーから起動す�
 #~ msgid "Import"
 #~ msgstr "インポート"
 
-#~ msgid "Open Data"
-#~ msgstr "データを開く"
-
 #~ msgid "_Save as"
 #~ msgstr "別名で保存(_S)"
-
-#~ msgid "_Import"
-#~ msgstr "インポート(_I)"
 
 #~ msgid "_Value Labels"
 #~ msgstr "値ラベル"

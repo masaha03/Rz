@@ -1,6 +1,6 @@
 analysisStat <-
 setRefClass("RzAnalysisStat",
-  fields = c("main", "liststore", "data"),
+  fields = c("main", "liststore", "data", "vvcore"),
   methods = list(
     initialize            = function(...) {
       initFields(...)
@@ -88,7 +88,7 @@ setRefClass("RzAnalysisStat",
       gSignalConnect(button.execute, "clicked", function(button){
         data.set.name  <- data$getData.set.name()
         variable.names <- data$getVariableNames()
-        variable.names <- variable.names[rzTools$getVariableView()$getSelectedRows()]
+        variable.names <- variable.names[vvcore$getSelectedRows()]
         variable.names <- paste("\"", variable.names, "\"", sep="", collapse=", ")
         
         group  <- localize(group.combo$getActiveText())
@@ -273,11 +273,13 @@ setRefClass("RzAnalysisStat",
       vbox$packStart(splom    , padding=2, expand=FALSE)
       vbox$packStart(button.box, padding=2, expand=FALSE)
       
+      viewport <- gtkViewportNew()
+      viewport$setShadowType(GtkShadowType["none"])
+      viewport$setBorderWidth(5)
+      viewport$add(vbox)
       sw <- gtkScrolledWindowNew()
-      sw$addWithViewport(vbox)
+      sw$add(viewport)
       sw$setShadowType(GtkShadowType["none"])
-      sw$getChild()$setShadowType(GtkShadowType["none"])
-      sw$getChild()$setBorderWidth(5)
       sw$setPolicy(GtkPolicyType["automatic"], GtkPolicyType["automatic"])      
       
       gSignalConnect(check1      , "toggled", function(button){
@@ -290,7 +292,7 @@ setRefClass("RzAnalysisStat",
       gSignalConnect(button.execute, "clicked", function(button){
         data.set.name  <- data$getData.set.name()
         variable.names <- data$getVariableNames()
-        variable.names <- variable.names[rzTools$getVariableView()$getSelectedRows()]
+        variable.names <- variable.names[vvcore$getSelectedRows()]
         variable.names <- paste("\"", variable.names, "\"", sep="", collapse=", ")
         
         script <- NULL
