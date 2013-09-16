@@ -57,7 +57,7 @@ setRefClass("RzPlotGeom",
       combo.geom <<- gtkComboBoxNewText()
       combo.geom["width-request"] <<- 1
       geoms <- c("none", "bar", "freqpoly", "histogram", "density", "boxplot", "violin",
-                 "line", "area", "point", "jitter", "dotplot", "rug", "smooth", "quantile", "blank")
+                 "line", "path", "area", "point", "jitter", "dotplot", "rug", "smooth", "quantile", "blank")
       for(i in geoms) combo.geom$appendText(i)
       combo.geom$setActive(0)
       

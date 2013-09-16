@@ -204,6 +204,10 @@ check.class <- function(obj, class){
     result <- try(as.logical(obj), silent=TRUE)
     if(class(result) != "logical" | is.na(result)) return(NULL)    
     
+  } else if (class=="expression") {
+    result <- try(parse(text=obj), silent=TRUE)
+    if(class(result) != "expression") return(NULL)
+  
   } else {
     result <- obj
   }

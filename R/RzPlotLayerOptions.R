@@ -61,6 +61,7 @@ setRefClass("RzPlotLayerOptions",
       color2 <- .self$buildComboEntry("color", colors(), width=120)
       shape2 <- .self$buildEntry("shape", class="any", width=120)
       size2  <- .self$buildEntry("size", class="numeric", width=120)
+      width2 <- .self$buildEntry("width", class="numeric", width=120)
       line2  <- .self$buildCombo("linetype", linetypes, active=1, width=120)
       
       table.option1  <- gtkTableNew(homogeneous=FALSE)
@@ -75,8 +76,10 @@ setRefClass("RzPlotLayerOptions",
       table.option1$attach(shape2[[2]], 1, 2, 2, 3, 5       , "shrink")
       table.option1$attach(size2[[1]] , 0, 1, 3, 4, "shrink", "shrink")
       table.option1$attach(size2[[2]] , 1, 2, 3, 4, 5       , "shrink")
-      table.option1$attach(line2[[1]] , 0, 1, 4, 5, "shrink", "shrink")
-      table.option1$attach(line2[[2]] , 1, 2, 4, 5, 5       , "shrink")
+      table.option1$attach(width2[[1]], 0, 1, 4, 5, "shrink", "shrink")
+      table.option1$attach(width2[[2]], 1, 2, 4, 5, 5       , "shrink")
+      table.option1$attach(line2[[1]] , 0, 1, 5, 6, "shrink", "shrink")
+      table.option1$attach(line2[[2]] , 1, 2, 5, 6, 5       , "shrink")
       
       frame.option1 <- gtkFrameNew("Appearance Options")
       frame.option1$setShadowType(GtkShadowType["etched-in"])
@@ -301,10 +304,14 @@ setRefClass("RzPlotLayerOptions",
         gSignalConnect(entry, "changed", function(entry){
           text <- localize(entry$getText())
           text <- check.class(text, class)
-          if ( is.null(text) || (!is.null(default) && text==default) ) {
+          if ( is.null(text) || (!is.null(default) && isTRUE(all.equal(text, default))) ) {
             args[[label]] <<- NULL
           } else {
-            args[[label]] <<- deparse(text)
+            if (is.expression(text)) {
+              args[[label]] <<- as.character(text)              
+            } else {
+              args[[label]] <<- deparse(text)              
+            }
           }
         })
       }
@@ -351,6 +358,14 @@ setRefClass("RzPlotLayerOptions",
           options[[4]] <- .self$buildCombo("kernel", kernel, 0, class="character")
           options[[5]] <- .self$buildCombo("na.rm" , c("TRUE", "FALSE"), 1, class="logical")
           
+        } else if (type=="path") {
+          options <- list(
+            .self$buildCombo("lineend" , c("round", "butt", "square"), 1, class="character"),
+            .self$buildCombo("linejoin" , c("round", "mitre", "bevel"), 0, class="character"),
+            .self$buildEntry("linemitre", class="numeric"),
+            .self$buildEntry("arrow", class="expression"),
+            .self$buildCombo("na.rm" , c("TRUE", "FALSE"), 1, class="logical")
+          )
         } else if (type=="area" | type=="point" | type=="jitter") {
           options[[1]] <- .self$buildCombo("na.rm" , c("TRUE", "FALSE"), 1, class="logical")          
         } else if (type=="dotplot") {
